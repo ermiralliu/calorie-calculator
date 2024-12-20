@@ -1,0 +1,9 @@
+.inputs{
+  display: flex;
+  flex-direction: column;
+}
+
+#user-input-form{
+  width: 50vw;
+  margin: 5px auto;
+}

@@ -1,0 +1,15 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <head> 
+    <title>Mama</title> 
+  </head> 
+  <body> 
+    <div th:each="fun, iStat: ${funs}">
+      <h1 th:text="${iStat.index}"></h1>
+      <ul>
+        <li th:text="${fun.x}"></li>
+        <li th:text="${fun.y}"></li>
+      </ul>
+    </div>
+  </body> 
+</html>

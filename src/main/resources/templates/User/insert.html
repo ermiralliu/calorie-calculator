@@ -1,0 +1,38 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+  <head> 
+    <meta charset="UTF-8">
+    <title>Greeting</title>
+    <link th:href="@{/insert.css}" rel="stylesheet"/>
+  </head> 
+  <body>
+    <dialog id="dial" th:if="${user != null}">
+      <span>
+        <h2>Id: </h2>
+        <h3 th:text="${user.getId()}"></h3>
+      </span>
+      <span>
+        <h2>Name: </h2>
+        <h3 th:text="${user.getName()}"></h3>
+      </span>
+      <span>
+        <h2>Email: </h2>
+        <h3 th:text="${user.getEmail()}"></h3>
+      </span>
+    </dialog>
+    <form id="user-input-form" action="/user/insert" method="post" title="user">
+      <div class="inputs">
+        <label for="email">Email</label><input name="email" type="text"/>
+        <label for="name">Name</label><input name="name" type="text"/>
+        <label for="password">Password</label><input name="password" type="password"/>
+      </div>
+      <div>
+        <button type="submit">Send</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+    <script>
+      document.getElementById("dial")?.showModal();
+    </script>
+  </body> 
+</html>
