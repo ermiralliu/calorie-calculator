@@ -26,10 +26,13 @@ public class User{
 	private String name; 
 	
 	private String password;
+
+	private boolean isAdmin;
 	
 	public User() { // This isn't really used, but the app displays an error otherwise
 		id = null;
 		email = null;
+		isAdmin=false;
 	}
 	
 	public User(String name, String email, String password) { // Parameterized constructor 
@@ -37,5 +40,5 @@ public class User{
 		this.name = name; 
 		this.email = email;
 		this.password = password;
-	}
+    }
 }
