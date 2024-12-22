@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Entity
-public class FoodEntity{
+public class FoodEntry {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
@@ -36,7 +36,7 @@ public class FoodEntity{
    @Temporal(TemporalType.TIMESTAMP)
    private LocalDateTime createdAt;
 
-   public FoodEntity() {
+   public FoodEntry() {
 
       id = null;
       name = null;
@@ -46,7 +46,7 @@ public class FoodEntity{
       createdAt = null;
    }
 
-   public FoodEntity(String name, String description, Double price, Integer calories, LocalDateTime createdAt) {
+   public FoodEntry(String name, String description, Double price, Integer calories, LocalDateTime createdAt) {
 
       this.id = null;
       this.name = name;
