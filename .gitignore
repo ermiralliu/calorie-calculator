@@ -1,4 +1,5 @@
 HELP.md
+databases/SHOE.db
 target/
 bin/
 !.mvn/wrapper/maven-wrapper.jar
