@@ -1,4 +1,4 @@
-package com.fti.softi.Models;
+package com.fti.softi.models;
 
 import java.util.Set;
 

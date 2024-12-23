@@ -1,4 +1,4 @@
-package com.fti.softi.Controllers;
+package com.fti.softi.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fti.softi.Models.FoodEntry;
-import com.fti.softi.Models.User;
-import com.fti.softi.Repositories.FoodEntryRepository;
-import com.fti.softi.Repositories.UserRepository;
+import com.fti.softi.models.FoodEntry;
+import com.fti.softi.models.User;
+import com.fti.softi.repositories.FoodEntryRepository;
+import com.fti.softi.repositories.UserRepository;
 
 @Controller
 @RequestMapping("/food")
