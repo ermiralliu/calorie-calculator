@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Food Entry</title>
+    <link rel="stylesheet" href="../static/foodEntry.css">
+</head>
+<body>
+
+<div class="food-form">
+    <h2>Add a Food Entry</h2>
+    <form id="foodEntryForm">
+        <label for="datetime">Date/Time</label>
+        <input type="datetime-local" id="datetime" name="datetime" required />
+
+        <label for="foodName">Food Name</label>
+        <input type="text" id="foodName" name="foodName" placeholder="e.g., Apple, Ice Cream" required />
+
+        <label for="calories">Calorie Value</label>
+        <input type="number" id="calories" name="calories" placeholder="e.g., 120" required />
+
+        <button type="submit">Save Food Entry</button>
+    </form>
+</div>
+
+<div class="food-list">
+    <h2>Food Log</h2>
+    <ul id="foodLog"></ul>
+</div>
+
+<script src="../static/foodEntry.js"></script>
+</body>
+</html>
