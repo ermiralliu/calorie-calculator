@@ -1,18 +1,20 @@
 package com.fti.softi.Models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,6 +25,10 @@ public class FoodEntry {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+   
+   @ManyToOne
+   @JoinColumn(name = "user_id", nullable = false)
+   private User user;
 
    @Column(unique = true)
    private String name;
@@ -37,8 +43,8 @@ public class FoodEntry {
    private LocalDateTime createdAt;
 
    public FoodEntry() {
-
       id = null;
+      user = null;
       name = null;
       description = null;
       price = null;
@@ -46,13 +52,13 @@ public class FoodEntry {
       createdAt = null;
    }
 
-   public FoodEntry(String name, String description, Double price, Integer calories, LocalDateTime createdAt) {
-
-      this.id = null;
+   public FoodEntry(String name, User user, String description, Double price, Integer calories) {
+      this.id = null;	// cause autogen
+      this.user = user;
       this.name = name;
       this.description = description;
       this.price = price;
       this.calories = calories;
-      this.createdAt = createdAt;
+      this.createdAt = null; // cause autogen
    }
 }
