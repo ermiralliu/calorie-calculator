@@ -32,7 +32,7 @@ public class User{
 	
 	private String password;
 
-	private boolean isAdmin;
+	private Boolean isAdmin;
 	
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
   private Set<FoodEntry> foodEntries;
