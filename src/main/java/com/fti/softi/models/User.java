@@ -2,14 +2,7 @@ package com.fti.softi.models;
 
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,8 +26,16 @@ public class User{
 	private String password;
 
 	private Boolean isAdmin;
+
+	@ManyToMany
+	@JoinTable (
+		name = "user_role",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "role_id")
+	)
+	private Set<Role> roles;
 	
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<FoodEntry> foodEntries;
   // fetchType lazy only fetches when the foodEntries are accessed for the first time
   // which avoids performance issues
