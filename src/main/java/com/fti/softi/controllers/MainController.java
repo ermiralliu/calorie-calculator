@@ -1,0 +1,30 @@
+package com.fti.softi.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping
+public class MainController {
+
+	public MainController() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	@GetMapping("/login")
+	public String loginView() {
+		return "login";
+	}
+	
+	@GetMapping("/register")
+	public String registerRedirect() {
+		return "redirect:/user/register";
+	}
+	
+	@GetMapping("/")
+	public String home() {
+		return "redirect:/food/list";
+	}
+
+}

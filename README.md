@@ -13,7 +13,6 @@ A MVC Spring Boot Web Application which tracks food calories and expenditure.
 
 Notes:
 - For Eclipse, you might have to manually install [lombok](https://projectlombok.org/download) for some of the annotation processing. Simply run the jar file after downloading and it will automatically find the IDE. Then proceed with the installation.
-
 - Other IDE-s contain lombok by default.
 
 #### Terminal-only:

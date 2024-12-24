@@ -15,12 +15,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register").permitAll() // Public endpoints
+                        .requestMatchers("/login", "/register", "user/register").permitAll() // Public endpoints
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .formLogin(login -> login
                         .loginPage("/login") // Custom login page
-                        .defaultSuccessUrl("/home", true) // Redirect after successful login
+                        .defaultSuccessUrl("/food", true) // Redirect after successful login
                         .permitAll()
                 )
                 .logout(logout -> logout
