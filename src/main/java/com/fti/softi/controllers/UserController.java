@@ -1,5 +1,8 @@
 package com.fti.softi.controllers;
 
+import java.util.HashSet;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,25 +12,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fti.softi.models.Role;
 import com.fti.softi.models.User;
+import com.fti.softi.repositories.RoleRepository;
 import com.fti.softi.repositories.UserRepository;
+
+import lombok.AllArgsConstructor;
 
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 	private final UserRepository userRepository; 
-
-	public UserController(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	private final RoleRepository roleRepository; 
 	
 	@GetMapping("/register")
 	public String getInsertView() {
 		return "register";
 	}
 	
-	@PostMapping
+	@PostMapping("/register")
 	public String postUser(
 			@RequestParam("name") String name, 
 			@RequestParam("email") String email,
@@ -35,13 +40,18 @@ public class UserController {
 			RedirectAttributes redirectAttributes
 	) {
 		if(userRepository.findByEmail(email) != null) {
-			redirectAttributes.addAttribute("Email is already in use");
+			redirectAttributes.addFlashAttribute("message","Email is already in use");
 			return "redirect:/user/register";
 		}
+		
+		var userRoles = new HashSet<Role>();
+		userRoles.add(roleRepository.findByName("USER"));
+		var encryptor = new BCryptPasswordEncoder();
 		var user = User.builder()
 				.name(name)
 				.email(email)
-				.password(password)
+				.password(encryptor.encode(password))
+				.roles(userRoles)
 				.build();
 		
 		var finalUser = userRepository.save(user);	//returns a copy that contains an id

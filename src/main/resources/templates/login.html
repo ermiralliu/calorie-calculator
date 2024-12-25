@@ -12,10 +12,25 @@
     <h2>Login</h2>
     <form th:action="@{/login}" method="post">
         <input type="email" name="username" placeholder="Email Address" required>
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password" placeholder="Password" minlength="6" maxlength="32" required>
         <button type="submit">Log In</button>
     </form>
     <p>Don't have an account? <a href="/register">Register here</a></p>
+	<dialog id="dial" th:if="${user != null}">
+	  <h2> User successfully created with properties:</h3>
+      <div>
+        <h3>Name: </h3>
+        <h4 th:text="${user.getName()}"></h4>
+      </div>
+      <div>
+        <h3>Email: </h3>
+        <h4 th:text="${user.getEmail()}"></h4>
+      </div>
+	  <h2>You can log in now</h2>
+    </dialog>
+	<script th:if="${user != null}">
+      document.getElementById("dial")?.showModal();
+    </script>
 </div>
 </body>
 </html>
