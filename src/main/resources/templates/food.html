@@ -8,8 +8,8 @@
 
 <!-- Monthly Expenditure and Calorie Messages -->
 <div>
-    <p th:text="|Current Monthly Expenditure: ${monthlyExpenditureMessage} Euros|"></p>
-    <p th:text="|Current Daily Calorie Count: ${dailyCalorieMessage} kcal|"></p>
+    <p th:text="|Current Monthly Expenditure: ${totalExpenditure} Euros|"></p>
+    <p th:text="|Current Daily Calorie Count: ${dailyCalories} kcal|"></p>
 </div>
 
 <!-- Food Entries Table -->
@@ -38,11 +38,11 @@
 </table>
 
 <!-- Warning Messages -->
-<div th:if="${totalExpenditure > 1000}">
+<div th:if="${totalExpenditure != null && totalExpenditure > 1000}">
     <p style="color: red;">Warning: You have exceeded your monthly expenditure limit of &euro;1,000!</p>
 </div>
 
-<div th:if="${dailyCalories > 2500}">
+<div th:if="${dailyCalories != null && dailyCalories > 2500}">
     <p style="color: red;">Warning: You have exceeded your daily calorie limit of 2,500 calories!</p>
 </div>
 
