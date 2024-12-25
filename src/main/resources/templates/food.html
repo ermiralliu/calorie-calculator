@@ -20,6 +20,7 @@
         <th>Name</th>
         <th>Calories</th>
         <th>Price (&euro;)</th>
+        <th>Date/Time</th>
     </tr>
     </thead>
     <tbody>
@@ -27,7 +28,7 @@
         <td th:text="${iStat.index + 1}"></td>
         <td th:text="${foodEntry.name}"></td>
         <td>
-          <input type="number" th:value="${foodEntry.calories}" />
+            <input type="number" th:value="${foodEntry.calories}" />
         </td>
         <td>
             <input type="number" th:value="${foodEntry.price}" />
@@ -36,6 +37,37 @@
     </tr>
     </tbody>
 </table>
+
+<!-- Add Food Entry Button -->
+<button onclick="document.getElementById('foodEntryDialog').showModal()">Add Food Entry</button>
+
+<!-- Food Entry Dialog -->
+<dialog id="foodEntryDialog">
+    <form method="dialog">
+        <h2>Add or Edit Food Entry</h2>
+        <label for="datetime">Date/Time</label>
+        <input type="datetime-local" id="datetime" name="datetime" />
+        <input type="checkbox" id="autoDatetime" onchange="document.getElementById('datetime').disabled = this.checked"> Use Current Time
+        <br><br>
+
+        <label for="foodName">Food Name</label>
+        <input type="text" id="foodName" name="foodName" placeholder="e.g., Apple, Ice Cream" required />
+        <br><br>
+
+        <label for="calories">Calorie Value</label>
+        <input type="number" id="calories" name="calories" placeholder="e.g., 120" required />
+        <br><br>
+
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" placeholder="e.g., 5.00" required />
+        <br><br>
+
+        <menu>
+            <button value="cancel">Cancel</button>
+            <button value="save">Save</button>
+        </menu>
+    </form>
+</dialog>
 
 <!-- Warning Messages -->
 <div th:if="${totalExpenditure != null && totalExpenditure > 1000}">
@@ -53,5 +85,6 @@
         <li th:each="day : ${exceededCalorieDays}" th:text="${day}"></li>
     </ul>
 </div>
+
 </body>
 </html>
