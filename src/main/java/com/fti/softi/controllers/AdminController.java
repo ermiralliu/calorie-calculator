@@ -43,7 +43,7 @@ public class AdminController {
 		model.addAttribute("dailyCalories", dailyCalories);
 		model.addAttribute("totalExpenditure", totalExpenditure);
 
-		return "admin/food-entries"; // Return the view for admin food entries
+		return "admin";
 	}
 
 	@PostMapping("/food-entries/add")

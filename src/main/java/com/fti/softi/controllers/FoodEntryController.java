@@ -30,19 +30,18 @@ public class FoodEntryController {
 		Long userId = currentUserService.getCurrentUserId();
 		List<FoodEntry> foodEntries = foodEntryRepository.findByUserId(userId);
 		
-		Integer dailyCalories = foodEntries.stream()
-				.filter(
-						entry -> entry.getCreatedAt().compareTo( LocalDateTime.now()) <= 0  
-						&& entry.getCreatedAt().compareTo(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0)) >= 0)
-				.mapToInt( entry -> entry.getCalories())
+		int dailyCalories = foodEntries.stream()
+				.filter(entry -> !entry.getCreatedAt().isAfter(LocalDateTime.now())
+						&& !entry.getCreatedAt().isBefore(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0)))
+				.mapToInt(FoodEntry::getCalories)
 				.sum();
 		// using streams will be moved to a service
 
-		Double totalExpenditure = foodEntries.stream()
+		double totalExpenditure = foodEntries.stream()
 				.filter(
-						entry -> entry.getCreatedAt().compareTo( LocalDateTime.now()) <= 0  
-						&& entry.getCreatedAt().compareTo(LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0)) >= 0)
-				.mapToDouble( entry -> entry.getPrice())
+						entry -> !entry.getCreatedAt().isAfter(LocalDateTime.now())
+						&& !entry.getCreatedAt().isBefore(LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0)))
+				.mapToDouble(FoodEntry::getPrice)
 				.sum();
 			System.out.println('\n'+ dailyCalories + '\n');
 		System.out.println('\n'+ totalExpenditure+'\n');
