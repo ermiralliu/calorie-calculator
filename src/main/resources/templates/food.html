@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Food Tracker</title>
 </head>
@@ -8,12 +8,12 @@
 
 <!-- Monthly Expenditure and Calorie Messages -->
 <div>
-    <p th:text="${monthlyExpenditureMessage}"></p>
-    <p th:text="${dailyCalorieMessage}"></p>
+    <p th:text="|Current Monthly Expenditure: ${monthlyExpenditureMessage} Euros|"></p>
+    <p th:text="|Current Daily Calorie Count: ${dailyCalorieMessage} kcal|"></p>
 </div>
 
 <!-- Food Entries Table -->
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>#</th>
@@ -26,10 +26,13 @@
     <tr th:each="foodEntry, iStat : ${foodEntries}">
         <td th:text="${iStat.index + 1}"></td>
         <td th:text="${foodEntry.name}"></td>
-        <td th:text="${foodEntry.calories}"></td>
+        <td>
+          <input type="number" th:value="${foodEntry.calories}" />
+        </td>
         <td>
             <input type="number" th:value="${foodEntry.price}" />
         </td>
+        <td th:text="${foodEntry.getCreatedAt().toString()}"></td>
     </tr>
     </tbody>
 </table>

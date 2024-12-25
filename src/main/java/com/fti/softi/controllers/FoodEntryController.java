@@ -1,5 +1,6 @@
 package com.fti.softi.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -27,11 +28,24 @@ public class FoodEntryController {
 	public String listFoodEntries(Model model) {
 		Long userId = currentUserService.getCurrentUserId();
 		List<FoodEntry> foodEntries = foodEntryRepository.findByUserId(userId);
-		Integer dailyCalories = foodEntryRepository.getTotalCaloriesForUserAndDate(userId, null);
-		Double totalExpenditure = foodEntryRepository.getTotalMonthlyExpenditureForUserAndMonth(userId, null);
+//		Integer dailyCalories = foodEntryRepository.getTotalCaloriesForUserAndDate(userId, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		Integer dailyCalories = foodEntries.stream()
+				.filter(
+						entry -> entry.getCreatedAt().compareTo( LocalDateTime.now()) <= 0  
+						&& entry.getCreatedAt().compareTo(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0)) >= 0)
+				.mapToInt( entry -> entry.getCalories())
+				.sum();
+		
+		//		Double totalExpenditure = foodEntryRepository.getTotalMonthlyExpenditureForUserAndMonth(userId, LocalDate.now().getMonthValue());
+		Double totalExpenditure = foodEntryRepository.sumPriceByDateBetween(userId, 
+				LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0), 
+				LocalDateTime.now()
+			);
+		System.out.println('\n'+ dailyCalories + '\n');
+		System.out.println('\n'+ totalExpenditure+'\n');
 		model.addAttribute("foodEntries", foodEntries);
-		model.addAttribute("dailyCalories", dailyCalories);
-		model.addAttribute("totalExpenditure", totalExpenditure);
+		model.addAttribute("dailyCalorieMessage", dailyCalories);
+		model.addAttribute("monthlyExpenditureMessage", totalExpenditure);
 		return "food";
 	}
 

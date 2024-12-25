@@ -24,7 +24,7 @@ public class MainController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "redirect:/food/list";
+		return "redirect:/food";
 	}
 
 }
