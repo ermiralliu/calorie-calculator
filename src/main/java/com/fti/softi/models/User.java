@@ -16,16 +16,14 @@ import lombok.Setter;
 public class User{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public final Long id;
+	private final Long id;
 	
 	@Column(unique=true)
-	public final String email;
+	private final String email;
 	
 	private String name; 
 	
 	private String password;
-
-	private Boolean isAdmin;
 
 	@ManyToMany
 	@JoinTable (
@@ -43,7 +41,6 @@ public class User{
 	public User() { // This isn't really used, but the app displays an error otherwise
 		id = null;
 		email = null;
-		isAdmin = false;
 	}
 	
 	public User(String name, String email, String password) { // Parameterized constructor 
@@ -51,7 +48,7 @@ public class User{
 		this.name = name; 
 		this.email = email;
 		this.password = password;
-		this.isAdmin = false;
+		this.roles = null;
 		this.foodEntries = null;
 	}
 }

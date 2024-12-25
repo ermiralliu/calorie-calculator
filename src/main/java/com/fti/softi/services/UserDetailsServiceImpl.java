@@ -1,14 +1,13 @@
-package com.fti.softi.service;
+package com.fti.softi.services;
 
-import com.fti.softi.models.User;
-import com.fti.softi.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
+import com.fti.softi.config.CustomUserDetails;
+import com.fti.softi.models.User;
+import com.fti.softi.repositories.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -27,12 +26,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // Create UserDetails instance
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                user.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority(role.getName()))
-                        .collect(Collectors.toList())
-        );
+        return new CustomUserDetails(user);
+//        return new org.springframework.security.core.userdetails.User(
+//                user.getEmail(),
+//                user.getPassword(),
+//                user.getRoles().stream()
+//                        .map(role -> new SimpleGrantedAuthority(role.getName()))
+//                        .collect(Collectors.toList())
+//        );
     }
 }
