@@ -10,9 +10,7 @@ import com.fti.softi.models.User;
 @Service
 public class CurrentUserServiceImpl implements CurrentUserService {
 
-	public CurrentUserServiceImpl() {
-		// TODO Auto-generated constructor stub
-	}
+	public CurrentUserServiceImpl() {}
 
 	@Override
 	public User getCurrentUser() {

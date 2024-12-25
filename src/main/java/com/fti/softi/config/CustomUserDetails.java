@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fti.softi.models.User;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails{
 	private static final long serialVersionUID = 4280594317366620191L;
 	
 	private User user;
@@ -17,9 +17,13 @@ public class CustomUserDetails implements UserDetails {
 	
 	public CustomUserDetails(User user) {
 		this.user = user;
+		System.out.println(user.getRoles().stream().map(role->role.getName()).collect(Collectors.toSet()));
 		this.authorities = user.getRoles().stream()
-      .map(role -> new SimpleGrantedAuthority(role.getName()))
-      .collect(Collectors.toList());
+      .map(role -> {
+      		System.out.println(role.getName());
+      		return new SimpleGrantedAuthority("ROLE_"+ role.getName());
+      	})
+      .collect(Collectors.toSet());
 	}
 
 	@Override

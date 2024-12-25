@@ -23,7 +23,7 @@ public class AdminController {
 	private final FoodEntryRepository foodEntryRepository;
 	private final CurrentUserService currentUserService;
 
-	@GetMapping("/food-entries")
+	@GetMapping
 	public String listFoodEntries(Model model) {
 		List<FoodEntry> foodEntries = foodEntryRepository.findAll(); // Fetch all food entries
 
