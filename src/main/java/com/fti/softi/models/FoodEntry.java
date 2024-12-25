@@ -1,6 +1,7 @@
 package com.fti.softi.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,5 +61,9 @@ public class FoodEntry {
       this.price = price;
       this.calories = calories;
       this.createdAt = null; // cause autogen
+   }
+   public String getCreatedAtToString() {
+  	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss");
+  	 return this.createdAt.format(formatter);
    }
 }

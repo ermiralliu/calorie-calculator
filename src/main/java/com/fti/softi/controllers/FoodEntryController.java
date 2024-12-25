@@ -56,9 +56,19 @@ public class FoodEntryController {
 	@PostMapping("/add")
 	public String addFoodEntry(
 			@RequestParam("name") String name, @RequestParam("description") String description,
-			@RequestParam("price") Double price, @RequestParam("calories") Integer calories) {
+			@RequestParam("price") Double price, @RequestParam("calories") Integer calories,
+			@RequestParam(name="createdAt", required=false) LocalDateTime dateTime) {
 		User user = currentUserService.getCurrentUser();
-		FoodEntry foodEntry = new FoodEntry(name, user, description, price, calories);
+		if(dateTime == null)
+			dateTime = LocalDateTime.now();		
+		FoodEntry foodEntry = FoodEntry.builder()
+				.name(name)
+				.user(user)
+				.description(description)
+				.price(price)
+				.calories(calories)
+				.createdAt(dateTime)
+				.build();
 		foodEntryRepository.save(foodEntry);
 		return "redirect:/food";
 	}

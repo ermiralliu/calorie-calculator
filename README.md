@@ -11,14 +11,11 @@ A MVC Spring Boot Web Application which tracks food calories and expenditure.
 
 #### User Routes ```/user```
 - ```GET /user/register``` returns the register view.
-
 - ```POST /user/register``` -> if email exists, inserts a new user and redirects to ```/login```, else reloads the current page and displays a message.
-
 - ```PUT /user``` updates current user (unimplemented).
 
 #### Food Routes ```/food```
 - ```GET /food``` returns the main view, with the food list and messages about calories and expenditure.
-
 - ```POST /food/add``` adds a new food entry and redirects to ```/food```.
 
 #### Admin Routes ```/admin```
