@@ -5,26 +5,24 @@ A MVC Spring Boot Web Application which tracks food calories and expenditure.
 ### Routes
 
 #### Root Routes ```/```
-```GET /``` redirects to ```/food``` which is the main page.
-
-```GET /register``` redirects to ```/user/register```, because registering has mostly to do with the User model.
-
-```GET /login``` leads to the login page, which is managed by Spring Security.
+- ```GET /``` redirects to ```/food``` which is the main page.
+- ```GET /register``` redirects to ```/user/register```, because registering has mostly to do with the User model.
+- ```GET /login``` leads to the login page, which is managed by Spring Security.
 
 #### User Routes ```/user```
-```GET /user/register``` returns the register view.
+- ```GET /user/register``` returns the register view.
 
-```POST /user/register``` -> if email exists, inserts a new user and redirects to ```/login```, else reloads the current page and displays a message.
+- ```POST /user/register``` -> if email exists, inserts a new user and redirects to ```/login```, else reloads the current page and displays a message.
 
-```PUT /user``` updates current user (unimplemented).
+- ```PUT /user``` updates current user (unimplemented).
 
 #### Food Routes ```/food```
-```GET /food``` returns the main view, with the food list and messages about calories and expenditure.
+- ```GET /food``` returns the main view, with the food list and messages about calories and expenditure.
 
-```POST /food/add``` adds a new food entry and redirects to ```/food```.
+- ```POST /food/add``` adds a new food entry and redirects to ```/food```.
 
 #### Admin Routes ```/admin```
-Leads to the admin page (currently unimplemented).
+-  Leads to the admin page (currently unimplemented).
 
 
 ### Setting-up the project
