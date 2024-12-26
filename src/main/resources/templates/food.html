@@ -6,6 +6,11 @@
 <body>
 <h1>Food Tracker</h1>
 
+<!-- Logout Button -->
+<form th:action="@{/logout}" method="post" style="display: inline;">
+    <button type="submit" class="logout-btn">Log out</button>
+</form>
+
 <!-- Monthly Expenditure and Calorie Messages -->
 <div>
     <p th:text="|Current Monthly Expenditure: ${totalExpenditure} Euros|"></p>
@@ -52,7 +57,7 @@
         <input type="checkbox" id="autoDatetime" onchange="document.getElementById('datetime').disabled = this.checked"> Use Current Time
         <br><br>
 
-        <label for="name">Food Name</label>
+        <label for="foodName">Food Name</label>
         <input type="text" id="foodName" name="name" placeholder="e.g., Apple, Ice Cream" required />
         <br><br>
 
