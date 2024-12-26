@@ -15,12 +15,32 @@
     <form th:action="@{/user/register}" method="post">
         <input type="text" name="name" placeholder="Full Name" required>
         <input type="email" name="email" placeholder="Email Address" required>
-        <input type="password" name="password" placeholder="Password" minlength="6" maxlength="32" required>
+
+        <div class="password-container">
+            <input type="password" id="password" name="password" placeholder="Password" minlength="6" maxlength="32" required>
+            <label>
+                <input type="checkbox" id="togglePassword"> Show Password
+            </label>
+        </div>
+
         <button type="submit">Register</button>
     </form>
     <p>Already have an account? <a href="/login">Log in here</a></p>
 	<script th:if="${message != null}">
       document.getElementById("dial")?.showModal();
+    </script>
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+
+        togglePassword.addEventListener('change', function () {
+            if (this.checked) {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        });
     </script>
 </div>
 </body>

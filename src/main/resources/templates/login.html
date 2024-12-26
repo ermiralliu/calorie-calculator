@@ -12,8 +12,16 @@
     <h2>Login</h2>
     <form th:action="@{/login}" method="post">
         <input type="email" name="username" placeholder="Email Address" required>
-        <input type="password" name="password" placeholder="Password" minlength="6" maxlength="32" required>
+
+        <div class="password-container">
+            <input type="password" id="password" name="password" placeholder="Password" minlength="6" maxlength="32" required>
+            <label>
+                <input type="checkbox" id="togglePassword"> Show Password
+            </label>
+        </div>
+
         <button type="submit">Log In</button>
+
     </form>
     <p>Don't have an account? <a href="/register">Register here</a></p>
 	<dialog id="dial" th:if="${user != null}">
@@ -30,6 +38,19 @@
     </dialog>
 	<script th:if="${user != null}">
       document.getElementById("dial")?.showModal();
+    </script>
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+
+        togglePassword.addEventListener('change', function () {
+            if (this.checked) {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        });
     </script>
 </div>
 </body>
