@@ -31,7 +31,7 @@ public class FoodEntry {
    @JoinColumn(name = "user_id", nullable = false)
    private User user;
 
-   @Column(unique = true)
+   //@Column(unique = true)
    private String name;
 
    private String description;
@@ -40,7 +40,7 @@ public class FoodEntry {
 
    private Integer calories;
 
-   @Temporal(TemporalType.TIMESTAMP)
+   //@Temporal(TemporalType.TIMESTAMP)
    private LocalDateTime createdAt;
 
    public FoodEntry() {
