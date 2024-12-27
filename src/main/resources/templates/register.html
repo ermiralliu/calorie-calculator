@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link th:href="@{/reg-and-login.css}" rel="stylesheet"/> <!-- Linking the reg-and-login.css file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- For close icon -->
 </head>
 <body>
 <div class="form-container">
-
     <dialog id="dial" th:if="${message != null}">
         <div class="dialog-header">
-            <button class="close-btn" onclick="document.getElementById('dial').close()">X</button>
+            <i class="fa fa-times close-btn" onclick="document.getElementById('dial').close()"></i>
         </div>
-        <h1 th:text="${message}"></h1>
+        <div class="dialog-content">
+            <h1 th:text="${message}"></h1>
+            <p>Name: <span th:text="${name}"></span></p>
+            <p>Email: <span th:text="${email}"></span></p>
+            <p>You can log in now</p>
+        </div>
     </dialog>
-
 
     <h2>Register</h2>
     <form th:action="@{/user/register}" method="post">
