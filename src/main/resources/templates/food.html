@@ -41,7 +41,8 @@
         <td>
             <input type="number" th:value="${foodEntry.price}" />
         </td>
-        <td th:text="${foodEntry.getCreatedAtToString()}"></td>
+        <td th:utext="|${foodEntry.getDate()}<br/>${foodEntry.getTime()}|">
+        </td >
     </tr>
     </tbody>
 </table>
@@ -91,7 +92,7 @@
 </div>
 
 <!-- Days with Exceeded Calorie Limit -->
-<div>
+<div th:if="exceededCalorieDays != null && !exeededCalorieDays.isEmpty()">
     <h2>Days Exceeding Calorie Limit</h2>
     <ul>
         <li th:each="day : ${exceededCalorieDays}" th:text="${day}"></li>

@@ -62,7 +62,14 @@ public class FoodEntry {
       this.createdAt = null; // cause autogen
    }
    public String getCreatedAtToString() {
-  	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss");
+  	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
   	 return this.createdAt.format(formatter);
+   }
+   public String getDate(){
+    return this.createdAt.toLocalDate().toString();
+   }
+   public String getTime(){
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    return this.createdAt.format(formatter);
    }
 }
