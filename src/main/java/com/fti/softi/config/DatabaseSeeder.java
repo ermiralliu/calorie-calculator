@@ -64,6 +64,8 @@ public class DatabaseSeeder {
       Set<Role> userRoles = new HashSet<Role>();
       userRoles.add(userRole);
 
+      //String[] foodOptions = new String[]  {"Pasta" , "Risotto" , ... }
+
       for (int i = 0; i < 10; i++) { // adding 20 users
         User currentUser = User.builder()
             .email("user" + i + "@gmail.com")
