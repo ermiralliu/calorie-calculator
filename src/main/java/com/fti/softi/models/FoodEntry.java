@@ -3,7 +3,6 @@ package com.fti.softi.models;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,7 +39,7 @@ public class FoodEntry {
 
    private Integer calories;
 
-   //@Temporal(TemporalType.TIMESTAMP)
+   @Temporal(TemporalType.TIMESTAMP)
    private LocalDateTime createdAt;
 
    public FoodEntry() {

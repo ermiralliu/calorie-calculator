@@ -1,6 +1,9 @@
 package com.fti.softi.models;
 
+import java.io.Serializable;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +16,9 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @Entity
-public class User{
+public class User implements Serializable{
+  
+  private static final long serialVersionUID = 10L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private final Long id;
@@ -34,7 +39,8 @@ public class User{
 	private Set<Role> roles;
 	
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private Set<FoodEntry> foodEntries;
+  @JsonIgnore
+  private transient Set<FoodEntry> foodEntries;
   // fetchType lazy only fetches when the foodEntries are accessed for the first time
   // which avoids performance issues
 	

@@ -14,38 +14,39 @@ import com.fti.softi.services.UserDetailsServiceImpl;
 
 @Configuration
 public class SecurityConfig {
-		@Autowired
-		UserRepository userRepository;
+  @Autowired
+  UserRepository userRepository;
 
-		public UserDetailsService userDetailsService() {
-			return new UserDetailsServiceImpl(userRepository);
-		}
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/user/register", "/*.css", "/*.js").permitAll() // Public endpoints
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/food/**").hasAnyRole("USER","ADMIN")
-                        .anyRequest().authenticated() // All other requests require authentication
-                )
-                .formLogin(login -> login
-                        .loginPage("/login") // Custom login page
-                        .defaultSuccessUrl("/food", true) // Redirect after successful login
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .permitAll()
-                );
+  public UserDetailsService userDetailsService() {
+    return new UserDetailsServiceImpl(userRepository);
+  }
 
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/*.css", "/*.js").permitAll() // Public endpoints
+            .requestMatchers("/register", "/user/register").not().authenticated()
+            .requestMatchers("/login").not().authenticated()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/food/**").hasAnyRole("USER", "ADMIN")
+            .anyRequest().authenticated() // All other requests require authentication
+        )
+        .formLogin(login -> login
+            .loginPage("/login") // Custom login page
+            .defaultSuccessUrl("/food", true) // Redirect after successful login
+            .permitAll())
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login")
+            .permitAll());
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Use BCrypt for password hashing
-    }
+    return http.build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(); // Use BCrypt for password hashing
+  }
 }
