@@ -3,6 +3,7 @@ package com.fti.softi.config;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -64,9 +65,9 @@ public class DatabaseSeeder {
       Set<Role> userRoles = new HashSet<Role>();
       userRoles.add(userRole);
 
-      //String[] foodOptions = new String[]  {"Pasta" , "Risotto" , ... }
+      String[] foodOptions = foodOptions();
 
-      for (int i = 0; i < 10; i++) { // adding 20 users
+      for (int i = 0; i < 7; i++) { // adding 20 users
         User currentUser = User.builder()
             .email("user" + i + "@gmail.com")
             .name("User " + i)
@@ -78,7 +79,7 @@ public class DatabaseSeeder {
           LocalDateTime time = LocalDateTime.now().withDayOfMonth((j % 29) + 1); // around this month
           FoodEntry food = FoodEntry.builder()
               .user(registeredUser)
-              .name("Food " + j + " of User " + i)
+              .name(foodOptions[(int) (Math.random()*foodOptions.length)])
               .description("Mock " + i + " * " + j)
               .calories((int) (Math.random() * 500))
               .price(roundToTwoDecimalPlaces(Math.random() * 100))
@@ -92,27 +93,35 @@ public class DatabaseSeeder {
 
   public void seedSessionTables() {
     try (Connection conn = dataSource.getConnection()) {
-      if (!tableExists(conn, "SPRING_SESSION")) { 
-        createTables(conn); 
+      if (!tableExists(conn, "SPRING_SESSION")) {
+        createTable(conn, SPRING_SESSION_STATEMENT());
+      }
+      if (!tableExists(conn, "SPRING_SESSION_ATTRIBUTES")) {
+        createTable(conn, SPRING_SESSION_ATTRIBUTES_STATEMENT());
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  private void createTables(Connection conn) throws SQLException {
-    String sql = """
-        CREATE TABLE SPRING_SESSION (
-            PRIMARY_ID CHAR(36) NOT NULL,
-            SESSION_ID CHAR(36) NOT NULL,
-            CREATION_TIME BIGINT NOT NULL,
-            LAST_ACCESS_TIME BIGINT NOT NULL,
-            MAX_INACTIVE_INTERVAL INT NOT NULL,
-            EXPIRY_TIME BIGINT NOT NULL,
-            PRINCIPAL_NAME VARCHAR(100),
-            CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
-        );
-        CREATE TABLE SPRING_SESSION_ATTRIBUTES (
+  private String SPRING_SESSION_STATEMENT() {
+    return """
+            CREATE TABLE SPRING_SESSION (
+                PRIMARY_ID CHAR(36) NOT NULL,
+                SESSION_ID CHAR(36) NOT NULL,
+                CREATION_TIME BIGINT NOT NULL,
+                LAST_ACCESS_TIME BIGINT NOT NULL,
+                MAX_INACTIVE_INTERVAL INT NOT NULL,
+                EXPIRY_TIME BIGINT NOT NULL,
+                PRINCIPAL_NAME VARCHAR(100),
+                CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
+            );
+        """;
+  }
+
+  private String SPRING_SESSION_ATTRIBUTES_STATEMENT() {
+    return """
+            CREATE TABLE SPRING_SESSION_ATTRIBUTES (
             SESSION_PRIMARY_ID CHAR(36) NOT NULL,
             ATTRIBUTE_NAME VARCHAR(200) NOT NULL,
             ATTRIBUTE_BYTES BLOB NOT NULL,
@@ -120,18 +129,54 @@ public class DatabaseSeeder {
             CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION (PRIMARY_ID) ON DELETE CASCADE
         );
         """;
+  }
+
+  private String[] foodOptions() {
+    String[] foods = {
+        "Apple", "Banana", "Orange", "Grapes", "Watermelon", "Pineapple", "Mango", "Strawberry",
+        "Blueberry", "Raspberry", "Blackberry", "Peach", "Plum", "Kiwi", "Pomegranate", "Cherry",
+        "Apricot", "Cantaloupe", "Honeydew", "Coconut", "Lemon", "Lime", "Grapefruit", "Papaya",
+        "Guava", "Avocado", "Tomato", "Cucumber", "Bell Pepper", "Carrot", "Broccoli", "Cauliflower",
+        "Spinach", "Lettuce", "Kale", "Swiss Chard", "Arugula", "Collard Greens", "Beetroot", "Radish",
+        "Onion", "Garlic", "Shallot", "Leek", "Green Onion", "Celery", "Zucchini", "Squash", "Pumpkin",
+        "Potato", "Sweet Potato", "Yam", "Corn", "Green Bean", "Peas", "Chickpeas", "Lentils", "Black Beans",
+        "Kidney Beans", "Pinto Beans", "Soybeans", "Edamame", "Mushroom", "Asparagus", "Artichoke",
+        "Brussels Sprouts", "Eggplant", "Okra", "Turnip", "Parsnip", "Rutabaga", "Daikon", "Fennel",
+        "Jicama", "Bok Choy", "Snow Peas", "Sugar Snap Peas", "Radicchio", "Endive", "Escarole", "Dandelion Greens",
+        "Watercress", "Napa Cabbage", "Purple Cabbage", "Savoy Cabbage", "Bitter Melon", "Bamboo Shoots",
+        "Lotus Root", "Celeriac", "Chayote", "Kohlrabi", "Taro", "Plantain", "Cassava", "Arrowroot", "Salsify",
+        "Burdock Root", "Jalapeño", "Habanero", "Ghost Pepper", "Scotch Bonnet", "Thai Chili", "Serrano Pepper",
+        "Poblano Pepper", "Anaheim Pepper", "Banana Pepper", "Cherry Pepper", "Bell Pepper", "Wax Pepper",
+        "Padron Pepper", "Shishito Pepper", "Pepperoncini", "Hatch Chili", "Chipotle Pepper", "Smoked Paprika",
+        "Chipotle Powder", "Cayenne Pepper", "Paprika", "Cumin", "Coriander", "Turmeric", "Ginger", "Garlic",
+        "Onion Powder", "Mustard Seed", "Caraway Seed", "Fenugreek", "Cardamom", "Cloves", "Cinnamon",
+        "Nutmeg", "Allspice", "Saffron", "Vanilla", "Star Anise", "Fennel Seed", "Anise Seed", "Dill Seed",
+        "Celery Seed", "Bay Leaf", "Oregano", "Basil", "Thyme", "Rosemary", "Sage", "Parsley", "Cilantro",
+        "Chives", "Tarragon", "Marjoram", "Mint", "Lemon Balm", "Lemongrass", "Bergamot", "Hyssop",
+        "Sorrel", "Lovage", "Woodruff", "Chervil", "Epazote", "Summer Savory", "Winter Savory", "Nasturtium",
+        "Dill", "Lavender", "Sage", "Elderflower", "Rose Petal", "Hibiscus", "Chamomile", "Calendula",
+        "Safflower", "Borage", "Sweet Bay", "Linden", "Cornflower", "Hop Shoots", "Malva", "Primrose",
+        "Red Clover", "Violet", "Buttercup", "Cowslip", "Purslane", "New Zealand Spinach", "Lamb’s Lettuce",
+        "Fat Hen", "Sea Buckthorn", "Gooseberry", "Cloudberry", "Salmonberry", "Lingonberry", "Aronia Berry"
+    };
+    return foods;
+  }
+
+  private void createTable(Connection conn, String sqlStatement) throws SQLException {
     try (Statement stmt = conn.createStatement()) {
-      stmt.execute(sql);
+      stmt.execute(sqlStatement);
     }
   }
 
   private boolean tableExists(Connection conn, String tableName) throws SQLException {
     boolean exists = false;
-    try (Statement stmt = conn.createStatement()) {
-      ResultSet rs = stmt
-          .executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';");
-      if (rs.next()) {
-        exists = true;
+    String sqlStatement = "SELECT name FROM sqlite_master WHERE type='table' AND name= ?;";
+    try (PreparedStatement stmt = conn.prepareStatement(sqlStatement)) {
+      stmt.setString(1, tableName);
+      try (ResultSet rs = stmt.executeQuery()) {
+        if (rs.next()) {
+          exists = true;
+        }
       }
     }
     return exists;
