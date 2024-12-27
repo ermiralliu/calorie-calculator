@@ -39,7 +39,7 @@ public class FoodEntry {
 
    private Integer calories;
 
-   //@Temporal(TemporalType.TIMESTAMP)
+   @Temporal(TemporalType.TIMESTAMP)
    private LocalDateTime createdAt;
 
    public FoodEntry() {
