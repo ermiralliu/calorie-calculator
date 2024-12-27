@@ -31,19 +31,19 @@ public class FoodEntryController {
 		List<FoodEntry> foodEntries = foodEntryRepository.findByUserId(userId);
 		
 		int dailyCalories = foodEntries.stream()
-				.filter(entry -> !entry.getCreatedAt().isAfter(LocalDateTime.now())
-						&& !entry.getCreatedAt().isBefore(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0)))
+				.filter(entry -> entry.getCreatedAt().isAfter(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0))  // start of month and start of day will be moved as helper functions
+						&& entry.getCreatedAt().isBefore(LocalDateTime.now()))
 				.mapToInt(FoodEntry::getCalories)
 				.sum();
 		// using streams will be moved to a service
 
 		double totalExpenditure = foodEntries.stream()
 				.filter(
-						entry -> !entry.getCreatedAt().isAfter(LocalDateTime.now())
-						&& !entry.getCreatedAt().isBefore(LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0)))
+						entry -> entry.getCreatedAt().isAfter(LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0))
+						&& entry.getCreatedAt().isBefore(LocalDateTime.now()))
 				.mapToDouble(FoodEntry::getPrice)
 				.sum();
-			System.out.println('\n'+ dailyCalories + '\n');
+		System.out.println('\n'+ dailyCalories + '\n');
 		System.out.println('\n'+ totalExpenditure+'\n');
 		model.addAttribute("foodEntries", foodEntries);
 		model.addAttribute("dailyCalories", dailyCalories);

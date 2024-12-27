@@ -48,13 +48,4 @@ public class User implements Serializable{
 		id = null;
 		email = null;
 	}
-	
-	public User(String name, String email, String password) { // Parameterized constructor 
-		this.id = null;
-		this.name = name; 
-		this.email = email;
-		this.password = password;
-		this.roles = null;
-		this.foodEntries = null;
-	}
 }

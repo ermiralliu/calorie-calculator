@@ -83,16 +83,16 @@
 </dialog>
 
 <!-- Warning Messages -->
-<div th:if="${totalExpenditure != null && totalExpenditure > 1000}">
+<div th:if="${totalExpenditure > 1000}">
     <p style="color: red;">Warning: You have exceeded your monthly expenditure limit of &euro;1,000!</p>
 </div>
 
-<div th:if="${dailyCalories != null && dailyCalories > 2500}">
+<div th:if="${dailyCalories > 2500}">
     <p style="color: red;">Warning: You have exceeded your daily calorie limit of 2,500 calories!</p>
 </div>
 
 <!-- Days with Exceeded Calorie Limit -->
-<div th:if="exceededCalorieDays != null && !exeededCalorieDays.isEmpty()">
+<div th:if="${exceededCalorieDays != null && !exceededCalorieDays.isEmpty()}">
     <h2>Days Exceeding Calorie Limit</h2>
     <ul>
         <li th:each="day : ${exceededCalorieDays}" th:text="${day}"></li>

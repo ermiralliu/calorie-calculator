@@ -22,54 +22,37 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class FoodEntry {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
-   
-   @ManyToOne
-   @JoinColumn(name = "user_id", nullable = false)
-   private User user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private final Long id;
 
-   //@Column(unique = true)
-   private String name;
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private final User user;
 
-   private String description;
+  private String name;
 
-   private Double price;
+  private String description;
 
-   private Integer calories;
+  private Double price;
 
-   @Temporal(TemporalType.TIMESTAMP)
-   private LocalDateTime createdAt;
+  private Integer calories;
 
-   public FoodEntry() {
-      id = null;
-      user = null;
-      name = null;
-      description = null;
-      price = null;
-      calories = null;
-      createdAt = null;
-   }
+  @Temporal(TemporalType.TIMESTAMP)
+  private final LocalDateTime createdAt;
 
-   public FoodEntry(String name, User user, String description, Double price, Integer calories) {
-      this.id = null;	// cause autogen
-      this.user = user;
-      this.name = name;
-      this.description = description;
-      this.price = price;
-      this.calories = calories;
-      this.createdAt = null; // cause autogen
-   }
-   public String getCreatedAtToString() {
-  	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-  	 return this.createdAt.format(formatter);
-   }
-   public String getDate(){
+  protected FoodEntry() { // for jpaRepository
+    id = null;
+    user = null;
+    createdAt = null;
+  }
+
+  public String getDate() {
     return this.createdAt.toLocalDate().toString();
-   }
-   public String getTime(){
+  }
+
+  public String getTime() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     return this.createdAt.format(formatter);
-   }
+  }
 }
