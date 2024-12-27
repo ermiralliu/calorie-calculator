@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class MainController {
 
-	public MainController() {
-		// TODO Auto-generated constructor stub
-	}
+	public MainController() {}
 	
 	@GetMapping("/login")
 	public String loginView() {
