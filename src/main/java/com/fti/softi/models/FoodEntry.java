@@ -41,7 +41,7 @@ public class FoodEntry {
   @Temporal(TemporalType.TIMESTAMP)
   private final LocalDateTime createdAt;
 
-  protected FoodEntry() { // for jpaRepository
+  public FoodEntry() { // for jpaRepository
     id = null;
     user = null;
     createdAt = null;
