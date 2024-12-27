@@ -3,29 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Log in</title>
 
     <link th:href="@{/reg-and-login.css}" rel="stylesheet"/>
 </head>
 <body>
 <div class="form-container">
-    <h2>Login</h2>
+    <h2>Log In</h2>
     <form th:action="@{/login}" method="post">
-        <input type="email" name="username" placeholder="Email Address" required>
-
-        <div class="password-container">
-            <input type="password" id="password" name="password" placeholder="Password" minlength="6" maxlength="32" required>
-            <label>
-                <input type="checkbox" id="togglePassword"> Show Password
-            </label>
+        <!-- Email Input Group -->
+        <div class="form-group">
+            <label for = "username">Email</label>
+            <input type="username" id="username" name="username" placeholder="Enter your email" required />
         </div>
 
-        <button type="submit">Log In</button>
+        <!-- Password and Show Password Group -->
+        <div class="form-group password-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            <div class="toggle-password">
+                <input type="checkbox" id="togglePassword"> Show Password
+            </div>
+        </div>
 
+        <!-- Submit Button Group -->
+        <div class="form-group">
+            <button type="submit">Login</button>
+        </div>
+
+        <!-- Register Link Group -->
+        <div class="form-group">
+            <p class="register-text">Don't have an account? <a href="/register">Register here</a></p>
+        </div>
     </form>
-    <p>Don't have an account? <a href="/register">Register here</a></p>
+</div>
+
 	<dialog id="dial" th:if="${user != null}">
-	  <h2> User successfully created with properties:</h3>
+	  <h2> User successfully created with properties:</h2>
       <div>
         <h3>Name: </h3>
         <h4 th:text="${user.getName()}"></h4>
@@ -36,22 +50,23 @@
       </div>
 	  <h2>You can log in now</h2>
     </dialog>
+
 	<script th:if="${user != null}">
       document.getElementById("dial")?.showModal();
     </script>
-    <script>
-        // Toggle password visibility
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordField = document.getElementById('password');
 
-        togglePassword.addEventListener('change', function () {
-            if (this.checked) {
-                passwordField.type = 'text';
-            } else {
-                passwordField.type = 'password';
-            }
-        });
-    </script>
-</div>
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+
+    togglePassword.addEventListener('change', function () {
+        if (this.checked) {
+            passwordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+        }
+    });
+</script>
+
 </body>
 </html>

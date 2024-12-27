@@ -85,4 +85,6 @@ public class DatabaseSeeder {
 		bd = bd.setScale(2, RoundingMode.HALF_UP); 
 		return bd.doubleValue(); 
 	}
+
+	//String[] options = new String[]  {"Pasta" , "Risotto" , ... }
 }
