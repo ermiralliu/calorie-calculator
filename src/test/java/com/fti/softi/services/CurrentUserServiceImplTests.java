@@ -68,4 +68,22 @@ class CurrentUserServiceImplTests {
     assertNotNull(userId);
     assertEquals(1L, userId);
   }
+
+  @Test
+  void testGetCurrentUserWhenNotAuthenticated() {
+    SecurityContextHolder.clearContext();
+
+    User result = currentUserService.getCurrentUser();
+
+    assertNull(result); // Expecting null if not authenticated
+  }
+
+  @Test
+  void testGetCurrentUserIdWhenNotAuthenticated() {
+    SecurityContextHolder.clearContext();
+
+    Long userId = currentUserService.getCurrentUserId();
+
+    assertNull(userId); // Expecting null if not authenticated
+  }
 }

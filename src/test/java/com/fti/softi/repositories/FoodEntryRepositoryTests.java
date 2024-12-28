@@ -2,6 +2,7 @@ package com.fti.softi.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,12 +11,13 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.fti.softi.models.FoodEntry;
 import com.fti.softi.models.User;
 
 @SpringBootTest
-// @DataJpaTest // this is supposed to be done with this annotation and not SBT; 
+// @DataJpaTest // this is supposed to be done with this annotation and not SBT;
 //however I'm finding it difficult to configure
 class FoodEntryRepositoryTests {
 
@@ -23,34 +25,101 @@ class FoodEntryRepositoryTests {
     private FoodEntryRepository foodEntryRepository;
     @Autowired
     private UserRepository userRepository;
+
+    private User testUser;
     // @Autowired
     // private RoleRepository roleRepository;
 
+    @BeforeEach
+    void setUp() {
+        // Set up a user before each test to avoid duplication
+        testUser = User.builder()
+                .id(1L)
+                .name("Test User")
+                .email("testuser@email.com")
+                .roles(Set.of()) // You can add roles if needed
+                .build();
+        userRepository.save(testUser);
+    }
+
     @Test
     void testFindAll() {
-      // Role role = new Role(1L, "USER", null);
-      // roleRepository.save(role);
+        FoodEntry foodEntry = FoodEntry.builder()
+                .createdAt(LocalDateTime.now())
+                .name("Banana")
+                .calories(105)
+                .price(31.23)
+                .user(testUser)
+                .build();
+        foodEntryRepository.save(foodEntry);
 
-      User user = User.builder()  // I should make a helper class, which contains these dummies cause it's getting tiring
-        .id(1L)
-        .name("user")
-        .email("user@email.com")
-        .roles(Set.of())
-        .build();
-      userRepository.save(user);
-
-      FoodEntry foodEntry = FoodEntry.builder()
-        .id(1L) // but main doesn't need one ?!?!?!, there's probably some configuration missing
-        .createdAt(LocalDateTime.now())
-        .name("Banana")
-        .calories(105)
-        .price(31.23)
-        .user(user)
-        .build();
-      foodEntryRepository.save(foodEntry);
-
-      List<FoodEntry> foodEntries = foodEntryRepository.findAll();
-      assertFalse(foodEntries.isEmpty());
-      assertEquals("Banana", foodEntries.get(0).getName());
+        List<FoodEntry> foodEntries = foodEntryRepository.findAll();
+        assertFalse(foodEntries.isEmpty());
+        assertEquals("Banana", foodEntries.get(0).getName());
     }
+
+    @Test
+    void testFindByUserId() {
+        FoodEntry foodEntry = FoodEntry.builder()
+                .createdAt(LocalDateTime.now())
+                .name("Apple")
+                .calories(95)
+                .price(0.99)
+                .user(testUser)
+                .build();
+        foodEntryRepository.save(foodEntry);
+
+        List<FoodEntry> foodEntries = foodEntryRepository.findByUserId(testUser.getId());
+        assertFalse(foodEntries.isEmpty());
+        assertEquals("Apple", foodEntries.get(0).getName());
+    }
+
+    @Test
+    void testFindByUserIdNoEntries() {
+        // Test for a user with no food entries
+        User newUser = User.builder()
+                .id(2L)
+                .name("New User")
+                .email("newuser@email.com")
+                .roles(Set.of())
+                .build();
+        userRepository.save(newUser);
+
+        List<FoodEntry> foodEntries = foodEntryRepository.findByUserId(newUser.getId());
+        assertTrue(foodEntries.isEmpty(), "Food entries should be empty for this user.");
+    }
+
+    @Test
+    void testFindById() {
+        FoodEntry foodEntry = FoodEntry.builder()
+                .createdAt(LocalDateTime.now())
+                .name("Orange")
+                .calories(80)
+                .price(1.5)
+                .user(testUser)
+                .build();
+        foodEntryRepository.save(foodEntry);
+
+        FoodEntry foundFoodEntry = foodEntryRepository.findById(foodEntry.getId()).orElse(null);
+        assertEquals(foodEntry.getName(), foundFoodEntry.getName());
+        assertEquals(foodEntry.getCalories(), foundFoodEntry.getCalories());
+    }
+
+    @Test
+    void testDeleteById() {
+        FoodEntry foodEntry = FoodEntry.builder()
+                .createdAt(LocalDateTime.now())
+                .name("Grapes")
+                .calories(70)
+                .price(2.0)
+                .user(testUser)
+                .build();
+        foodEntryRepository.save(foodEntry);
+
+        Long id = foodEntry.getId();
+        foodEntryRepository.deleteById(id);
+
+        assertFalse(foodEntryRepository.findById(id).isPresent(), "Food entry should be deleted.");
+    }
+
 }

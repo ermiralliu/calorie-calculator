@@ -32,4 +32,25 @@ public class FoodEntryControllerTests {
       .content(newFoodEntryUrlEncoded))
       .andExpect(status().isFound()); // we get 302 cause of redirect after adding
   }
+
+  @Test
+  void testAddFoodEntryWithMissingData() throws Exception {
+    String newFoodEntryUrlEncoded = "name=&calories=95&description=Tasty&date=2024-12-27"; // Missing name
+
+    mockMvc.perform(post("/food/add")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .content(newFoodEntryUrlEncoded))
+            .andExpect(status().isBadRequest()); // Expecting a 400 Bad Request due to validation
+  }
+
+  @Test
+  void testAddFoodEntryWithInvalidDate() throws Exception {
+    String newFoodEntryUrlEncoded = "name=Apple&calories=95&description=Tasty&date=invalid-date"; // Invalid date format
+
+    mockMvc.perform(post("/food/add")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .content(newFoodEntryUrlEncoded))
+            .andExpect(status().isBadRequest()); // Expecting a 400 Bad Request due to invalid date format
+  }
+
 }

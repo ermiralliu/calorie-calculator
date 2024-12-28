@@ -31,4 +31,11 @@ public class SecurityConfigTests {
     mockMvc.perform(get("/admin"))
       .andExpect(status().isForbidden());
   }
+
+  @Test
+  @WithMockUser(username = "user", roles = {"USER"})
+  void testHomePageAccess() throws Exception {
+    mockMvc.perform(get("/"))
+            .andExpect(status().isOk());
+  }
 }
