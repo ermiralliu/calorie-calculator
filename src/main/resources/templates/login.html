@@ -1,72 +1,86 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in</title>
-
-    <link th:href="@{/reg-and-login.css}" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in</title>
+  <link th:href="@{/reg-and-login.css}" rel="stylesheet" />
+  <link th:if="${user != null}" th:href="@{/login-dialog.css}" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- For close icon -->
 </head>
+
 <body>
-<div class="form-container">
-    <h2>Log In</h2>
-    <form th:action="@{/login}" method="post">
-        <!-- Email Input Group -->
-        <div class="form-group">
-            <label for = "username">Email</label>
-            <input type="username" id="username" name="username" placeholder="Enter your email" required />
-        </div>
-
-        <!-- Password and Show Password Group -->
-        <div class="form-group password-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required />
-            <div class="toggle-password">
-                <input type="checkbox" id="togglePassword"> Show Password
-            </div>
-        </div>
-
-        <!-- Submit Button Group -->
-        <div class="form-group">
-            <button type="submit">Login</button>
-        </div>
-
-        <!-- Register Link Group -->
-        <div class="form-group">
-            <p class="register-text">Don't have an account? <a href="/register">Register here</a></p>
-        </div>
-    </form>
-</div>
-
-	<dialog id="dial" th:if="${user != null}">
-	  <h2> User successfully created with properties:</h2>
-      <div>
-        <h3>Name: </h3>
-        <h4 th:text="${user.getName()}"></h4>
+  <div class="form-container">
+    <dialog id="dialog-box" class="dialog-container" th:if="${user != null}">
+      <div class="dialog-header">
+        <button id="dialog-close-button" type="button" class="close-btn">
+          <i class="fa fa-times"></i>
+        </button>
       </div>
-      <div>
-        <h3>Email: </h3>
-        <h4 th:text="${user.getEmail()}"></h4>
+      <div class="dialog-content">
+        <h2 class="dialog-htext">User successfully created with properties:</h2>
+        <div class="created-fields">
+          <p th:utext="|<b>Name:</b> ${user.getName()}|"></p>
+          <p th:utext="|<b>Email:</b> ${user.getEmail()}|"></p>
+        </div>
+        <button id="continue-button" type="button">You can log in now</button>
       </div>
-	  <h2>You can log in now</h2>
     </dialog>
 
-	<script th:if="${user != null}">
-      document.getElementById("dial")?.showModal();
-    </script>
+    <h2>Log In</h2>
+    <form th:action="@{/login}" method="post">
+      <!-- Email Input Group -->
+      <div class="form-group">
+        <label for="username">Email</label>
+        <input type="username" id="username" name="username" placeholder="Enter your email" required />
+      </div>
 
-<script>
+      <!-- Password and Show Password Group -->
+      <div class="form-group password-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+        <div class="toggle-password">
+          <input type="checkbox" id="togglePassword"> Show Password
+        </div>
+      </div>
+
+      <!-- Submit Button Group -->
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+
+      <!-- Register Link Group -->
+      <div class="form-group">
+        <p class="register-text">Don't have an account? <a href="/register">Register here</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script th:if="${user != null}">
+    const dialogBox = document.getElementById("dialog-box");
+    dialogBox.showModal();
+    function closeDialog(){
+      dialogBox.close();
+    }
+    document.getElementById('dialog-close-button').addEventListener('click', closeDialog);
+    document.getElementById('continue-button').addEventListener('click', closeDialog);
+  </script>
+
+  <script>
     const togglePassword = document.getElementById('togglePassword');
     const passwordField = document.getElementById('password');
 
     togglePassword.addEventListener('change', function () {
-        if (this.checked) {
-            passwordField.type = 'text';
-        } else {
-            passwordField.type = 'password';
-        }
+      if (this.checked) {
+        passwordField.type = 'text';
+      } else {
+        passwordField.type = 'password';
+      }
     });
-</script>
+  </script>
 
 </body>
+
 </html>

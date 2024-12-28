@@ -1,59 +1,165 @@
-
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-/* Form Container */
-.food-form {
-    max-width: 400px;
-    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fc;
+    color: #333;
+    line-height: 1.6;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Form Labels */
-.food-form label {
-    display: block;
-    margin: 10px 0 5px;
+h1 {
+    text-align: center;
+    color: #007BFF;
+    font-size: 2rem;
+    margin-bottom: 30px;
 }
 
-/* Form Inputs */
-.food-form input {
+.logout-btn {
+    background-color: #FF5733;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #C83F2A;
+}
+
+div p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    text-align: center;
+}
+
+div p:first-of-type {
+    color: #333;
+}
+
+div p:last-of-type {
+    color: #FF5733;
+}
+
+table {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
+    border-collapse: collapse;
+    margin: 30px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+td input {
+    width: 100%;
+    padding: 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #fff;
 }
 
-/* Submit Button */
-.food-form button {
-    padding: 10px 15px;
-    background-color: #007BFF;
-    color: #fff;
+tr:nth-child(even) td {
+    background-color: #f1f1f1;
+}
+
+tr:hover td {
+    background-color: #e7f1ff;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
     border: none;
-    border-radius: 4px;
+    font-size: 1rem;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.food-form button:hover {
+button:hover {
+    background-color: #218838;
+}
+
+dialog {
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+dialog input[type="text"],
+dialog input[type="number"],
+dialog input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+dialog menu {
+    display: flex;
+    justify-content: flex-end;
+}
+
+dialog menu button {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
+dialog menu button:hover {
     background-color: #0056b3;
 }
 
-/* Food Log Container */
-.food-list {
-    margin-top: 30px;
+div p[style="color: red;"] {
+    color: #e74c3c;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2rem;
 }
 
-.food-list ul {
+h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #FF5733;
+}
+
+ul {
     list-style-type: none;
     padding: 0;
+    text-align: center;
 }
 
-.food-list li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+ul li {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    color: #333;
 }

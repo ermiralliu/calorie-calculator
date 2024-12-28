@@ -95,7 +95,7 @@
 <div th:if="${exceededCalorieDays != null && !exceededCalorieDays.isEmpty()}">
     <h2>Days Exceeding Calorie Limit</h2>
     <ul>
-        <li th:each="day : ${exceededCalorieDays}" th:text="${day}"></li>
+        <li th:each="day : ${exceededCalorieDays}" th:text="|Day: ${day.getKey()} with ${day.getValue()} calories|"></li>
     </ul>
 </div>
 
