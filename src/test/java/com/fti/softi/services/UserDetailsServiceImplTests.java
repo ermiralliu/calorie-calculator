@@ -1,13 +1,19 @@
 package com.fti.softi.services;
 
-import com.fti.softi.models.User;
-import com.fti.softi.repositories.UserRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import com.fti.softi.models.User;
+import com.fti.softi.repositories.UserRepository;
 
 class UserDetailsServiceImplTests {
 
@@ -21,6 +27,7 @@ class UserDetailsServiceImplTests {
                 .id(1L)
                 .email("testuser@email.com")
                 .password("encryptedPassword")
+                .roles(Set.of())
                 .build();
 
         when(userRepository.findByEmail("testuser@email.com")).thenReturn(mockUser);

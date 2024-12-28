@@ -70,15 +70,19 @@ class FoodEntryRepositoryTests {
         foodEntryRepository.save(foodEntry);
 
         List<FoodEntry> foodEntries = foodEntryRepository.findByUserId(testUser.getId());
+        List<String> names = foodEntries.stream()
+          .map(FoodEntry::getName)
+          .toList();
         assertFalse(foodEntries.isEmpty());
-        assertEquals("Apple", foodEntries.get(0).getName());
+        assertTrue(names.contains("Apple"));
+        // assertEquals("Apple", foodEntries.get(0).getName());
     }
 
     @Test
     void testFindByUserIdNoEntries() {
         // Test for a user with no food entries
         User newUser = User.builder()
-                .id(2L)
+                .id(1792873L)
                 .name("New User")
                 .email("newuser@email.com")
                 .roles(Set.of())

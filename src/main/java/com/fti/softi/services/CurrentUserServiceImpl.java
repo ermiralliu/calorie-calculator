@@ -22,6 +22,9 @@ public class CurrentUserServiceImpl implements CurrentUserService {
 		return user;
 	}
 	public Long getCurrentUserId() {
+    User user = getCurrentUser();
+    if(user == null)
+      return null;
 		return getCurrentUser().getId();
 	}
 

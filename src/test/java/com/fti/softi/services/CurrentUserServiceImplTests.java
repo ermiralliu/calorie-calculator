@@ -72,16 +72,16 @@ class CurrentUserServiceImplTests {
   @Test
   void testGetCurrentUserWhenNotAuthenticated() {
     SecurityContextHolder.clearContext();
-
     User result = currentUserService.getCurrentUser();
 
     assertNull(result); // Expecting null if not authenticated
   }
 
   @Test
+  // this reports problems, cause user is null and we're trying to get an attribute from a null value
+  // for security, maybe I'll do the check first
   void testGetCurrentUserIdWhenNotAuthenticated() {
     SecurityContextHolder.clearContext();
-
     Long userId = currentUserService.getCurrentUserId();
 
     assertNull(userId); // Expecting null if not authenticated

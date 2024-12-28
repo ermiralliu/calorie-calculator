@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -48,21 +47,16 @@ public class DatabaseSeeder {
       Role adminRole = roleRepository.save(new Role("ADMIN"));
       Role userRole = roleRepository.save(new Role("USER"));
 
-      Set<Role> adminRoles = new HashSet<Role>();
-      adminRoles.add(adminRole);
-      adminRoles.add(userRole);
-
       var hasher = new BCryptPasswordEncoder();
       User admin = User.builder()
           .email("admin@gmail.com")
           .name("Admin")
-          .roles(adminRoles)
+          .roles(Set.of(adminRole, userRole))
           .password(hasher.encode("adminpassword"))
           .build();
       userRepository.save(admin);
 
-      Set<Role> userRoles = new HashSet<Role>();
-      userRoles.add(userRole);
+      Set<Role> userRoles = Set.of(userRole);
 
       Food[] foodOptions = foodOptions();
       Food[] highCalorieFoods = highCalorieFoods();
@@ -70,11 +64,11 @@ public class DatabaseSeeder {
 
       for (String currentName : names) { // adding a user for each name
         User currentUser = User.builder()
-            .email(currentName.toLowerCase() + "@gmail.com")
-            .name(currentName)
-            .roles(userRoles)
-            .password(hasher.encode("password" + currentName))
-            .build();
+          .email(currentName.toLowerCase() + "@gmail.com")
+          .name(currentName)
+          .roles(userRoles)
+          .password(hasher.encode("password" + currentName))
+          .build();
         User registeredUser = userRepository.save(currentUser);
         for (int j = 1; j <= LocalDate.now().getDayOfMonth(); j++) {
           LocalDateTime time = LocalDateTime.now().withDayOfMonth(j); // around this month
@@ -115,29 +109,29 @@ public class DatabaseSeeder {
 
   private String SPRING_SESSION_STATEMENT() {
     return """
-            CREATE TABLE SPRING_SESSION (
-                PRIMARY_ID CHAR(36) NOT NULL,
-                SESSION_ID CHAR(36) NOT NULL,
-                CREATION_TIME BIGINT NOT NULL,
-                LAST_ACCESS_TIME BIGINT NOT NULL,
-                MAX_INACTIVE_INTERVAL INT NOT NULL,
-                EXPIRY_TIME BIGINT NOT NULL,
-                PRINCIPAL_NAME VARCHAR(100),
-                CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
-            );
-        """;
+      CREATE TABLE SPRING_SESSION (
+        PRIMARY_ID CHAR(36) NOT NULL,
+        SESSION_ID CHAR(36) NOT NULL,
+        CREATION_TIME BIGINT NOT NULL,
+        LAST_ACCESS_TIME BIGINT NOT NULL,
+        MAX_INACTIVE_INTERVAL INT NOT NULL,
+        EXPIRY_TIME BIGINT NOT NULL,
+        PRINCIPAL_NAME VARCHAR(100),
+        CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
+      );
+    """;
   }
 
   private String SPRING_SESSION_ATTRIBUTES_STATEMENT() {
     return """
-            CREATE TABLE SPRING_SESSION_ATTRIBUTES (
-            SESSION_PRIMARY_ID CHAR(36) NOT NULL,
-            ATTRIBUTE_NAME VARCHAR(200) NOT NULL,
-            ATTRIBUTE_BYTES BLOB NOT NULL,
-            CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME),
-            CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION (PRIMARY_ID) ON DELETE CASCADE
-        );
-        """;
+        CREATE TABLE SPRING_SESSION_ATTRIBUTES (
+        SESSION_PRIMARY_ID CHAR(36) NOT NULL,
+        ATTRIBUTE_NAME VARCHAR(200) NOT NULL,
+        ATTRIBUTE_BYTES BLOB NOT NULL,
+        CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME),
+        CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION (PRIMARY_ID) ON DELETE CASCADE
+      );
+    """;
   }
 
   private class Food {

@@ -9,7 +9,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,6 +36,7 @@ public class SecurityConfigTests {
   @WithMockUser(username = "user", roles = {"USER"})
   void testHomePageAccess() throws Exception {
     mockMvc.perform(get("/"))
-            .andExpect(status().isOk());
+      .andExpect(status().is3xxRedirection())
+      .andExpect(header().string("Location", "/food"));
   }
 }

@@ -1,8 +1,15 @@
 package com.fti.softi.config;
 
-import com.fti.softi.models.User;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import com.fti.softi.models.User;
 
 class CustomUserDetailsTests {
 
@@ -11,6 +18,7 @@ class CustomUserDetailsTests {
         User user = User.builder()
                 .id(1L)
                 .email("testuser@email.com")
+                .roles(Set.of())
                 .build();
 
         CustomUserDetails customUserDetails = new CustomUserDetails(user);
@@ -23,6 +31,7 @@ class CustomUserDetailsTests {
         User user = User.builder()
                 .id(1L)
                 .email("testuser@email.com")
+                .roles(Set.of())
                 .build();
 
         CustomUserDetails customUserDetails = new CustomUserDetails(user);
@@ -35,6 +44,7 @@ class CustomUserDetailsTests {
         User user = User.builder()
                 .id(1L)
                 .email("testuser@email.com")
+                .roles(Set.of())
                 .build();
 
         CustomUserDetails customUserDetails = new CustomUserDetails(user);
@@ -47,6 +57,7 @@ class CustomUserDetailsTests {
         User user = User.builder()
                 .id(1L)
                 .email("testuser@email.com")
+                .roles(Set.of())
                 .build();
 
         CustomUserDetails customUserDetails = new CustomUserDetails(user);
