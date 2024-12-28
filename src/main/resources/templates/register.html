@@ -9,12 +9,14 @@
 </head>
 <body>
 <div class="form-container">
-    <dialog id="dial" th:if="${message != null}">
+    <dialog id="dialog-box" class="dialog-container" th:if="${message != null}">
         <div class="dialog-header">
-            <i class="fa fa-times close-btn" onclick="document.getElementById('dial').close()"></i>
+            <button class="close-btn" onclick="document.getElementById('dialog-box').close()">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
         <div class="dialog-content">
-            <h1 th:text="${message}"></h1>
+            <h2 th:text="${message}"></h2>
             <p>Name: <span th:text="${name}"></span></p>
             <p>Email: <span th:text="${email}"></span></p>
             <p>You can log in now</p>

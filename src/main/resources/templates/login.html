@@ -7,8 +7,23 @@
 
     <link th:href="@{/reg-and-login.css}" rel="stylesheet"/>
 </head>
+
 <body>
 <div class="form-container">
+    <dialog id="dialog-box" class="dialog-container" th:if="${user != null}">
+        <div class="dialog-header">
+            <button class="close-btn" onclick="document.getElementById('dialog-box').close()">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div class="dialog-content">
+            <h2>User successfully created with properties:</h2>
+            <p>Name: <span th:text="${user.getName()}"></span></p>
+            <p>Email: <span th:text="${user.getEmail()}"></span></p>
+            <p>You can log in now</p>
+        </div>
+    </dialog>
+
     <h2>Log In</h2>
     <form th:action="@{/login}" method="post">
         <!-- Email Input Group -->
@@ -38,20 +53,29 @@
     </form>
 </div>
 
-	<dialog id="dial" th:if="${user != null}">
-	  <h2> User successfully created with properties:</h2>
-      <div>
-        <h3>Name: </h3>
-        <h4 th:text="${user.getName()}"></h4>
-      </div>
-      <div>
-        <h3>Email: </h3>
-        <h4 th:text="${user.getEmail()}"></h4>
-      </div>
-	  <h2>You can log in now</h2>
-    </dialog>
+<dialog id="dial" th:if="${user != null}">
+    <div class="dialog-header">
+        <button class="close-btn" onclick="document.getElementById('dial').close()">
+            <i class="fa fa-times"></i> <!-- Font Awesome Close Icon -->
+        </button>
+    </div>
+    <div class="dialog-content">
+        <h2>User successfully created with properties:</h2>
+        <div>
+            <h3>Name:</h3>
+            <h4 th:text="${user.getName()}"></h4>
+        </div>
+        <div>
+            <h3>Email:</h3>
+            <h4 th:text="${user.getEmail()}"></h4>
+        </div>
+        <h2>You can log in now</h2>
+    </div>
+</dialog>
 
-	<script th:if="${user != null}">
+
+
+<script th:if="${user != null}">
       document.getElementById("dial")?.showModal();
     </script>
 

@@ -77,6 +77,8 @@ button:hover {
     text-decoration: underline;
 }
 
+
+/* Modal (Dialog) Styling */
 /* Modal (Dialog) Styling */
 dialog {
     position: fixed;
@@ -84,41 +86,72 @@ dialog {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
-    background-color: #ECECEC;
-    border: 2px solid #4CAF50;
+    background-color: #ECECEC; /* Light gray for the modal */
+    border: 2px solid #4CAF50; /* Green border */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     font-family: 'Varela Round', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Close button styling */
 dialog .dialog-header {
     display: flex;
     justify-content: flex-end;
+    width: 100%;
     margin-bottom: 10px;
 }
 
 dialog .close-btn {
     background: none;
-    color: #4CAF50;;
+    color: #4CAF50; /* Green color for the button */
     border: none;
     font-size: 24px;
     cursor: pointer;
     transition: color 0.3s ease;
+    padding: 0;
 }
 
+dialog .close-btn i {
+    font-size: 24px; /* Font Awesome icon size */
+}
+
+/* Hover effect for close button */
 dialog .close-btn:hover {
-    color: #ff001e;
+    color: #ff001e; /* Red when hovered */
 }
 
-dialog h1 {
-    font-size: 20px;
-    color: #333;
+/* Title and Content Styling */
+dialog h2, dialog h3, dialog h4 {
     text-align: center;
-    margin-bottom: 20px;
+    color: #333;
 }
 
+dialog h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+dialog h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+dialog h4 {
+    font-size: 16px;
+    font-weight: normal;
+    color: #555;
+}
+
+/* Content Styling */
+dialog .dialog-content {
+    width: 100%;
+}
+
+/* Modal (Dialog) - Text Styling */
 dialog p {
     font-size: 16px;
     color: #555;
