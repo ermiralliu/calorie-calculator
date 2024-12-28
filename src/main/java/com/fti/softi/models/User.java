@@ -48,14 +48,4 @@ public class User implements Serializable{
 		id = null;
 		email = null;
 	}
-
-    public void setUsername(String testuser) {
-    }
-
-	public void setId(long l) {
-	}
-
-	public String getUsername() {
-		return null;
-	}
 }
