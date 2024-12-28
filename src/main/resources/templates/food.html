@@ -32,9 +32,12 @@
     </thead>
     <tbody>
     <tr th:each="foodEntry, iStat : ${foodEntries}">
-        <td th:text="${iStat.index + 1}"></td>
-        <td th:text="${foodEntry.name}"></td>
-        <td th:text="${foodEntry.getDescription()}"></td>
+        <td th:utext="|${iStat.index + 1}|"></td>
+        <td th:text="|${foodEntry.name}|"></td>
+        <td th:text="|${foodEntry.getDescription()}|"></td>
+        <td>
+            <span th:utext="|<input type='hidden' name='foodId' value='${foodEntry.getId()}' />|"></span>
+        </td>
         <td>
             <input type="number" th:value="${foodEntry.calories}" />
         </td>
