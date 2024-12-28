@@ -44,7 +44,7 @@ public class User implements Serializable{
   // fetchType lazy only fetches when the foodEntries are accessed for the first time
   // which avoids performance issues
 	
-	public User() { // This isn't really used, but the app displays an error otherwise
+	protected User() { // This isn't really used, but the app displays an error otherwise
 		id = null;
 		email = null;
 	}
