@@ -28,24 +28,25 @@
         <th>Calories</th>
         <th>Price (&euro;)</th>
         <th>Date/Time</th>
+        <th> </th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="foodEntry, iStat : ${foodEntries}">
-        <td th:utext="|${iStat.index + 1}|"></td>
-        <td th:text="|${foodEntry.name}|"></td>
-        <td th:text="|${foodEntry.getDescription()}|"></td>
+        <td th:text="${iStat.index + 1}"></td>
+        <td th:text="${foodEntry.name}"></td>
+        <td th:text="${foodEntry.getDescription()}"></td>
+        <td th:text="${foodEntry.calories}"></td>
+        <td th:text="${foodEntry.price}"></td>
         <td>
-            <span th:utext="|<input type='hidden' name='foodId' value='${foodEntry.getId()}' />|"></span>
-        </td>
-        <td>
-            <input type="number" th:value="${foodEntry.calories}" />
-        </td>
-        <td>
-            <input type="number" th:value="${foodEntry.price}" />
-        </td>
-        <td th:utext="|${foodEntry.getDate()}<br/>${foodEntry.getTime()}|">
+          <span th:text="${foodEntry.getDate()}"></span>
+          <br/>
+          <span th:text="${foodEntry.getTime()}"></span>
         </td >
+        <td>
+          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
+          <button type="button">Edit</button>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -98,7 +99,7 @@
 <div th:if="${exceededCalorieDays != null && !exceededCalorieDays.isEmpty()}">
     <h2>Days Exceeding Calorie Limit</h2>
     <ul>
-        <li th:each="day : ${exceededCalorieDays}" th:text="${day}"></li>
+        <li th:each="day : ${exceededCalorieDays}" th:text="|Day: ${day.getKey()} with ${day.getValue()} calories|"></li>
     </ul>
 </div>
 

@@ -1,0 +1,7 @@
+.red{
+  color:red;
+}
+.email-exists>*{
+  padding: 2px;
+  margin: 3px;
+}
