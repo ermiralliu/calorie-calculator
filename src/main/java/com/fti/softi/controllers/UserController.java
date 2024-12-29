@@ -72,5 +72,6 @@ public class UserController {
 			RedirectAttributes redirectAttributes
 		) {
 		return "redirect:/user";
+
 	}
 }
