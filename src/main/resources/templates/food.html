@@ -28,6 +28,7 @@
         <th>Calories</th>
         <th>Price (&euro;)</th>
         <th>Date/Time</th>
+        <th> </th>
     </tr>
     </thead>
     <tbody>
@@ -42,6 +43,10 @@
           <br/>
           <span th:text="${foodEntry.getTime()}"></span>
         </td >
+        <td>
+          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
+          <button type="button">Edit</button>
+        </td>
     </tr>
     </tbody>
 </table>
