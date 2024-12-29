@@ -65,6 +65,8 @@ public class DatabaseSeeder {
       for (String currentName : names) { // adding a user for each name
         User currentUser = User.builder()
           .email(currentName.toLowerCase() + "@gmail.com")
+          .username(currentName)
+          .dailyCalorieLimit((int) (Math.random()*500)+2000)
           .name(currentName)
           .roles(userRoles)
           .password(hasher.encode("password" + currentName))
