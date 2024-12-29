@@ -50,6 +50,8 @@ public class DatabaseSeeder {
       var hasher = new BCryptPasswordEncoder();
       User admin = User.builder()
           .email("admin@gmail.com")
+          .username("admin")
+          .dailyCalorieLimit(2000)
           .name("Admin")
           .roles(Set.of(adminRole, userRole))
           .password(hasher.encode("adminpassword"))
