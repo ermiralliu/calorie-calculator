@@ -1,25 +1,18 @@
 package com.fti.softi.controllers;
 
-import java.util.Set;
 import java.util.Optional;
-
-import com.fti.softi.services.CurrentUserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.Set;
 
 import com.fti.softi.models.User;
 import com.fti.softi.repositories.RoleRepository;
 import com.fti.softi.repositories.UserRepository;
-
+import com.fti.softi.services.CurrentUserService;
 import lombok.AllArgsConstructor;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @AllArgsConstructor
@@ -41,15 +34,14 @@ public class UserController {
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
 			@RequestParam("calorieLimit") Integer calorieLimit,
-
 			RedirectAttributes redirectAttributes
 	) {
 		if (userRepository.findByEmail(email) != null) {
 			redirectAttributes.addFlashAttribute("message", "Email is already in use");
 			return "redirect:/user/register";
-    }
-    var userRoles = Set.of(roleRepository.findByName("USER"));
+		}
 
+		var userRoles = Set.of(roleRepository.findByName("USER"));
 		var encryptor = new BCryptPasswordEncoder();
 		var user = User.builder()
 				.name(name)
@@ -59,38 +51,59 @@ public class UserController {
 				.dailyCalorieLimit(calorieLimit)
 				.roles(userRoles)
 				.build();
-		var finalUser = userRepository.save(user);	//returns a copy that contains an id
-    finalUser.setRoles(Set.of()); // for some reason having roles in here made it difficult to pass 
-    //and required it to be serialized
+
+		var finalUser = userRepository.save(user);
+		finalUser.setRoles(Set.of());
 		redirectAttributes.addFlashAttribute("user", finalUser);
-		return "redirect:/login";    // Okay good, POST-Redirect-GET design DONE
+
+		return "redirect:/login";
 	}
 
-	@PutMapping
-	public String editUser(
-			@RequestParam("name") String name,
-			@RequestParam("password") String password,
-			@RequestParam("calorieLimit") String calorieLimit,
+	@PutMapping("/update")
+	public String updateUser(
+			@RequestParam(name = "name", required = false) String name,
+			@RequestParam(name = "password", required = false) String password,
+			@RequestParam(name = "calorieLimit", required = false) String calorieLimit,
 			RedirectAttributes redirectAttributes
 	) {
-		return "redirect:/user";
+		Optional<User> optionalUser = currentUserService.getCurrentUser();
 
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
+
+			if (name != null) {
+				user.setName(name);
+			}
+			if (password != null) {
+				var encryptor = new BCryptPasswordEncoder();
+				user.setPassword(encryptor.encode(password));
+			}
+			if (calorieLimit != null) {
+				user.setDailyCalorieLimit(Integer.parseInt(calorieLimit));
+			}
+
+			userRepository.save(user);
+		} else {
+			redirectAttributes.addFlashAttribute("message", "User not found.");
+			return "redirect:/error";
+		}
+
+		return "redirect:/user";
 	}
 
 	@GetMapping("/user")
-		public String getUserView(Model model) {
-			Optional<User> user = currentUserService.getCurrentUser();
+	public String getUserView(Model model) {
+		Optional<User> user = currentUserService.getCurrentUser();
 
-			if (user.isEmpty()) {
-				model.addAttribute("message", "User not found.");
-				return "error";
-			}
-
-
-			model.addAttribute("user", user.get());
-			model.addAttribute("dailyCalorieLimit", user.get().getDailyCalorieLimit());
-			model.addAttribute("username", user.get().getUsername());
-
-			return "user";
+		if (user.isEmpty()) {
+			model.addAttribute("message", "User not found.");
+			return "error";
 		}
+
+		model.addAttribute("user", user.get());
+		model.addAttribute("dailyCalorieLimit", user.get().getDailyCalorieLimit());
+		model.addAttribute("username", user.get().getUsername());
+
+		return "user";
+	}
 }
