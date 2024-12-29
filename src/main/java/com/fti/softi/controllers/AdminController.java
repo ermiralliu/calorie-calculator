@@ -55,7 +55,7 @@ public class AdminController {
       @RequestParam("calories") Integer calories) {
     FoodEntry foodEntry = FoodEntry.builder()
         .name(name)
-        .user(currentUserService.getCurrentUser())
+        .user(currentUserService.getCurrentUser().get())
         .description(description)
         .price(price)
         .calories(calories)

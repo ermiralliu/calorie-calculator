@@ -1,18 +1,28 @@
 package com.fti.softi.services;
 
-import com.fti.softi.config.CustomUserDetails;
-import com.fti.softi.models.User;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import com.fti.softi.config.CustomUserDetails;
+import com.fti.softi.models.User;
+import com.fti.softi.repositories.UserRepository;
 
 
 class CurrentUserServiceImplTests {
-  // @Autowired
-  private CurrentUserService currentUserService = new CurrentUserServiceImpl();
+  
+  private final UserRepository userRepository = mock(UserRepository.class);
+  private final CurrentUserService currentUserService = new CurrentUserServiceImpl(userRepository);
 
   @Test
   void testGetCurrentUser() {
@@ -24,7 +34,7 @@ class CurrentUserServiceImplTests {
 
     // Mocking CustomUserDetails
     CustomUserDetails mockUserDetails = mock(CustomUserDetails.class);
-    when(mockUserDetails.getUser()).thenReturn(mockUser);
+    when(mockUserDetails.getId()).thenReturn(mockUser.getId());
 
     // Mocking Authentication
     Authentication mockAuthentication = mock(Authentication.class);
@@ -34,12 +44,14 @@ class CurrentUserServiceImplTests {
     SecurityContextHolder.getContext().setAuthentication(mockAuthentication);
 
     // Calling the method under test
-    User result = currentUserService.getCurrentUser();
+    Optional<User> result = currentUserService.getCurrentUser();
+
 
     // Assertions
-    assertNotNull(result);
-    assertEquals("testuser@email.com", result.getEmail());
-    assertEquals(1L, result.getId());
+    assertTrue(result.isPresent());
+    User resultUser = result.get();
+    assertEquals("testuser@email.com", resultUser.getEmail());
+    assertEquals(1L, resultUser.getId());
   }
 
   @Test
@@ -52,7 +64,7 @@ class CurrentUserServiceImplTests {
 
     // Mocking CustomUserDetails
     CustomUserDetails mockUserDetails = mock(CustomUserDetails.class);
-    when(mockUserDetails.getUser()).thenReturn(mockUser);
+    when(mockUserDetails.getId()).thenReturn(mockUser.getId());
 
     // Mocking Authentication
     Authentication mockAuthentication = mock(Authentication.class);
@@ -72,9 +84,9 @@ class CurrentUserServiceImplTests {
   @Test
   void testGetCurrentUserWhenNotAuthenticated() {
     SecurityContextHolder.clearContext();
-    User result = currentUserService.getCurrentUser();
+    Optional<User> result = currentUserService.getCurrentUser();
 
-    assertNull(result); // Expecting null if not authenticated
+    assertFalse(result.isPresent()); // Expecting null if not authenticated
   }
 
   @Test

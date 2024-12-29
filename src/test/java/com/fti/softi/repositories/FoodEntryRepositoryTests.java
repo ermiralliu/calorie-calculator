@@ -8,13 +8,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.junit.jupiter.api.BeforeEach;
 
 import com.fti.softi.models.FoodEntry;
 import com.fti.softi.models.User;
+// import com.fti.softi.services.FoodEntryService;
 
 @SpringBootTest
 // @DataJpaTest // this is supposed to be done with this annotation and not SBT;
@@ -25,6 +26,8 @@ class FoodEntryRepositoryTests {
     private FoodEntryRepository foodEntryRepository;
     @Autowired
     private UserRepository userRepository;
+    // @Autowired
+    // private FoodEntryService foodEntryService;
 
     private User testUser;
     // @Autowired

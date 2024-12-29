@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fti.softi.repositories.FoodEntryRepository;
 import com.fti.softi.services.CurrentUserService;
+import com.fti.softi.services.FoodEntryService;
 
 // @SpringBootTest
 // @AutoConfigureMockMvc
@@ -24,6 +25,8 @@ public class FoodEntryControllerTests {
   private FoodEntryRepository foodEntryRepository;
   @Mock
   private CurrentUserService currentUserService;
+  @Mock
+  private FoodEntryService foodEntryService;
   @InjectMocks
   private FoodEntryController foodEntryController;
   @Autowired

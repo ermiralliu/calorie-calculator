@@ -3,8 +3,6 @@ package com.fti.softi.models;
 import java.io.Serializable;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +26,8 @@ public class User implements Serializable{
 	
 	private String name; 
 	
-	private String password;
+  @Builder.Default
+	private String password = "";//helps with tests to have empty strings instead of null
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable (
@@ -36,11 +35,11 @@ public class User implements Serializable{
 		joinColumns = @JoinColumn(name = "user_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
-	private Set<Role> roles;
+  @Builder.Default
+	private Set<Role> roles = Set.of();
 	
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JsonIgnore
-  private transient Set<FoodEntry> foodEntries;
+  private Set<FoodEntry> foodEntries;
   // fetchType lazy only fetches when the foodEntries are accessed for the first time
   // which avoids performance issues
 	

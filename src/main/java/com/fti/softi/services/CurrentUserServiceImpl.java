@@ -1,5 +1,7 @@
 package com.fti.softi.services;
 
+import java.util.Optional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,13 @@ public class CurrentUserServiceImpl implements CurrentUserService {
   private final UserRepository userRepository;
 
 	@Override
-	public User getCurrentUser() {
-		long user_id = getCurrentUserId();
-		return userRepository.getReferenceById(user_id);
+	public Optional<User> getCurrentUser() {
+		Long user_id = getCurrentUserId();
+    if(user_id == null)
+      return Optional.empty();
+		return userRepository.findById(user_id);
 	}
-
+  @Override
 	public Long getCurrentUserId() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null || !(auth.getPrincipal() instanceof CustomUserDetails))

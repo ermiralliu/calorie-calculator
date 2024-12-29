@@ -1,8 +1,10 @@
 package com.fti.softi.services;
 
+import java.util.Optional;
+
 import com.fti.softi.models.User;
 
 public interface CurrentUserService {
-	User getCurrentUser();
+	Optional<User> getCurrentUser();
 	Long getCurrentUserId();
 }

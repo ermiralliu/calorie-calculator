@@ -21,10 +21,11 @@ public class Role{
   private final String name;
 
   @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-  private Set<User> users; // A role can be assigned to many users
+  private Set<User> users = Set.of(); // A role can be assigned to many users
 
   protected Role(){
-    this(null, null, null);
+      this.id = null;
+      this.name = null;
   }
 
   public Role(String name) { // Parameterized constructor
