@@ -23,6 +23,9 @@ public class User implements Serializable{
 	
 	@Column(unique=true)
 	private final String email;
+
+	@Column(unique = true)
+	private final String username;
 	
 	private String name; 
 	
@@ -42,9 +45,12 @@ public class User implements Serializable{
   private Set<FoodEntry> foodEntries;
   // fetchType lazy only fetches when the foodEntries are accessed for the first time
   // which avoids performance issues
-	
+  @Builder.Default
+  private Integer dailyCalorieLimit = 2500;
+
 	protected User() { // This isn't really used, but the app displays an error otherwise
 		id = null;
 		email = null;
+		username=null;
 	}
 }
