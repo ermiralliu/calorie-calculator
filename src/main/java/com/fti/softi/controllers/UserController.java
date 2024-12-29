@@ -79,7 +79,7 @@ public class UserController {
 
 	@GetMapping("/user")
 		public String getUserView(Model model) {
-			Optional<User> = currentUserService.getCurrentUser();
+			Optional<User> user = currentUserService.getCurrentUser();
 
 			if (user.isEmpty()) {
 				model.addAttribute("message", "User not found.");
