@@ -34,9 +34,12 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public String postUser(
-			@RequestParam("name") String name, 
+			@RequestParam("name") String name,
+			@RequestParam("username")String username,
 			@RequestParam("email") String email,
-			@RequestParam("password") String password, 
+			@RequestParam("password") String password,
+			@RequestParam("calorieLimit") Integer calorieLimit,
+
 			RedirectAttributes redirectAttributes
 	) {
 		if(userRepository.findByEmail(email) != null) {
@@ -49,8 +52,10 @@ public class UserController {
 		var encryptor = new BCryptPasswordEncoder();
 		var user = User.builder()
 				.name(name)
+				.username(username)
 				.email(email)
 				.password(encryptor.encode(password))
+				.dailyCalorieLimit(calorieLimit)
 				.roles(userRoles)
 				.build();
 		
