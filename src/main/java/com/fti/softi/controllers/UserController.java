@@ -59,7 +59,7 @@ public class UserController {
 		return "redirect:/login";
 	}
 
-	@PutMapping("/update")
+	@PutMapping
 	public String updateUser(
 			@RequestParam(name = "name", required = false) String name,
 			@RequestParam(name = "password", required = false) String password,
@@ -91,7 +91,7 @@ public class UserController {
 		return "redirect:/user";
 	}
 
-	@GetMapping("/user")
+	@GetMapping
 	public String getUserView(Model model) {
 		Optional<User> user = currentUserService.getCurrentUser();
 
