@@ -31,6 +31,6 @@ public class Role{
   public Role(String name) { // Parameterized constructor
     this.id = null;
     this.name = name;
-    this.users = null;
+    this.users = Set.of();  
   }
 }

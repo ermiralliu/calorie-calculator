@@ -23,10 +23,16 @@
         <h2 class="dialog-htext">User successfully created with properties:</h2>
         <div class="created-fields">
           <p>
-            <b>Name:</b>&nbsp;<span th:text="${user.getName()}"></span>
+            <b>Name:</b>&nbsp;<span th:text="${user.name}"></span>
           </p>
           <p>
-            <b>Email:</b>&nbsp;<span th:text="${user.getEmail()}"></span>
+            <b>Username:</b>&nbsp;<span th:text="${user.username}"></span>
+          </p>
+          <p>
+            <b>Email:</b>&nbsp;<span th:text="${user.email}"></span>
+          </p>
+          <p>
+            <b>Daily Calorie Limit:</b>&nbsp;<span th:text="${user.dailyCalorieLimit}"></span>
           </p>
         </div>
         <button id="continue-button" type="button">You can log in now</button>

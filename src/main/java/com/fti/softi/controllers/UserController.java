@@ -1,6 +1,6 @@
 package com.fti.softi.controllers;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fti.softi.models.Role;
 import com.fti.softi.models.User;
 import com.fti.softi.repositories.RoleRepository;
 import com.fti.softi.repositories.UserRepository;
@@ -47,8 +46,7 @@ public class UserController {
 			return "redirect:/user/register";
 		}
 		
-		var userRoles = new HashSet<Role>();
-		userRoles.add(roleRepository.findByName("USER"));
+    var userRoles = Set.of(roleRepository.findByName("USER"));
 		var encryptor = new BCryptPasswordEncoder();
 		var user = User.builder()
 				.name(name)
@@ -60,6 +58,8 @@ public class UserController {
 				.build();
 		
 		var finalUser = userRepository.save(user);	//returns a copy that contains an id
+    finalUser.setRoles(Set.of()); // for some reason having roles in here made it difficult to pass 
+    //and required it to be serialized
 		redirectAttributes.addFlashAttribute("user", finalUser);
 		return "redirect:/login";	// Okay good, POST-Redirect-GET design DONE
 	}
