@@ -67,7 +67,8 @@ public class UserController {
 	@PutMapping
 	public String editUser(
 			@RequestParam("name") String name,
-			@RequestParam("password") String password, 
+			@RequestParam("password") String password,
+			@RequestParam("calorieLimit")String calorieLimit,
 			RedirectAttributes redirectAttributes
 		) {
 		return "redirect:/user";
