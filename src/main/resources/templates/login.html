@@ -22,8 +22,12 @@
       <div class="dialog-content">
         <h2 class="dialog-htext">User successfully created with properties:</h2>
         <div class="created-fields">
-          <p th:utext="|<b>Name:</b> ${user.getName()}|"></p>
-          <p th:utext="|<b>Email:</b> ${user.getEmail()}|"></p>
+          <p>
+            <b>Name:</b>&nbsp;<span th:text="${user.getName()}"></span>
+          </p>
+          <p>
+            <b>Email:</b>&nbsp;<span th:text="${user.getEmail()}"></span>
+          </p>
         </div>
         <button id="continue-button" type="button">You can log in now</button>
       </div>

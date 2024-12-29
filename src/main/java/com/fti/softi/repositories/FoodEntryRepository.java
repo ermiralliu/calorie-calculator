@@ -5,11 +5,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.fti.softi.models.FoodEntry;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
@@ -22,13 +25,15 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
     @Param("endDate") LocalDateTime endDate
   );
 
-  @Query(value = "INSERT INTO food_entry (user_id, name, description, price, calories, created_at) VALUES (:userIdd, :name, :description, :price, :calories, :createdAt)", nativeQuery = true) 
-  FoodEntry insertFoodEntrybyId(
-    @Param("userId") Long userId, 
+  @Modifying
+  @Transactional
+  @Query(value = "INSERT INTO food_entry (user_id, name, description, price, calories, created_at) VALUES (:userId, :name, :description, :price, :calories, :createdAt)", nativeQuery = true) 
+  int insertFoodEntrybyId( // the return value shows number of rows affected
+    @Param("userId") long userId, 
     @Param("name") String name, 
     @Param("description") String description,
-    @Param("price") String price,
-    @Param("calories") String calories,
+    @Param("price") double price,
+    @Param("calories") double calories,
     @Param("createdAt") LocalDateTime createdAt
-  );
+  ); // After some testing we will prove if this is okay
 }

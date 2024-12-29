@@ -35,13 +35,12 @@
         <td th:text="${iStat.index + 1}"></td>
         <td th:text="${foodEntry.name}"></td>
         <td th:text="${foodEntry.getDescription()}"></td>
+        <td th:text="${foodEntry.calories}"></td>
+        <td th:text="${foodEntry.price}"></td>
         <td>
-            <input type="number" th:value="${foodEntry.calories}" />
-        </td>
-        <td>
-            <input type="number" th:value="${foodEntry.price}" />
-        </td>
-        <td th:utext="|${foodEntry.getDate()}<br/>${foodEntry.getTime()}|">
+          <span th:text="${foodEntry.getDate()}"></span>
+          <br/>
+          <span th:text="${foodEntry.getTime()}"></span>
         </td >
     </tr>
     </tbody>

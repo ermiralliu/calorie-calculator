@@ -5,18 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Entity
-public class Role implements Serializable {
-
-  private static final long serialVersionUID = 5L;
+public class Role{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +21,7 @@ public class Role implements Serializable {
   private final String name;
 
   @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-  @JsonIgnore
-  private transient Set<User> users; // A role can be assigned to many users
+  private Set<User> users; // A role can be assigned to many users
 
   protected Role(){
     this(null, null, null);
