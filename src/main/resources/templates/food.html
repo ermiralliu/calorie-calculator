@@ -104,7 +104,7 @@
 </div>
 
 <form action="@{food/get-interval}" method="GET">
-    <h2> Specify your date </h2>
+    <h2> Enter the interval of time </h2>
     <label for="start-date"> Start Date </label>
     <input type="date" id="start-date" name="start-date" required>
 
@@ -113,6 +113,12 @@
 
     <button type="submit">Get From Interval</button>
 </form>
+
+<!-- Button to navigate to /user -->
+<a th:href="@{/user}" class="button-link">
+    <button type="button">Go to User</button>
+</a>
+
 
 </body>
 </html>
