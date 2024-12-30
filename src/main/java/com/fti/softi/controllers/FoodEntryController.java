@@ -40,7 +40,7 @@ public class FoodEntryController {
     return "food";
   }
 
-  @GetMapping("/interval")
+  @GetMapping("/get-interval")
   public String listFoodEntriesByInterval(
           @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
           @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
@@ -66,7 +66,7 @@ public class FoodEntryController {
     var daysOverDailyCalories = foodEntryService.getDaysAboveCalorieThreshold(filteredEntries, minCalories);
     model.addAttribute("exceededCalorieDays", daysOverDailyCalories.entrySet());
 
-    return "food-interval";
+    return "food";
   }
 
 

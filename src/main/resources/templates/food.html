@@ -103,5 +103,16 @@
     </ul>
 </div>
 
+<form action="@{food/get-interval}" method="GET">
+    <h2> Specify your date </h2>
+    <label for="start-date"> Start Date </label>
+    <input type="date" id="start-date" name="start-date" required>
+
+    <label for="end-date">End Date</label>
+    <input type="date" id="end-date" name="end-date" required>
+
+    <button type="submit">Get From Interval</button>
+</form>
+
 </body>
 </html>
