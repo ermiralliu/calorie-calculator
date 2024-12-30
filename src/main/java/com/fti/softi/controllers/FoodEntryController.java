@@ -42,8 +42,8 @@ public class FoodEntryController {
 
   @GetMapping("/get-interval")
   public String listFoodEntriesByInterval(
-          @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-          @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+          @RequestParam("start-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+          @RequestParam("end-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
           Model model) {
 
     List<FoodEntry> foodEntries = foodEntryService.getAllForUser();
