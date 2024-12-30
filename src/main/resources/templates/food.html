@@ -103,5 +103,23 @@
     </ul>
 </div>
 
+<form action="@{food/get-interval}" method="GET">
+    <h2> Enter the interval of time </h2>
+    <h5>to filter the food entries by specifying a date range , so you can review specific days</h5>
+    <label for="start-date"> Start Date </label>
+    <input type="date" id="start-date" name="start-date" required>
+
+    <label for="end-date">End Date</label>
+    <input type="date" id="end-date" name="end-date" required>
+
+    <button type="submit">Get From Interval</button>
+</form>
+
+<!-- Button to navigate to /user -->
+<a th:href="@{/user}" class="button-link">
+    <button type="button">Go to User</button>
+</a>
+
+
 </body>
 </html>

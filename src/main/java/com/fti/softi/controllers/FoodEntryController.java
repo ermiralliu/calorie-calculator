@@ -1,8 +1,10 @@
 package com.fti.softi.controllers;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,37 @@ public class FoodEntryController {
     model.addAttribute("exceededCalorieDays", daysOverDailyCalories.entrySet()); // will be fixed later
     return "food";
   }
+
+  @GetMapping("/get-interval")
+  public String listFoodEntriesByInterval(
+          @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+          @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+          Model model) {
+
+    List<FoodEntry> foodEntries = foodEntryService.getAllForUser();
+
+    List<FoodEntry> filteredEntries = foodEntries.stream()
+            .filter(entry -> {
+              LocalDate entryDate = LocalDate.parse(entry.getDate());
+              return !entryDate.isBefore(startDate) && !entryDate.isAfter(endDate);
+            })
+            .toList();
+
+    int dailyCalories = foodEntryService.getDailyCalories(filteredEntries);
+    double totalExpenditure = foodEntryService.getMonthlyExpenditure(filteredEntries);
+
+    model.addAttribute("foodEntries", filteredEntries);
+    model.addAttribute("dailyCalories", dailyCalories);
+    model.addAttribute("totalExpenditure", totalExpenditure);
+
+    int minCalories = 2000;
+    var daysOverDailyCalories = foodEntryService.getDaysAboveCalorieThreshold(filteredEntries, minCalories);
+    model.addAttribute("exceededCalorieDays", daysOverDailyCalories.entrySet());
+
+    return "food";
+  }
+
+
 
   @PostMapping("/add")
   public String addFoodEntry(
