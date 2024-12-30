@@ -25,7 +25,7 @@
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="New Password" minlength="6" maxlength="32" disabled>
+            <input type="password" id="password" name="password" placeholder="New Password" minlength="6" maxlength="32">
             <div class="toggle-password">
                 <input type="checkbox" id="togglePassword"> <span>Show Password</span>
             </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="form-group">
             <label for="calorieLimit">Calorie Limit</label>
-            <input type="number" id="calorieLimit" name="calorieLimit" th:value="${user.dailyCalorieLimit}" min="0" disabled>
+            <input type="number" id="calorieLimit" name="calorieLimit" th:value="${user.dailyCalorieLimit}" min="0">
             <div class="unchanged-group">
                 <input type="checkbox" id="unchangedCalorieLimit" onchange="togglePasswordField('calorieLimit')"> Unchanged
             </div>
@@ -58,7 +58,7 @@
 
         function togglePasswordField(fieldId) {
             const field = document.getElementById(fieldId);
-            const checkbox = document.getElementById('unchangedPassword');
+            const checkbox = document.getElementById('unchangedPassword') || document.getElementById('unchangedCalorieLimit');
             if (checkbox.checked) {
                 field.disabled = true;
                 field.value = ''; // Clear the field if unchanged
