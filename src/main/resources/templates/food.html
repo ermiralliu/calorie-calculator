@@ -8,8 +8,8 @@
 <h1>Food Tracker</h1>
 
 <!-- Logout Button -->
-<form th:action="@{/logout}" method="post" style="display: inline;">
-    <button type="submit" class="logout-btn">Log out</button>
+<form th:action="@{/logout}"  method="post" style="display: inline;">
+    <button class="logout-btn" type="submit">Log out</button>
 </form>
 
 <!-- Monthly Expenditure and Calorie Messages -->
@@ -24,11 +24,6 @@
 
     <!-- Button for Calorie Report -->
     <button type="button" onclick="document.getElementById('calorieReportDialog').showModal()">Calorie Report</button>
-
-    <!-- Button for Go to User -->
-    <a th:href="@{/user}" class="button-link">
-        <button type="button" id="goToUser">Go to User</button>
-    </a>
 
     <button type="button" onclick="document.getElementById('intervalDialog').showModal()">Enter Interval of Time</button>
 </div>
@@ -101,7 +96,7 @@
         <th>Calories</th>
         <th>Price (&euro;)</th>
         <th>Date/Time</th>
-        <th> </th>
+        <!-- <th> </th> -->
     </tr>
     </thead>
     <tbody>
@@ -116,10 +111,10 @@
           <br/>
           <span th:text="${foodEntry.getTime()}"></span>
         </td >
-        <td>
+        <!-- <td>
           <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
           <button type="button">Edit</button>
-        </td>
+        </td> -->
     </tr>
     </tbody>
 </table>
