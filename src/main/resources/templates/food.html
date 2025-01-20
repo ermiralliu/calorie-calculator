@@ -18,6 +18,30 @@
     <p th:text="|Current Daily Calorie Count: ${dailyCalories} kcal|"></p>
 </div>
 
+
+<!-- Interval Input Dialog -->
+<!-- Interval Input Dialog -->
+<dialog id="intervalDialog">
+    <form th:action="@{/food/get-interval}" method="get">
+        <h2>Enter Interval of Time</h2>
+        <label for="interval-start">Start Date:</label>
+        <input type="date" id="interval-start" name="start-date" required>
+        <br><br>
+        <label for="interval-end">End Date:</label>
+        <input type="date" id="interval-end" name="end-date" required>
+        <br><br>
+        <menu>
+            <button type="button" onclick="document.getElementById('intervalDialog').close()">Cancel</button>
+            <button type="submit">Submit</button>
+        </menu>
+    </form>
+</dialog>
+
+<!-- Button to Open Interval Dialog -->
+<button type="button" onclick="document.getElementById('intervalDialog').showModal()">Enter Interval of Time</button>
+
+
+
 <!-- Food Entries Table -->
 <table>
     <thead>
@@ -103,17 +127,7 @@
     </ul>
 </div>
 
-<form action="/food/get-interval" method="GET">
-    <h2> Enter the interval of time </h2>
-    <h5>to filter the food entries by specifying a date range , so you can review specific days</h5>
-    <label for="start-date"> Start Date </label>
-    <input type="date" id="start-date" name="start-date" required>
 
-    <label for="end-date">End Date</label>
-    <input type="date" id="end-date" name="end-date" required>
-
-    <button type="submit">Get From Interval</button>
-</form>
 
 <!-- Button to navigate to /user -->
 <a th:href="@{/user}" class="button-link">

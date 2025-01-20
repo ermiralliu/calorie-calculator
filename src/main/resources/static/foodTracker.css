@@ -1,34 +1,33 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9;
+    min-height: 100vh;
+    background-color: #cddcd0;
     color: #333;
-    position: relative;
+    line-height: 1.6;
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 36px;
     color: #4CAF50;
-    margin-bottom: 10px;
+    margin: 20px 0;
     text-align: center;
-    width: 100%;
 }
 
 .logout-btn {
     background-color: #f44336;
-    color: white;
+    color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
     transition: background-color 0.3s ease;
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 20px;
 }
@@ -37,39 +36,40 @@ h1 {
     background-color: #d32f2f;
 }
 
-div {
-    margin: 20px 0;
-    font-size: 16px;
+div, p {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    margin: 15px auto;
     color: #555;
-    width: 80%;
+    font-size: 16px;
 }
 
 table {
-    width: 80%;
+    width: 90%;
+    max-width: 1000px;
     margin: 20px 0;
     border-collapse: collapse;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 table th, table td {
-    padding: 12px;
+    padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    vertical-align: middle;
 }
 
 table th {
     background-color: #4CAF50;
-    color: white;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
-table td input {
-    width: 100%;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
+table tr:hover {
+    background-color: #f1f1f1;
 }
 
 button {
@@ -79,29 +79,37 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 10px 0;
+    font-size: 14px;
     transition: background-color 0.3s ease;
+    margin: 5px;
 }
 
 button:hover {
     background-color: #45a049;
 }
 
-dialog {
-    width: 300px;
-    border-radius: 10px;
-    padding: 20px;
-    background: #fff;
-    border: none;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    margin-top: 20px;
-}
-
 .dialog-header {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+dialog {
+    width: 90%;
+    max-width: 400px;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 10%;
+    position: relative;
+}
+
+dialog h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
 }
 
 .close-btn {
@@ -117,67 +125,88 @@ dialog {
     color: #d9534f;
 }
 
-input[type="text"], input[type="number"], input[type="datetime-local"] {
+input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"] {
     width: 100%;
     padding: 10px;
+    margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
-    margin: 8px 0;
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 input[type="checkbox"] {
     margin-right: 5px;
 }
 
+menu {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
 menu button {
     padding: 8px 15px;
-    margin-top: 10px;
-    margin-right: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-left: 10px;
+    font-size: 14px;
 }
 
 menu button[value="cancel"] {
     background-color: #f44336;
-    color: white;
+    color: #fff;
 }
 
 menu button[value="save"] {
     background-color: #4CAF50;
-    color: white;
-}
-
-menu button:hover {
-    opacity: 0.8;
-}
-
-p {
-    font-size: 16px;
-    color: red;
+    color: #fff;
 }
 
 ul {
     list-style: none;
     padding: 0;
+    margin: 10px 0;
 }
 
 ul li {
     font-size: 16px;
     color: #333;
-    padding: 5px;
+    padding: 5px 0;
 }
 
-.button-link button {
+a.button-link button {
     background-color: #4CAF50;
     color: white;
+    padding: 10px 15px;
     border: none;
-    padding: 15px 15px;
-    cursor: pointer;
     font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
 }
 
-.button-link button:hover {
-    background-color: #00b339;
+a.button-link button:hover {
+    background-color: #388E3C;
 }
 
+.warning {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 900px) {
+    table, div, button {
+        width: 100%;
+    }
+
+    table th, table td {
+        padding: 8px 10px;
+    }
+
+    button {
+        font-size: 12px;
+    }
+
+    dialog {
+        width: 95%;
+    }
+}
