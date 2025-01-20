@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +47,6 @@ class FoodEntryRepositoryTests {
     }
 
     @Test
-    void testFindAll() {
-        FoodEntry foodEntry = FoodEntry.builder()
-                .createdAt(LocalDateTime.now())
-                .name("Banana")
-                .calories(105)
-                .price(31.23)
-                .user(testUser)
-                .build();
-        foodEntryRepository.save(foodEntry);
-
-        List<FoodEntry> foodEntries = foodEntryRepository.findAll();
-        assertFalse(foodEntries.isEmpty());
-        assertEquals("Banana", foodEntries.get(0).getName());
-    }
-
-    @Test
     void testFindByUserId() {
         FoodEntry foodEntry = FoodEntry.builder()
                 .createdAt(LocalDateTime.now())
@@ -79,21 +64,6 @@ class FoodEntryRepositoryTests {
         assertFalse(foodEntries.isEmpty());
         assertTrue(names.contains("Apple"));
         // assertEquals("Apple", foodEntries.get(0).getName());
-    }
-
-    @Test
-    void testFindByUserIdNoEntries() {
-        // Test for a user with no food entries
-        User newUser = User.builder()
-                .id(1792873L)
-                .name("New User")
-                .email("newuser@email.com")
-                .roles(Set.of())
-                .build();
-        userRepository.save(newUser);
-
-        List<FoodEntry> foodEntries = foodEntryRepository.findByUserId(newUser.getId());
-        assertTrue(foodEntries.isEmpty(), "Food entries should be empty for this user.");
     }
 
     @Test

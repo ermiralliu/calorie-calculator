@@ -48,7 +48,7 @@ public class User implements Serializable{
   @Builder.Default
   private Integer dailyCalorieLimit = 2500;
 
-	protected User() { // This isn't really used, but the app displays an error otherwise
+	public User() { // This isn't really used, but the app displays an error otherwise
 		id = null;
 		email = null;
 		username=null;

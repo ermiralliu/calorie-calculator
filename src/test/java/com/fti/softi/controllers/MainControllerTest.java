@@ -20,10 +20,23 @@ class MainControllerTest {
   }
 
   @Test
-  void testGetWelcome() throws Exception {
+  void testHomeRedirect() throws Exception {
     mockMvc.perform(get("/"))
-      .andExpect(status().is3xxRedirection())
-      .andExpect(header().string("Location", "/food"));
-    ;
+            .andExpect(status().is3xxRedirection())
+            .andExpect(header().string("Location", "/food"));
+  }
+
+  @Test
+  void testLoginView() throws Exception {
+    mockMvc.perform(get("/login"))  // Perform a GET request to the "/login" URL
+            .andExpect(status().isOk())  // Expect a status of 200 (OK)
+            .andExpect(view().name("login"));  // Expect the view name to be "login"
+  }
+
+  @Test
+  void testRegisterRedirect() throws Exception {
+    mockMvc.perform(get("/register"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(header().string("Location", "/user/register"));
   }
 }

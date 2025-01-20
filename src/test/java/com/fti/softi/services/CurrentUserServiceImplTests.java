@@ -10,7 +10,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -18,12 +20,11 @@ import com.fti.softi.config.CustomUserDetails;
 import com.fti.softi.models.User;
 import com.fti.softi.repositories.UserRepository;
 
-
 class CurrentUserServiceImplTests {
   
   private final UserRepository userRepository = mock(UserRepository.class);
   private final CurrentUserService currentUserService = new CurrentUserServiceImpl(userRepository);
-
+  
   @Test
   void testGetCurrentUser() {
     // Mocking a User object
@@ -48,7 +49,7 @@ class CurrentUserServiceImplTests {
 
 
     // Assertions
-    assertTrue(result.isPresent());
+    assert(result.isPresent());
     User resultUser = result.get();
     assertEquals("testuser@email.com", resultUser.getEmail());
     assertEquals(1L, resultUser.getId());

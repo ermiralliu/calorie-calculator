@@ -1,6 +1,7 @@
 package com.fti.softi.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,7 +15,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import com.fti.softi.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -49,32 +52,47 @@ class AdminControllerTest {
   // Test for listing food entries
   @Test
   void testListFoodEntries() throws Exception {
-    // Arrange: mock the food entries returned from the repository
-    List<FoodEntry> foodEntries = Arrays.asList(
-        FoodEntry.builder()
+    // Arrange: Use a fixed point in time for testing
+    LocalDateTime fixedNow = LocalDateTime.of(2025, 1, 20, 12, 0); // Example fixed date and time
+    FoodEntry entry1 = FoodEntry.builder()
             .id(1L)
             .name("Apple")
             .description("Fresh apple")
             .calories(100)
             .price(1.0)
-            .createdAt(LocalDateTime.now().withHour(0))
-            .build(),
-        FoodEntry.builder()
+            .createdAt(fixedNow.minusHours(1)) // Within today's range
+            .build();
+    FoodEntry entry2 = FoodEntry.builder()
             .id(2L)
             .name("Banana")
             .description("Ripe banana")
             .calories(150)
             .price(1.2)
-            .createdAt(LocalDateTime.now().withHour(0))
-            .build());
+            .createdAt(fixedNow.minusHours(2)) // Within today's range
+            .build();
+    List<FoodEntry> foodEntries = Arrays.asList(entry1, entry2);
+
     when(foodEntryRepository.findAll()).thenReturn(foodEntries);
 
-    // GET request and verify the response
+    // Calculate expected daily calories and total expenditure
+    int expectedDailyCalories = foodEntries.stream()
+            .filter(entry -> entry.getCreatedAt().isAfter(fixedNow.withHour(0).withMinute(0).withSecond(0)))
+            .mapToInt(FoodEntry::getCalories)
+            .sum();
+
+    double expectedTotalExpenditure = foodEntries.stream()
+            .filter(entry -> entry.getCreatedAt().isAfter(fixedNow.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0)))
+            .mapToDouble(FoodEntry::getPrice)
+            .sum();
+
+    // Act & Assert: Perform the GET request and verify
     mockMvc.perform(get("/admin"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("admin"))
-        .andExpect(model().attributeExists("foodEntries"))
-        .andExpect(model().attribute("foodEntries", foodEntries));
+            .andExpect(status().isOk())
+            .andExpect(view().name("admin")) // Verify correct view name
+            .andExpect(model().attributeExists("foodEntries", "dailyCalories", "totalExpenditure"))
+            .andExpect(model().attribute("foodEntries", foodEntries))
+            .andExpect(model().attribute("dailyCalories", expectedDailyCalories))
+            .andExpect(model().attribute("totalExpenditure", expectedTotalExpenditure));
   }
 
   // Test for adding a food entry
@@ -86,18 +104,33 @@ class AdminControllerTest {
     Double price = 1.0;
     Integer calories = 100;
 
-    // POST request and verify the redirect
-    mockMvc.perform(post("/admin/food-entries/add")
-        .param("name", name)
-        .param("description", description)
-        .param("price", price.toString())
-        .param("calories", calories.toString()))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(header().string("Location", "/admin/food-entries"));
+    // Mock the current user
+    User mockUser = User.builder()
+            .id(1L)
+            .build();
+    when(currentUserService.getCurrentUser()).thenReturn(Optional.of(mockUser));
 
-    // Verify that food entry was saved
-    verify(foodEntryRepository, times(1)).save(any(FoodEntry.class));
+    // Act & Assert: Perform POST request and verify the redirect
+    mockMvc.perform(post("/admin/food-entries/add")
+                    .param("name", name)
+                    .param("description", description)
+                    .param("price", price.toString())
+                    .param("calories", calories.toString()))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(header().string("Location", "/admin/food-entries"));
+
+    // Verify that the food entry was saved with correct attributes
+    verify(foodEntryRepository, times(1)).save(argThat(foodEntry ->
+            foodEntry.getName().equals(name) &&
+                    foodEntry.getDescription().equals(description) &&
+                    foodEntry.getPrice().equals(price) &&
+                    foodEntry.getCalories().equals(calories) &&
+                    foodEntry.getUser().equals(mockUser)
+    ));
   }
+
+
+
 
   // Test for editing a food entry
   @Test
