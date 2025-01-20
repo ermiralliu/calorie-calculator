@@ -75,8 +75,19 @@
     </tbody>
 </table>
 
-<!-- Add Food Entry Button -->
-<button type="button" onclick="document.getElementById('foodEntryDialog').showModal()">Add Food Entry</button>
+<!-- Button Container Box -->
+<div class="button-container">
+    <!-- Button for Add Food Entry -->
+    <button id="addFoodBtn" type="button" onclick="document.getElementById('foodEntryDialog').showModal()">Add Food Entry</button>
+
+    <!-- Button for Calorie Report -->
+    <button type="button" onclick="document.getElementById('calorieReportDialog').showModal()">Calorie Report</button>
+
+    <!-- Button for Go to User -->
+    <a th:href="@{/user}" class="button-link">
+        <button type="button" id="goToUser">Go to User</button>
+    </a>
+</div>
 
 <!-- Food Entry Dialog -->
 <dialog id="foodEntryDialog">
@@ -110,29 +121,14 @@
     </form>
 </dialog>
 
-<!-- Warning Messages -->
-<div th:if="${totalExpenditure > 1000}">
-    <p style="color: red;">Warning: You have exceeded your monthly expenditure limit of &euro;1,000!</p>
-</div>
-
-<div th:if="${dailyCalories > 2500}">
-    <p style="color: red;">Warning: You have exceeded your daily calorie limit of 2,500 calories!</p>
-</div>
-
-<!-- Days with Exceeded Calorie Limit -->
-<div th:if="${exceededCalorieDays != null && !exceededCalorieDays.isEmpty()}">
+<!-- Calorie Report Dialog -->
+<dialog id="calorieReportDialog">
     <h2>Days Exceeding Calorie Limit</h2>
     <ul>
         <li th:each="day : ${exceededCalorieDays}" th:text="|Day: ${day.getKey()} with ${day.getValue()} calories|"></li>
     </ul>
-</div>
-
-
-
-<!-- Button to navigate to /user -->
-<a th:href="@{/user}" class="button-link">
-    <button type="button">Go to User</button>
-</a>
+    <button type="button" onclick="document.getElementById('calorieReportDialog').close()">Close</button>
+</dialog>
 
 
 </body>
