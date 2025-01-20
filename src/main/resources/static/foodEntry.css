@@ -229,7 +229,7 @@ ul li {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap: 40px;
     margin-top: 30px;
     background-color: #f4f4f9;
     padding: 20px;
@@ -272,17 +272,7 @@ ul li {
     background-color: #d32f2f;
 }
 
-#goToUser{
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
+
 
 dialog {
     border-radius: 15px;

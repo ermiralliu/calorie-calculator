@@ -18,64 +18,6 @@
     <p th:text="|Current Daily Calorie Count: ${dailyCalories} kcal|"></p>
 </div>
 
-
-<!-- Interval Input Dialog -->
-<!-- Interval Input Dialog -->
-<dialog id="intervalDialog">
-    <form th:action="@{/food/get-interval}" method="get">
-        <h2>Enter Interval of Time</h2>
-        <label for="interval-start">Start Date:</label>
-        <input type="date" id="interval-start" name="start-date" required>
-        <br><br>
-        <label for="interval-end">End Date:</label>
-        <input type="date" id="interval-end" name="end-date" required>
-        <br><br>
-        <menu>
-            <button type="button" onclick="document.getElementById('intervalDialog').close()">Cancel</button>
-            <button type="submit">Submit</button>
-        </menu>
-    </form>
-</dialog>
-
-<!-- Button to Open Interval Dialog -->
-<button type="button" onclick="document.getElementById('intervalDialog').showModal()">Enter Interval of Time</button>
-
-
-
-<!-- Food Entries Table -->
-<table>
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Calories</th>
-        <th>Price (&euro;)</th>
-        <th>Date/Time</th>
-        <th> </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="foodEntry, iStat : ${foodEntries}">
-        <td th:text="${iStat.index + 1}"></td>
-        <td th:text="${foodEntry.name}"></td>
-        <td th:text="${foodEntry.getDescription()}"></td>
-        <td th:text="${foodEntry.calories}"></td>
-        <td th:text="${foodEntry.price}"></td>
-        <td>
-          <span th:text="${foodEntry.getDate()}"></span>
-          <br/>
-          <span th:text="${foodEntry.getTime()}"></span>
-        </td >
-        <td>
-          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
-          <button type="button">Edit</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<!-- Button Container Box -->
 <div class="button-container">
     <!-- Button for Add Food Entry -->
     <button id="addFoodBtn" type="button" onclick="document.getElementById('foodEntryDialog').showModal()">Add Food Entry</button>
@@ -87,6 +29,8 @@
     <a th:href="@{/user}" class="button-link">
         <button type="button" id="goToUser">Go to User</button>
     </a>
+
+    <button type="button" onclick="document.getElementById('intervalDialog').showModal()">Enter Interval of Time</button>
 </div>
 
 <!-- Food Entry Dialog -->
@@ -130,6 +74,55 @@
     <button type="button" onclick="document.getElementById('calorieReportDialog').close()">Close</button>
 </dialog>
 
+
+<dialog id="intervalDialog">
+    <form th:action="@{/food/get-interval}" method="get">
+        <h2>Enter Interval of Time</h2>
+        <label for="interval-start">Start Date:</label>
+        <input type="date" id="interval-start" name="start-date" required>
+        <br><br>
+        <label for="interval-end">End Date:</label>
+        <input type="date" id="interval-end" name="end-date" required>
+        <br><br>
+        <menu>
+            <button type="button" onclick="document.getElementById('intervalDialog').close()">Cancel</button>
+            <button type="submit">Submit</button>
+        </menu>
+    </form>
+</dialog>
+
+<!-- Food Entries Table -->
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Calories</th>
+        <th>Price (&euro;)</th>
+        <th>Date/Time</th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="foodEntry, iStat : ${foodEntries}">
+        <td th:text="${iStat.index + 1}"></td>
+        <td th:text="${foodEntry.name}"></td>
+        <td th:text="${foodEntry.getDescription()}"></td>
+        <td th:text="${foodEntry.calories}"></td>
+        <td th:text="${foodEntry.price}"></td>
+        <td>
+          <span th:text="${foodEntry.getDate()}"></span>
+          <br/>
+          <span th:text="${foodEntry.getTime()}"></span>
+        </td >
+        <td>
+          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
+          <button type="button">Edit</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>
