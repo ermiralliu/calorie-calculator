@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -7,28 +8,22 @@ body {
     padding: 20px;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     color: #007BFF;
-    font-size: 2rem;
     margin-bottom: 30px;
 }
 
-.logout-btn {
-    background-color: #FF5733;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+h1 {
+    font-size: 2rem;
 }
 
-.logout-btn:hover {
-    background-color: #C83F2A;
+h2 {
+    font-size: 1.5rem;
+    color: #FF5733;
 }
 
+/* Text & Paragraphs */
 div p {
     font-size: 1.1rem;
     margin: 10px 0;
@@ -43,6 +38,103 @@ div p:last-of-type {
     color: #FF5733;
 }
 
+div p[style="color: red;"] {
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+ul li {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+/* Buttons */
+button, .logout-btn {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn {
+    background-color: #FF5733;
+    color: white;
+}
+
+.logout-btn:hover {
+    background-color: #C83F2A;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Buttons for Containers */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-top: 30px;
+    background-color: #f4f4f9;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.button-container button {
+    color: #fff;
+    padding: 15px 25px;
+    background-color: #38D2D2;
+    background-image: radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: inset -3px -3px 9px rgba(255, 255, 255, 0.25), inset 0px 3px 9px rgba(255, 255, 255, 0.3), inset 0px 1px 1px rgba(255, 255, 255, 0.6), inset 0px -8px 36px rgba(0, 0, 0, 0.3), inset 0px 1px 5px rgba(255, 255, 255, 0.6), 2px 19px 31px rgba(0, 0, 0, 0.2);
+    border-radius: 14px;
+    font-weight: bold;
+    font-size: 16px;
+    border: 0;
+
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.button-container button:hover {
+    background-color: #2A9D9D;
+    box-shadow: inset -3px -3px 9px rgba(255, 255, 255, 0.25), inset 0px 3px 9px rgba(255, 255, 255, 0.3), inset 0px 1px 1px rgba(255, 255, 255, 0.6), inset 0px -8px 36px rgba(0, 0, 0, 0.3), inset 0px 1px 5px rgba(255, 255, 255, 0.6), 2px 19px 31px rgba(0, 0, 0, 0.3);
+}
+
+.button-container button#addFoodBtn {
+    background-color: #4CAF50;
+    padding: 15px 25px;
+    font-size: 18px;
+}
+
+.button-container button#addFoodBtn:hover {
+    background-color: #388E3C;
+}
+
+/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -86,27 +178,12 @@ tr:last-child td {
     border-bottom: none;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-
-}
-
-button:hover {
-    background-color: #218838;
-}
-
+/* Dialog Styles */
 dialog {
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
 }
 
 dialog input[type="text"],
@@ -140,37 +217,13 @@ dialog menu button:hover {
     background-color: #0056b3;
 }
 
-div p[style="color: red;"] {
-    color: #e74c3c;
-    font-weight: bold;
-    text-align: center;
-    font-size: 1.2rem;
-}
-
-h2 {
-    font-size: 1.5rem;
-    text-align: center;
-    color: #FF5733;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-    text-align: center;
-}
-
-ul li {
-    margin: 5px 0;
-    font-size: 1.1rem;
-    color: #333;
-}
-
+/* Calorie Report Dialog */
 #calorieReportDialog {
     width: 80%;
     max-width: 500px;
-    border-radius: 10px;
-    padding: 20px;
     background: #cddcd0;
+    padding: 20px;
+    border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     margin-top: 10%;
@@ -198,85 +251,13 @@ ul li {
 #calorieReportDialog button {
     background-color: #4CAF50;
     color: white;
-    border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 15px;
     font-size: 14px;
-    transition: background-color 0.3s ease;
+    margin-top: 15px;
 }
 
 #calorieReportDialog button:hover {
     background-color: #388E3C;
-}
-
-/* Container for the buttons */
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px; /* Space between the buttons */
-    margin-top: 30px;
-    background-color: #f4f4f9;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Container for the buttons */
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    margin-top: 30px;
-    background-color: #f4f4f9;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Add Food Entry button */
-.button-container button#addFoodBtn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-}
-
-.button-container button#addFoodBtn:hover {
-    background-color: #388E3C;
-}
-
-.button-container button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-}
-
-.button-container button:hover {
-    background-color: #d32f2f;
-}
-
-
-
-dialog {
-    border-radius: 15px;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
