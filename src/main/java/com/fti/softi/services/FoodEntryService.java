@@ -18,6 +18,10 @@ public interface FoodEntryService {
   public boolean insertFoodEntry(String name, String description,
    double price, double calories, LocalDateTime createdAt);
 
+  LinkedHashMap<String, Integer> getWeeklyEntryComparison(); // Last 7 days vs previous week
+  double getAverageCaloriesPerUser();
+  List<String> getUsersExceedingMonthlyLimit(double monthlyLimit);
+
   LinkedHashMap<String, Integer> getDaysAboveCalorieThreshold(List<FoodEntry> foodEntries, int minCalories);
   //Other methods to be added later
 }

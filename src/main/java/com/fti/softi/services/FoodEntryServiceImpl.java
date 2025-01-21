@@ -22,7 +22,7 @@ public class FoodEntryServiceImpl implements FoodEntryService {
   @Override
   public List<FoodEntry> getAllForUser() {
     return foodEntryRepository.findByUserId(currentUserService.getCurrentUserId());
-  };
+  }
 
   @Override
   public int getDailyCalories(List<FoodEntry> foodEntries) {
@@ -52,7 +52,7 @@ public class FoodEntryServiceImpl implements FoodEntryService {
   @Override
   public double getMonthlyExpenditure() {
     return getMonthlyExpenditure(foodEntryRepository.findByUserId(currentUserService.getCurrentUserId()));
-  };
+  }
 
   @Override
   public boolean insertFoodEntry(String name, String description,
@@ -62,7 +62,7 @@ public class FoodEntryServiceImpl implements FoodEntryService {
     return foodEntryRepository.insertFoodEntrybyId(
         currentUserService.getCurrentUserId(),
         name, description, price, calories, createdAt) == 1;
-  };
+  }
   @Override
   public LinkedHashMap<String, Integer> getDaysAboveCalorieThreshold(List<FoodEntry> foodEntries, int minCalories){
     return foodEntries.stream()
@@ -76,5 +76,54 @@ public class FoodEntryServiceImpl implements FoodEntryService {
           (e1, e2) -> e1, 
           LinkedHashMap::new
         ));
-  };
+  }
+  @Override
+  public LinkedHashMap<String, Integer> getWeeklyEntryComparison() {
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime startOfWeek = now.minusDays(7);
+    LocalDateTime previousWeekStart = startOfWeek.minusDays(7);
+
+    int last7Days = foodEntryRepository
+            .findByCreatedAtBetween(startOfWeek, now)
+            .size();
+
+    int previousWeek = foodEntryRepository
+            .findByCreatedAtBetween(previousWeekStart, startOfWeek)
+            .size();
+
+    LinkedHashMap<String, Integer> weeklyEntryComparison = new LinkedHashMap<>();
+    weeklyEntryComparison.put("Last 7 Days", last7Days);
+    weeklyEntryComparison.put("Previous Week", previousWeek);
+
+    return weeklyEntryComparison; // Return the map directly
+  }
+
+
+  @Override
+  public double getAverageCaloriesPerUser() {
+    List<FoodEntry> allEntries = foodEntryRepository.findAll();
+    Map<Long, Integer> userCalories = allEntries.stream()
+            .collect(Collectors.groupingBy(
+                    entry -> entry.getUser().getId(),
+                    Collectors.summingInt(FoodEntry::getCalories)
+            ));
+    return userCalories.values().stream()
+            .mapToDouble(Integer::doubleValue)
+            .average()
+            .orElse(0.0);
+  }
+
+  @Override
+  public List<String> getUsersExceedingMonthlyLimit(double monthlyLimit) {
+    LocalDateTime startOfMonth = LocalDateTime.now().withDayOfMonth(1);
+    return foodEntryRepository.findAll().stream()
+            .collect(Collectors.groupingBy(entry -> entry.getUser().getId()))
+            .entrySet().stream()
+            .filter(entry -> entry.getValue().stream()
+                    .filter(e -> e.getCreatedAt().isAfter(startOfMonth))
+                    .mapToDouble(FoodEntry::getPrice).sum() > monthlyLimit)
+            .map(entry -> entry.getValue().get(0).getUser().getUsername())
+            .toList();
+  }
+
 }

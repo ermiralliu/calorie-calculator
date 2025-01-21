@@ -80,19 +80,16 @@
 <section id="reports">
   <h2>Reports</h2>
 
-
   <div>
     <h3>Entries Comparison</h3>
-    <p th:text="'Entries in last 7 days: ' + ${entriesLast7Days}"></p>
-    <p th:text="'Entries in the previous week: ' + ${entriesWeekBefore}"></p>
+    <p>Entries in the last 7 days: <span th:text="${weeklyComparison['Last 7 Days']}"></span></p>
+    <p>Entries in the previous week: <span th:text="${weeklyComparison['Previous Week']}"></span></p>
   </div>
-
 
   <div>
     <h3>Average Calories</h3>
-    <p th:text="'Average calories per user (last 7 days): ' + ${avgCaloriesLast7Days}"></p>
+    <p>Average calories per user: <span th:text="${avgCalories}"></span></p>
   </div>
-
 
   <div>
     <h3>Users Exceeding Monthly Price Limit</h3>

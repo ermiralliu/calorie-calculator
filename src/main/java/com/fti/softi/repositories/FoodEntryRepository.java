@@ -36,4 +36,7 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
     @Param("calories") double calories,
     @Param("createdAt") LocalDateTime createdAt
   ); // After some testing we will prove if this is okay
+    @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
+    List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
 }

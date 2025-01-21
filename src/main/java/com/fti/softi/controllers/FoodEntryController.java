@@ -2,6 +2,7 @@ package com.fti.softi.controllers;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -69,6 +70,19 @@ public class FoodEntryController {
     return "food";
   }
 
+  @GetMapping("/admin/reports")
+  public String getAdminReports(Model model) {
+    LinkedHashMap<String, Integer> weeklyComparison = foodEntryService.getWeeklyEntryComparison();
+    double avgCalories = foodEntryService.getAverageCaloriesPerUser();
+    double monthlyLimit = 100.0; // Define the limit
+    List<String> usersExceedingLimit = foodEntryService.getUsersExceedingMonthlyLimit(monthlyLimit);
+
+    model.addAttribute("weeklyComparison", weeklyComparison);
+    model.addAttribute("avgCalories", avgCalories);
+    model.addAttribute("usersExceedingLimit", usersExceedingLimit);
+
+    return "admin";
+  }
 
 
   @PostMapping("/add")
