@@ -100,55 +100,15 @@ public class FoodEntryServiceImpl implements FoodEntryService {
     return weeklyEntryComparison; // Return the map directly
   }
 
-  @Override
+  @Override // Konverton Listen me Object array qe merret nga databaza ne Liste me CalorieDto
   public List<CalorieDto> getAverageCaloriesPerUserPerDay() {
     return foodEntryRepository.findAverageCaloriesPerUser().stream()
     .map(item -> {
         String name = (String) item[0];
-        // Double caloriesPerDay = Double.valueOf((Float) item[1]);
         String caloriesPerDay = String.format("%.2f", item[1]);
         return new CalorieDto(name, caloriesPerDay);
     })
     .collect(Collectors.toList());
-    // List<FoodEntry> allEntries = foodEntryRepository.findAll();
-
-    // var entriesByUser = allEntries.stream()
-    //     .collect(Collectors.groupingBy(FoodEntry::getUser));
-
-    // return entriesByUser.entrySet().stream()
-    //     .map(entry -> {
-    //       User user = entry.getKey();
-    //       List<FoodEntry> userEntries = entry.getValue();
-
-    //       if (userEntries.isEmpty()) {
-    //         return new CalorieDto(user.getName(), 0.0);
-    //       }
-
-    //       java.time.Instant minDate = userEntries.stream()
-    //           .map(FoodEntry::getCreatedAt)
-    //           .min(Comparator.naturalOrder())
-    //           .orElse(null);
-    //       java.time.Instant maxDate = userEntries.stream()
-    //           .map(FoodEntry::getCreatedAt)
-    //           .max(Comparator.naturalOrder())
-    //           .orElse(null);
-
-    //       if (minDate == null || maxDate == null) {
-    //         return new CalorieDto(user.getName(), 0.0); // Handle cases where min or max date is null
-    //       }
-
-    //       long days = ChronoUnit.DAYS.between(minDate.toLocalDate(), maxDate.toLocalDate()) + 1;
-    //       if (days == 0) {
-    //         days = 1;
-    //       }
-    //       int totalCalories = userEntries.stream()
-    //           .mapToInt(FoodEntry::getCalories)
-    //           .sum();
-
-    //       double averageCalories = (double) totalCalories / days;
-    //       return new CalorieDto(user.getName(), averageCalories);
-    //     })
-    //     .collect(Collectors.toList());
   }
 
   @Override
