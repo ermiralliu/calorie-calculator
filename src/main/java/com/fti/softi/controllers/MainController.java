@@ -25,4 +25,9 @@ public class MainController {
 		return "redirect:/food";
 	}
 
+  // @GetMapping("/error")
+  // public String error() {
+
+  // }
+
 }
