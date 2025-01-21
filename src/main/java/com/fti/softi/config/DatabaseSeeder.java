@@ -49,7 +49,7 @@ public class DatabaseSeeder {
 
       var hasher = new BCryptPasswordEncoder();
       User admin = User.builder()
-          .email("admin@gmail.com")
+          .email("admin@example.com")
           .username("admin")
           .dailyCalorieLimit(2000)
           .name("Admin")
@@ -66,7 +66,7 @@ public class DatabaseSeeder {
 
       for (String currentName : names) { // adding a user for each name
         User currentUser = User.builder()
-          .email(currentName.toLowerCase() + "@gmail.com")
+          .email(currentName.toLowerCase() + "@example.com")
           .username(currentName)
           .dailyCalorieLimit(2500)
           .name(currentName)

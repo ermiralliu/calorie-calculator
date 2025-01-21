@@ -10,33 +10,47 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.fti.softi.dtos.CalorieDto;
 import com.fti.softi.models.FoodEntry;
 
 import jakarta.transaction.Transactional;
 
 @Repository
 public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
-	List<FoodEntry> findByUserId(Long userId);
+  List<FoodEntry> findByUserId(Long userId);
 
-	@Query(value = "SELECT SUM(price) FROM food_entry WHERE user_id= :userId AND (created_at BETWEEN :startDate AND :endDate)", nativeQuery = true) 
-	Double sumPriceByDateBetween(
-    @Param("userId") Long userId, 
-    @Param("startDate") LocalDateTime startDate, 
-    @Param("endDate") LocalDateTime endDate
-  );
+  @Query(value = "SELECT SUM(price) FROM food_entry WHERE user_id= :userId AND (created_at BETWEEN :startDate AND :endDate)", nativeQuery = true)
+  Double sumPriceByDateBetween(
+      @Param("userId") Long userId,
+      @Param("startDate") LocalDateTime startDate,
+      @Param("endDate") LocalDateTime endDate);
 
   @Modifying
   @Transactional
-  @Query(value = "INSERT INTO food_entry (user_id, name, description, price, calories, created_at) VALUES (:userId, :name, :description, :price, :calories, :createdAt)", nativeQuery = true) 
+  @Query(value = "INSERT INTO food_entry (user_id, name, description, price, calories, created_at) VALUES (:userId, :name, :description, :price, :calories, :createdAt)", nativeQuery = true)
   int insertFoodEntrybyId( // the return value shows number of rows affected
-    @Param("userId") long userId, 
-    @Param("name") String name, 
-    @Param("description") String description,
-    @Param("price") double price,
-    @Param("calories") double calories,
-    @Param("createdAt") LocalDateTime createdAt
-  ); // After some testing we will prove if this is okay
-    @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
-    List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+      @Param("userId") long userId,
+      @Param("name") String name,
+      @Param("description") String description,
+      @Param("price") double price,
+      @Param("calories") double calories,
+      @Param("createdAt") LocalDateTime createdAt); // After some testing we will prove if this is okay
 
+  @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
+  List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+  @Query(value = """
+      SELECT u.name AS name,
+             COALESCE(SUM(daily_calories) * 1.0 / COUNT(DISTINCT entry_date), 0.0) AS caloriesPerDay
+      FROM users u
+      LEFT JOIN (
+          SELECT user_id,
+                 strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch')) AS entry_date,
+                 SUM(CAST(calories AS REAL)) AS daily_calories
+          FROM food_entry
+          GROUP BY user_id, strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch'))
+      ) AS fe ON u.id = fe.user_id
+      GROUP BY u.id, u.name
+      """, nativeQuery = true)
+  List<Object[]> findAverageCaloriesPerUser();
 }

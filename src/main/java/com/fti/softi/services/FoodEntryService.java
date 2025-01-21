@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.fti.softi.dtos.CalorieDto;
 import com.fti.softi.models.FoodEntry;
 
 public interface FoodEntryService {
@@ -19,7 +20,7 @@ public interface FoodEntryService {
    double price, double calories, LocalDateTime createdAt);
 
   LinkedHashMap<String, Integer> getWeeklyEntryComparison(); // Last 7 days vs previous week
-  double getAverageCaloriesPerUser();
+  List<CalorieDto> getAverageCaloriesPerUserPerDay();
   List<String> getUsersExceedingMonthlyLimit(double monthlyLimit);
 
   LinkedHashMap<String, Integer> getDaysAboveCalorieThreshold(List<FoodEntry> foodEntries, int minCalories);

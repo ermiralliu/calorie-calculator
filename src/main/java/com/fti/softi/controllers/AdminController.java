@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fti.softi.dtos.CalorieDto;
 import com.fti.softi.models.FoodEntry;
 import com.fti.softi.repositories.FoodEntryRepository;
 import com.fti.softi.services.CurrentUserService;
+import com.fti.softi.services.FoodEntryService;
 
 import lombok.AllArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.AllArgsConstructor;
 public class AdminController {
   private final FoodEntryRepository foodEntryRepository;
   private final CurrentUserService currentUserService;
+  private final FoodEntryService foodEntryService;
 
   @GetMapping
   public String listFoodEntries(Model model) {
@@ -40,9 +44,14 @@ public class AdminController {
         .mapToDouble(FoodEntry::getPrice)
         .sum();
 
+    var weeklyComparison = foodEntryService.getWeeklyEntryComparison();
+    List<CalorieDto> avgCalories = foodEntryService.getAverageCaloriesPerUserPerDay();
+
     model.addAttribute("foodEntries", foodEntries);
     model.addAttribute("dailyCalories", dailyCalories);
     model.addAttribute("totalExpenditure", totalExpenditure);
+    model.addAttribute("weeklyComparison", weeklyComparison);
+    model.addAttribute("avgCalories", avgCalories);
 
     return "admin";
   }
@@ -85,5 +94,10 @@ public class AdminController {
   public String deleteFoodEntry(@RequestParam("id") Long id) {
     foodEntryRepository.deleteById(id);
     return "redirect:/admin/food-entries";
+  }
+  @GetMapping("/test")
+  @ResponseBody
+  public Object test(){
+    return foodEntryService.getAverageCaloriesPerUserPerDay();
   }
 }
