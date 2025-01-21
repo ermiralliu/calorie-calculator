@@ -8,8 +8,8 @@
 <h1>Food Tracker</h1>
 
 <!-- Logout Button -->
-<form th:action="@{/logout}" method="post" style="display: inline;">
-    <button type="submit" class="logout-btn">Log out</button>
+<form th:action="@{/logout}"  method="post" style="display: inline;">
+    <button class="logout-btn" type="submit">Log out</button>
 </form>
 
 <!-- Monthly Expenditure and Calorie Messages -->
@@ -18,41 +18,15 @@
     <p th:text="|Current Daily Calorie Count: ${dailyCalories} kcal|"></p>
 </div>
 
-<!-- Food Entries Table -->
-<table>
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Calories</th>
-        <th>Price (&euro;)</th>
-        <th>Date/Time</th>
-        <th> </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="foodEntry, iStat : ${foodEntries}">
-        <td th:text="${iStat.index + 1}"></td>
-        <td th:text="${foodEntry.name}"></td>
-        <td th:text="${foodEntry.getDescription()}"></td>
-        <td th:text="${foodEntry.calories}"></td>
-        <td th:text="${foodEntry.price}"></td>
-        <td>
-          <span th:text="${foodEntry.getDate()}"></span>
-          <br/>
-          <span th:text="${foodEntry.getTime()}"></span>
-        </td >
-        <td>
-          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
-          <button type="button">Edit</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="button-container">
+    <!-- Button for Add Food Entry -->
+    <button id="addFoodBtn" type="button" onclick="document.getElementById('foodEntryDialog').showModal()">Add Food Entry</button>
 
-<!-- Add Food Entry Button -->
-<button type="button" onclick="document.getElementById('foodEntryDialog').showModal()">Add Food Entry</button>
+    <!-- Button for Calorie Report -->
+    <button type="button" onclick="document.getElementById('calorieReportDialog').showModal()">Calorie Report</button>
+
+    <button type="button" onclick="document.getElementById('intervalDialog').showModal()">Enter Interval of Time</button>
+</div>
 
 <!-- Food Entry Dialog -->
 <dialog id="foodEntryDialog">
@@ -86,40 +60,64 @@
     </form>
 </dialog>
 
-<!-- Warning Messages -->
-<div th:if="${totalExpenditure > 1000}">
-    <p style="color: red;">Warning: You have exceeded your monthly expenditure limit of &euro;1,000!</p>
-</div>
-
-<div th:if="${dailyCalories > 2500}">
-    <p style="color: red;">Warning: You have exceeded your daily calorie limit of 2,500 calories!</p>
-</div>
-
-<!-- Days with Exceeded Calorie Limit -->
-<div th:if="${exceededCalorieDays != null && !exceededCalorieDays.isEmpty()}">
+<!-- Calorie Report Dialog -->
+<dialog id="calorieReportDialog">
     <h2>Days Exceeding Calorie Limit</h2>
     <ul>
         <li th:each="day : ${exceededCalorieDays}" th:text="|Day: ${day.getKey()} with ${day.getValue()} calories|"></li>
     </ul>
-</div>
+    <button type="button" onclick="document.getElementById('calorieReportDialog').close()">Close</button>
+</dialog>
 
-<form action="/food/get-interval" method="GET">
-    <h2> Enter the interval of time </h2>
-    <h5>to filter the food entries by specifying a date range , so you can review specific days</h5>
-    <label for="start-date"> Start Date </label>
-    <input type="date" id="start-date" name="start-date" required>
 
-    <label for="end-date">End Date</label>
-    <input type="date" id="end-date" name="end-date" required>
+<dialog id="intervalDialog">
+    <form th:action="@{/food/get-interval}" method="get">
+        <h2>Enter Interval of Time</h2>
+        <label for="interval-start">Start Date:</label>
+        <input type="date" id="interval-start" name="start-date" required>
+        <br><br>
+        <label for="interval-end">End Date:</label>
+        <input type="date" id="interval-end" name="end-date" required>
+        <br><br>
+        <menu>
+            <button type="button" onclick="document.getElementById('intervalDialog').close()">Cancel</button>
+            <button type="submit">Submit</button>
+        </menu>
+    </form>
+</dialog>
 
-    <button type="submit">Get From Interval</button>
-</form>
-
-<!-- Button to navigate to /user -->
-<a th:href="@{/user}" class="button-link">
-    <button type="button">Go to User</button>
-</a>
-
+<!-- Food Entries Table -->
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Calories</th>
+        <th>Price (&euro;)</th>
+        <th>Date/Time</th>
+        <!-- <th> </th> -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="foodEntry, iStat : ${foodEntries}">
+        <td th:text="${iStat.index + 1}"></td>
+        <td th:text="${foodEntry.name}"></td>
+        <td th:text="${foodEntry.getDescription()}"></td>
+        <td th:text="${foodEntry.calories}"></td>
+        <td th:text="${foodEntry.price}"></td>
+        <td>
+          <span th:text="${foodEntry.getDate()}"></span>
+          <br/>
+          <span th:text="${foodEntry.getTime()}"></span>
+        </td >
+        <!-- <td>
+          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
+          <button type="button">Edit</button>
+        </td> -->
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

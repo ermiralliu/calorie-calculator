@@ -21,3 +21,4 @@ foodEntryForm.addEventListener("submit", function (event) {
     // Clear the form
     foodEntryForm.reset();
 });
+
