@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.fti.softi.models.User;
 import com.fti.softi.repositories.UserRepository;
+import com.fti.softi.services.impl.UserDetailsServiceImpl;
 
 class UserDetailsServiceImplTests {
 

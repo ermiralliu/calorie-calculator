@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fti.softi.dtos.CalorieDto;
 import com.fti.softi.models.FoodEntry;
 import com.fti.softi.repositories.FoodEntryRepository;
-import com.fti.softi.services.CurrentUserService;
+// import com.fti.softi.services.CurrentUserService;
 import com.fti.softi.services.FoodEntryService;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/admin")
 public class AdminController {
   private final FoodEntryRepository foodEntryRepository;
-  private final CurrentUserService currentUserService;
+  // private final CurrentUserService currentUserService;
   private final FoodEntryService foodEntryService;
 
   @GetMapping
@@ -56,22 +56,23 @@ public class AdminController {
     return "admin";
   }
 
-  @PostMapping("/food-entries/add")
-  public String addFoodEntry(
-      @RequestParam("name") String name,
-      @RequestParam("description") String description,
-      @RequestParam("price") Double price,
-      @RequestParam("calories") Integer calories) {
-    FoodEntry foodEntry = FoodEntry.builder()
-        .name(name)
-        .user(currentUserService.getCurrentUser().get())
-        .description(description)
-        .price(price)
-        .calories(calories)
-        .build();
-    foodEntryRepository.save(foodEntry);
-    return "redirect:/admin/food-entries";
-  }
+  // @PostMapping("/food-entries/add")
+  // public String addFoodEntry(
+  //     @RequestParam("name") String name,
+  //     @RequestParam("description") String description,
+  //     @RequestParam("price") Double price,
+  //     @RequestParam("calories") Integer calories) {
+  //   // FoodEntry foodEntry = FoodEntry.builder()
+  //   //     .name(name)
+  //   //     .user(currentUserService.getCurrentUserId())
+  //   //     .description(description)
+  //   //     .price(price)
+  //   //     .calories(calories)
+  //   //     .build();
+  //   // foodEntryRepository.save(foodEntry);
+  //   foodEntryService.insertFoodEntry(currentUserService.getCurrentUserId(), name, description, price, calories, null);
+  //   return "redirect:/admin/food-entries";
+  // }
 
   @PostMapping("/food-entries/edit")
   public String editFoodEntry(

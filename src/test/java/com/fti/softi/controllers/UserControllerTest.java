@@ -89,65 +89,65 @@ class UserControllerTest {
   }
 
 
-  @Test
-  void testGetUserView_UserFound() throws Exception {
-    User user = User.builder()
-            .name("John Doe")
-            .username("johndoe")
-            .email("john.doe@example.com")
-            .dailyCalorieLimit(2000)
-            .build();
+  // @Test
+  // void testGetUserView_UserFound() throws Exception {
+  //   User user = User.builder()
+  //           .name("John Doe")
+  //           .username("johndoe")
+  //           .email("john.doe@example.com")
+  //           .dailyCalorieLimit(2000)
+  //           .build();
 
-    when(currentUserService.getCurrentUser()).thenReturn(Optional.of(user));
+  //   when(currentUserService.getCurrentUser()).thenReturn(Optional.of(user));
 
-    mockMvc.perform(get("/user"))
-            .andExpect(status().isOk())
-            .andExpect(view().name("user"))
-            .andExpect(model().attribute("user", user))
-            .andExpect(model().attribute("dailyCalorieLimit", user.getDailyCalorieLimit()))
-            .andExpect(model().attribute("username", user.getUsername()));
-  }
-  @Test
-  void testGetUserView_UserNotFound() throws Exception {
-    when(currentUserService.getCurrentUser()).thenReturn(java.util.Optional.empty());
+  //   mockMvc.perform(get("/user"))
+  //           .andExpect(status().isOk())
+  //           .andExpect(view().name("user"))
+  //           .andExpect(model().attribute("user", user))
+  //           .andExpect(model().attribute("dailyCalorieLimit", user.getDailyCalorieLimit()))
+  //           .andExpect(model().attribute("username", user.getUsername()));
+  // }
+  // @Test
+  // void testGetUserView_UserNotFound() throws Exception {
+  //   when(currentUserService.getCurrentUser()).thenReturn(java.util.Optional.empty());
 
-    mockMvc.perform(get("/user"))
-            .andExpect(status().isOk())
-            .andExpect(view().name("error"))
-            .andExpect(model().attribute("message", "User not found."));
-  }
+  //   mockMvc.perform(get("/user"))
+  //           .andExpect(status().isOk())
+  //           .andExpect(view().name("error"))
+  //           .andExpect(model().attribute("message", "User not found."));
+  // }
 
-  @Test
-  void testUpdateUser_Success() throws Exception {
-    String updatedName = "John Updated";
-    String updatedPassword = "newpassword";
-    String updatedCalorieLimit = "2500";
+  // @Test
+  // void testUpdateUser_Success() throws Exception {
+  //   String updatedName = "John Updated";
+  //   String updatedPassword = "newpassword";
+  //   String updatedCalorieLimit = "2500";
 
-    User user = User.builder()
-            .name("John Doe")
-            .username("johndoe")
-            .email("john.doe@example.com")
-            .build();
+  //   User user = User.builder()
+  //           .name("John Doe")
+  //           .username("johndoe")
+  //           .email("john.doe@example.com")
+  //           .build();
 
-    when(currentUserService.getCurrentUser()).thenReturn(java.util.Optional.of(user));
-    when(userRepository.save(any(User.class))).thenReturn(user);
+  //   when(currentUserService.getCurrentUser()).thenReturn(java.util.Optional.of(user));
+  //   when(userRepository.save(any(User.class))).thenReturn(user);
 
-    mockMvc.perform(put("/user")
-                    .param("name", updatedName)
-                    .param("password", updatedPassword)
-                    .param("calorieLimit", updatedCalorieLimit))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/user"));
+  //   mockMvc.perform(put("/user")
+  //                   .param("name", updatedName)
+  //                   .param("password", updatedPassword)
+  //                   .param("calorieLimit", updatedCalorieLimit))
+  //           .andExpect(status().is3xxRedirection())
+  //           .andExpect(redirectedUrl("/user"));
 
-    verify(userRepository, times(1)).save(any(User.class)); // Verify that the user is updated
-  }
+  //   verify(userRepository, times(1)).save(any(User.class)); // Verify that the user is updated
+  // }
 
-  @Test
-  void testUpdateUser_UserNotFound() throws Exception {
-    when(currentUserService.getCurrentUser()).thenReturn(java.util.Optional.empty());
+  // @Test
+  // void testUpdateUser_UserNotFound() throws Exception {
+  //   when(currentUserService.getCurrentUser()).thenReturn(java.util.Optional.empty());
 
-    mockMvc.perform(put("/user"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/error"));
-  }
+  //   mockMvc.perform(put("/user"))
+  //           .andExpect(status().is3xxRedirection())
+  //           .andExpect(redirectedUrl("/error"));
+  // }
 }

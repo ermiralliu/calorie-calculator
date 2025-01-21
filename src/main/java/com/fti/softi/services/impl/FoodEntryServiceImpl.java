@@ -1,4 +1,4 @@
-package com.fti.softi.services;
+package com.fti.softi.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -6,27 +6,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fti.softi.dtos.CalorieDto;
 import com.fti.softi.models.FoodEntry;
 import com.fti.softi.repositories.FoodEntryRepository;
+import com.fti.softi.services.BaseService;
+import com.fti.softi.services.FoodEntryService;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
-public class FoodEntryServiceImpl implements FoodEntryService {
+public class FoodEntryServiceImpl extends BaseService implements FoodEntryService{
   private final FoodEntryRepository foodEntryRepository;
-  private final CurrentUserService currentUserService;
 
   @Override
   public List<FoodEntry> getAllForUser() {
-    return foodEntryRepository.findByUserId(currentUserService.getCurrentUserId());
+    long userId = this.getCurrentUserId();
+    return foodEntryRepository.findByUserId(userId);
   }
 
   @Override
   public int getDailyCalories(List<FoodEntry> foodEntries) {
+    
     return foodEntries.stream()
         .filter(entry -> entry.getCreatedAt().isAfter(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0))
             && entry.getCreatedAt().isBefore(LocalDateTime.now()))
@@ -36,7 +41,8 @@ public class FoodEntryServiceImpl implements FoodEntryService {
 
   @Override
   public int getDailyCalories() {
-    return getDailyCalories(foodEntryRepository.findByUserId(currentUserService.getCurrentUserId()));
+    long userId = this.getCurrentUserId();
+    return getDailyCalories(foodEntryRepository.findByUserId(userId));
   }
 
   @Override
@@ -52,16 +58,18 @@ public class FoodEntryServiceImpl implements FoodEntryService {
 
   @Override
   public double getMonthlyExpenditure() {
-    return getMonthlyExpenditure(foodEntryRepository.findByUserId(currentUserService.getCurrentUserId()));
+    long userId = this.getCurrentUserId();
+    return getMonthlyExpenditure(foodEntryRepository.findByUserId(userId));
   }
 
   @Override
   public boolean insertFoodEntry(String name, String description,
       double price, double calories, LocalDateTime createdAt) {
+    long userId = this.getCurrentUserId();
     if (createdAt == null)
       createdAt = LocalDateTime.now();
     return foodEntryRepository.insertFoodEntrybyId(
-        currentUserService.getCurrentUserId(),
+        userId,
         name, description, price, calories, createdAt) == 1;
   }
 
@@ -85,13 +93,15 @@ public class FoodEntryServiceImpl implements FoodEntryService {
     LocalDateTime startOfWeek = now.minusDays(7);
     LocalDateTime previousWeekStart = startOfWeek.minusDays(7);
 
-    int last7Days = foodEntryRepository
-        .findByCreatedAtBetween(startOfWeek, now)
-        .size();
+    // int last7Days = foodEntryRepository
+    //     .findByCreatedAtBetween(startOfWeek, now)
+    //     .size();
+    int last7Days = ((int)foodEntryRepository.countByCreatedAtBetween(startOfWeek, now));
+    int previousWeek = ((int)foodEntryRepository.countByCreatedAtBetween(previousWeekStart, startOfWeek));
 
-    int previousWeek = foodEntryRepository
-        .findByCreatedAtBetween(previousWeekStart, startOfWeek)
-        .size();
+    // int previousWeek = foodEntryRepository
+    //     .findByCreatedAtBetween(previousWeekStart, startOfWeek)
+    //     .size();
 
     LinkedHashMap<String, Integer> weeklyEntryComparison = new LinkedHashMap<>();
     weeklyEntryComparison.put("Last 7 Days", last7Days);
@@ -122,6 +132,18 @@ public class FoodEntryServiceImpl implements FoodEntryService {
             .mapToDouble(FoodEntry::getPrice).sum() > monthlyLimit)
         .map(entry -> entry.getValue().get(0).getUser().getUsername())
         .toList();
+  }
+
+  @Override
+  public Page<FoodEntry> getFoodPageForUser(Pageable pageable) {
+    long userId = this.getCurrentUserId();
+    return foodEntryRepository.findByUserId(userId, pageable);
+  }
+
+  @Override
+  public List<FoodEntry> getByDate(LocalDateTime start, LocalDateTime end) {
+    long userId = this.getCurrentUserId();
+    return foodEntryRepository.findByUserIdAndDateRange(userId, start, end);
   }
 
 }

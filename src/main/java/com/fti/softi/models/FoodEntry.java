@@ -3,6 +3,9 @@ package com.fti.softi.models;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +31,7 @@ public class FoodEntry {
 
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
+  @JsonBackReference // Prevents infinite recursion
   private final User user;
 
   private String name;
@@ -39,6 +43,7 @@ public class FoodEntry {
   private Integer calories;
 
   @Temporal(TemporalType.TIMESTAMP)
+  @JsonIgnore
   private final LocalDateTime createdAt;
 
   public FoodEntry() { // for jpaRepository

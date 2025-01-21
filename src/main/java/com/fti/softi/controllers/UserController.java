@@ -1,16 +1,13 @@
 package com.fti.softi.controllers;
 
-import java.util.Optional;
 import java.util.Set;
 
 import com.fti.softi.models.User;
 import com.fti.softi.repositories.RoleRepository;
 import com.fti.softi.repositories.UserRepository;
-import com.fti.softi.services.CurrentUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
-	private final CurrentUserService currentUserService;
 
 	@GetMapping("/register")
 	public String getInsertView() {
@@ -92,19 +88,19 @@ public class UserController {
 	// 	return "redirect:/user";
 	// }
 
-	@GetMapping
-	public String getUserView(Model model) {
-		Optional<User> user = currentUserService.getCurrentUser();
+	// @GetMapping
+	// public String getUserView(Model model) {
+	// 	Optional<User> user = currentUserService.getCurrentUserId();
 
-		if (user.isEmpty()) {
-			model.addAttribute("message", "User not found.");
-			return "error";
-		}
+	// 	if (user.isEmpty()) {
+	// 		model.addAttribute("message", "User not found.");
+	// 		return "error";
+	// 	}
 
-		model.addAttribute("user", user.get());
-		model.addAttribute("dailyCalorieLimit", user.get().getDailyCalorieLimit());
-		model.addAttribute("username", user.get().getUsername());
+	// 	model.addAttribute("user", user.get());
+	// 	model.addAttribute("dailyCalorieLimit", user.get().getDailyCalorieLimit());
+	// 	model.addAttribute("username", user.get().getUsername());
 
-		return "user";
-	}
+	// 	return "user";
+	// }
 }

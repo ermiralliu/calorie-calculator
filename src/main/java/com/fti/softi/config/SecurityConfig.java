@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.fti.softi.repositories.UserRepository;
-import com.fti.softi.services.UserDetailsServiceImpl;
+import com.fti.softi.services.impl.UserDetailsServiceImpl;
 
 @Configuration
 public class SecurityConfig {

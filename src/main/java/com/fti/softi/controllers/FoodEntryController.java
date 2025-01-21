@@ -47,14 +47,11 @@ public class FoodEntryController {
           @RequestParam("end-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
           Model model) {
 
-    List<FoodEntry> foodEntries = foodEntryService.getAllForUser();
+    // List<FoodEntry> foodEntries = foodEntryService.getAllForUser();
 
-    List<FoodEntry> filteredEntries = foodEntries.stream()
-            .filter(entry -> {
-              LocalDate entryDate = LocalDate.parse(entry.getDate());
-              return !entryDate.isBefore(startDate) && !entryDate.isAfter(endDate);
-            })
-            .toList();
+    LocalDateTime start = startDate.atStartOfDay();
+    LocalDateTime end = endDate.plusDays(1).atStartOfDay(); // endDate included
+    List<FoodEntry> filteredEntries = foodEntryService.getByDate(start, end);
 
     int dailyCalories = foodEntryService.getDailyCalories(filteredEntries);
     double totalExpenditure = foodEntryService.getMonthlyExpenditure(filteredEntries);
@@ -91,7 +88,10 @@ public class FoodEntryController {
       @RequestParam("price") Double price, @RequestParam("calories") Integer calories,
       @RequestParam(name = "createdAt", required = false) LocalDateTime dateTime) {
 
-    boolean success = foodEntryService.insertFoodEntry(name, description, price, calories, dateTime);
+    boolean success = foodEntryService.insertFoodEntry(
+     name, description, price, calories, dateTime
+    );
+
     if(success)
       System.out.println("Database insertion successful");
     return "redirect:/food";

@@ -1,4 +1,4 @@
-package com.fti.softi.services;
+package com.fti.softi.services.impl;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

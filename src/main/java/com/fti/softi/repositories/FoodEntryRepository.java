@@ -4,13 +4,14 @@ package com.fti.softi.repositories;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.fti.softi.dtos.CalorieDto;
 import com.fti.softi.models.FoodEntry;
 
 import jakarta.transaction.Transactional;
@@ -39,6 +40,10 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
   @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
   List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
+  @Query(value = "SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end", 
+    countQuery = "SELECT COUNT(fe) FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
+  long countByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
   @Query(value = """
       SELECT u.name AS name,
              COALESCE(SUM(daily_calories) * 1.0 / COUNT(DISTINCT entry_date), 0.0) AS caloriesPerDay
@@ -53,4 +58,18 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
       GROUP BY u.id, u.name
       """, nativeQuery = true)
   List<Object[]> findAverageCaloriesPerUser();
+
+  @Query(value = "SELECT * FROM food_entry WHERE user_id = :userId AND created_at BETWEEN :startDate AND :endDate", nativeQuery = true)
+  List<FoodEntry> findByUserIdAndDateRangeNative(
+      @Param("userId") Long userId,
+      @Param("startDate") Long startDate,
+      @Param("endDate") Long endDate);
+
+  default List<FoodEntry> findByUserIdAndDateRange(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+    long startMillis = startDate.toInstant(java.time.ZoneOffset.UTC).toEpochMilli();
+    long endMillis = endDate.toInstant(java.time.ZoneOffset.UTC).toEpochMilli();
+    return findByUserIdAndDateRangeNative(userId, startMillis, endMillis);
+  }
+
+  Page<FoodEntry> findByUserId(Long userId, Pageable pageable);
 }

@@ -94,39 +94,39 @@ class AdminControllerTest {
             .andExpect(model().attribute("totalExpenditure", expectedTotalExpenditure));
   }
 
-  // Test for adding a food entry
-  @Test
-  void testAddFoodEntry() throws Exception {
-    // Arrange: prepare input data
-    String name = "Apple";
-    String description = "Fresh apple";
-    Double price = 1.0;
-    Integer calories = 100;
+  // // Test for adding a food entry
+  // @Test
+  // void testAddFoodEntry() throws Exception {
+  //   // Arrange: prepare input data
+  //   String name = "Apple";
+  //   String description = "Fresh apple";
+  //   Double price = 1.0;
+  //   Integer calories = 100;
 
-    // Mock the current user
-    User mockUser = User.builder()
-            .id(1L)
-            .build();
-    when(currentUserService.getCurrentUser()).thenReturn(Optional.of(mockUser));
+  //   // Mock the current user
+  //   User mockUser = User.builder()
+  //           .id(1L)
+  //           .build();
+  //   when(currentUserService.getCurrentUser()).thenReturn(Optional.of(mockUser));
 
-    // Act & Assert: Perform POST request and verify the redirect
-    mockMvc.perform(post("/admin/food-entries/add")
-                    .param("name", name)
-                    .param("description", description)
-                    .param("price", price.toString())
-                    .param("calories", calories.toString()))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(header().string("Location", "/admin/food-entries"));
+  //   // Act & Assert: Perform POST request and verify the redirect
+  //   mockMvc.perform(post("/admin/food-entries/add")
+  //                   .param("name", name)
+  //                   .param("description", description)
+  //                   .param("price", price.toString())
+  //                   .param("calories", calories.toString()))
+  //           .andExpect(status().is3xxRedirection())
+  //           .andExpect(header().string("Location", "/admin/food-entries"));
 
-    // Verify that the food entry was saved with correct attributes
-    verify(foodEntryRepository, times(1)).save(argThat(foodEntry ->
-            foodEntry.getName().equals(name) &&
-                    foodEntry.getDescription().equals(description) &&
-                    foodEntry.getPrice().equals(price) &&
-                    foodEntry.getCalories().equals(calories) &&
-                    foodEntry.getUser().equals(mockUser)
-    ));
-  }
+  //   // Verify that the food entry was saved with correct attributes
+  //   verify(foodEntryRepository, times(1)).save(argThat(foodEntry ->
+  //           foodEntry.getName().equals(name) &&
+  //                   foodEntry.getDescription().equals(description) &&
+  //                   foodEntry.getPrice().equals(price) &&
+  //                   foodEntry.getCalories().equals(calories) &&
+  //                   foodEntry.getUser().equals(mockUser)
+  //   ));
+  // }
 
 
 
@@ -165,18 +165,18 @@ class AdminControllerTest {
   }
 
   // Test for deleting a food entry
-  @Test
-  void testDeleteFoodEntry() throws Exception {
+  // @Test
+  // void testDeleteFoodEntry() throws Exception {
 
-    Long id = 1L;
+  //   Long id = 1L;
 
-    // POST request and verify the redirect
-    mockMvc.perform(post("/admin/food-entries/delete")
-        .param("id", id.toString()))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(header().string("Location", "/admin/food-entries"));
+  //   // POST request and verify the redirect
+  //   mockMvc.perform(post("/admin/food-entries/delete")
+  //       .param("id", id.toString()))
+  //       .andExpect(status().is3xxRedirection())
+  //       .andExpect(header().string("Location", "/admin/food-entries"));
 
-    // Verify that the food entry was deleted
-    verify(foodEntryRepository, times(1)).deleteById(id);
-  }
+  //   // Verify that the food entry was deleted
+  //   verify(foodEntryRepository, times(1)).deleteById(id);
+  // }
 }

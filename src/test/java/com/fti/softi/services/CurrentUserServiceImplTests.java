@@ -19,41 +19,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.fti.softi.config.CustomUserDetails;
 import com.fti.softi.models.User;
 import com.fti.softi.repositories.UserRepository;
+import com.fti.softi.services.impl.CurrentUserServiceImpl;
 
 class CurrentUserServiceImplTests {
   
-  private final UserRepository userRepository = mock(UserRepository.class);
-  private final CurrentUserService currentUserService = new CurrentUserServiceImpl(userRepository);
-  
-  @Test
-  void testGetCurrentUser() {
-    // Mocking a User object
-    User mockUser = User.builder()
-        .id(1L)
-        .email("testuser@email.com")
-        .build();
-
-    // Mocking CustomUserDetails
-    CustomUserDetails mockUserDetails = mock(CustomUserDetails.class);
-    when(mockUserDetails.getId()).thenReturn(mockUser.getId());
-
-    // Mocking Authentication
-    Authentication mockAuthentication = mock(Authentication.class);
-    when(mockAuthentication.getPrincipal()).thenReturn(mockUserDetails);
-
-    // Setting the mocked authentication in the SecurityContext
-    SecurityContextHolder.getContext().setAuthentication(mockAuthentication);
-
-    // Calling the method under test
-    Optional<User> result = currentUserService.getCurrentUser();
-
-
-    // Assertions
-    assert(result.isPresent());
-    User resultUser = result.get();
-    assertEquals("testuser@email.com", resultUser.getEmail());
-    assertEquals(1L, resultUser.getId());
-  }
+  // private final UserRepository userRepository = mock(UserRepository.class);
+  private final CurrentUserService currentUserService = new CurrentUserServiceImpl();
 
   @Test
   void testGetCurrentUserId() {
@@ -82,13 +53,13 @@ class CurrentUserServiceImplTests {
     assertEquals(1L, userId);
   }
 
-  @Test
-  void testGetCurrentUserWhenNotAuthenticated() {
-    SecurityContextHolder.clearContext();
-    Optional<User> result = currentUserService.getCurrentUser();
+  // @Test
+  // void testGetCurrentUserWhenNotAuthenticated() {
+  //   SecurityContextHolder.clearContext();
+  //   Optional<User> result = currentUserService.getCurrentUser();
 
-    assertFalse(result.isPresent()); // Expecting null if not authenticated
-  }
+  //   assertFalse(result.isPresent()); // Expecting null if not authenticated
+  // }
 
   @Test
   // this reports problems, cause user is null and we're trying to get an attribute from a null value

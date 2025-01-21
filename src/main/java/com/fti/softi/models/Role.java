@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,6 +23,7 @@ public class Role{
   private final String name;
 
   @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+  @JsonBackReference // Prevents infinite recursion
   private Set<User> users = Set.of(); // A role can be assigned to many users
 
   protected Role(){
