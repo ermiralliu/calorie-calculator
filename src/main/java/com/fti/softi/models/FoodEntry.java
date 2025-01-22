@@ -27,12 +27,12 @@ import lombok.Setter;
 public class FoodEntry {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private final Long id;
+  private Long id;
 
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
   @JsonBackReference // Prevents infinite recursion
-  private final User user;
+  private User user;
 
   private String name;
 
@@ -44,7 +44,7 @@ public class FoodEntry {
 
   @Temporal(TemporalType.TIMESTAMP)
   @JsonIgnore
-  private final LocalDateTime createdAt;
+  private LocalDateTime createdAt;
 
   public FoodEntry() { // for jpaRepository
     id = null;

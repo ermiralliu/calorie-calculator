@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log in</title>
   <link th:href="@{/css/reg-and-login.css}" rel="stylesheet" />
-  <link th:if="${user != null}" th:href="@{/css/login-dialog.css}" rel="stylesheet"/>
+  <link th:if="${user != null}" th:href="@{/css/login-dialog.css}" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- For close icon -->
 </head>
@@ -37,6 +37,14 @@
         </div>
         <button id="continue-button" type="button">You can log in now</button>
       </div>
+    </dialog>
+
+    <dialog id="error-box" class="dialog-container" th:if="${error != null}">
+      <div class="dialog-content">
+        <h2>Unsuccessful. Try Again</h2>
+        <p>Your email or password was likely wrong</p>
+      </div>
+      <button id="error-button" type="button">Try Again</button>
     </dialog>
 
     <h2>Log In</h2>
@@ -71,12 +79,22 @@
   <script th:if="${user != null}">
     const dialogBox = document.getElementById("dialog-box");
     dialogBox.showModal();
-    function closeDialog(){
+    function closeDialog() {
       dialogBox.close();
     }
     document.getElementById('dialog-close-button').addEventListener('click', closeDialog);
     document.getElementById('continue-button').addEventListener('click', closeDialog);
   </script>
+
+  <script th:if="${error != null}">
+    const errorBox = document.getElementById("error-box");
+    errorBox.showModal();
+    function closeDialog() {
+      errorBox.close();
+    }
+    document.getElementById('error-button').addEventListener('click', closeDialog);
+  </script>
+
 
   <script>
     const togglePassword = document.getElementById('togglePassword');

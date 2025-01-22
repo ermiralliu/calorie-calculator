@@ -50,8 +50,6 @@ public class DatabaseSeeder {
       var hasher = new BCryptPasswordEncoder();
       User admin = User.builder()
           .email("admin@example.com")
-          .username("admin")
-          .dailyCalorieLimit(2000)
           .name("Admin")
           .roles(Set.of(adminRole, userRole))
           .password(hasher.encode("adminpassword"))
@@ -62,13 +60,11 @@ public class DatabaseSeeder {
 
       Food[] foodOptions = foodOptions();
       Food[] highCalorieFoods = highCalorieFoods();
-      String[] names = { "John", "Emma", "Michael", "Sophia", "James" };
+      String[] names = { "Ermir", "Holta", "Orkida", "Selma"};
 
       for (String currentName : names) { // adding a user for each name
         User currentUser = User.builder()
           .email(currentName.toLowerCase() + "@example.com")
-          .username(currentName)
-          .dailyCalorieLimit(2500)
           .name(currentName)
           .roles(userRoles)
           .password(hasher.encode("password" + currentName))

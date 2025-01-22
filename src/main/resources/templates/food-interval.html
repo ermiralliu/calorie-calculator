@@ -12,24 +12,17 @@
     <button class="logout-btn" type="submit">Log out</button>
 </form>
 
-<!-- Monthly Expenditure and Calorie Messages -->
-<div>
-    <p th:text="|Current Monthly Expenditure: ${totalExpenditure} Euros|"></p>
-    <p th:text="|Current Daily Calorie Count: ${dailyCalories} kcal|"></p>
-</div>
 
 <div class="button-container">
     <!-- Button for Add Food Entry -->
+    <form action="/food" method="get"><button>Home</button></form>
+
     <button id="addFoodBtn" type="button" onclick="document.getElementById('foodEntryDialog').showModal()">Add Food Entry</button>
 
     <!-- Button for Calorie Report -->
     <button type="button" onclick="document.getElementById('calorieReportDialog').showModal()">Calorie Report</button>
 
     <button type="button" onclick="document.getElementById('intervalDialog').showModal()">Enter Interval of Time</button>
-</div>
-
-<div id="pagination-buttons">
-  <!-- <span>pages</span> -->
 </div>
 
 <!-- Food Entry Dialog -->
@@ -63,16 +56,6 @@
         </menu>
     </form>
 </dialog>
-
-<!-- Calorie Report Dialog -->
-<dialog id="calorieReportDialog">
-    <h2>Days Exceeding Calorie Limit</h2>
-    <ul>
-        <li th:each="day : ${exceededCalorieDays}" th:text="|Day: ${day.getKey()} with ${day.getValue()} calories|"></li>
-    </ul>
-    <button type="button" onclick="document.getElementById('calorieReportDialog').close()">Close</button>
-</dialog>
-
 
 <dialog id="intervalDialog">
     <form th:action="@{/food/get-interval}" method="get">
