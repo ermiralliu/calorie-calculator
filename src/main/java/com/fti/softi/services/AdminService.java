@@ -1,5 +1,6 @@
 package com.fti.softi.services;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -9,7 +10,8 @@ public interface AdminService {
 
   void deleteFoodEntryById(long id);
 
-  void updateFoodEntryById(long id);
+  public void updateFoodEntry(  long foodId, String name, String description, 
+    Double price, Integer calories, LocalDateTime createdAt );
 
   public List<String> getUsersExceedingMonthlyLimit(double monthlyLimit);
 

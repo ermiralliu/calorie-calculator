@@ -28,13 +28,11 @@ public class FoodEntryController {
     List<FoodEntry> foodEntries = foodEntryService.getLastMonthForUser();
 
     int dailyCalories = foodEntryService.getDailyCalories(foodEntries);
-    double totalExpenditure = foodEntryService.getMonthlyExpenditure(foodEntries);
     double monthlyExpenditure = foodEntryService.getExpenditure(foodEntries);
 
     model.addAttribute("foodEntries", foodEntries);
     model.addAttribute("dailyCalories", dailyCalories);
-    // model.addAttribute("totalExpenditure", monthlyExpenditure);
-    model.addAttribute("totalExpenditure", totalExpenditure); // ky del ne rreg. Duhet te rreg dhe ate tjt
+    model.addAttribute("totalExpenditure", monthlyExpenditure);
 
     int maxCalories = 2500;
     // Probably will be set by user and held in CurrentUserService
@@ -50,7 +48,6 @@ public class FoodEntryController {
           @RequestParam("end-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
           Model model) {
 
-    // List<FoodEntry> foodEntries = foodEntryService.getAllForUser();
     if(startDate.isAfter(endDate)){
       return "redirect:/food";  // i should add a redirect dialog that explains the problem
     }
@@ -59,16 +56,7 @@ public class FoodEntryController {
     LocalDateTime end = endDate.plusDays(1).atStartOfDay(); // endDate included
     List<FoodEntry> filteredEntries = foodEntryService.getByDate(start, end);
 
-    int dailyCalories = foodEntryService.getDailyCalories(filteredEntries);
-    double totalExpenditure = foodEntryService.getMonthlyExpenditure(filteredEntries);
-
     model.addAttribute("foodEntries", filteredEntries);
-    model.addAttribute("dailyCalories", dailyCalories);
-    model.addAttribute("totalExpenditure", totalExpenditure);
-
-    int minCalories = 2000;
-    var daysOverDailyCalories = foodEntryService.getDaysAboveCalorieThreshold(filteredEntries, minCalories);
-    model.addAttribute("exceededCalorieDays", daysOverDailyCalories.entrySet());
     model.addAttribute("startDate", startDate.toString());
     model.addAttribute("endDate", endDate.toString());
 
@@ -85,8 +73,10 @@ public class FoodEntryController {
      name, description, price, calories, dateTime
     );
 
-    if(success)
-      System.out.println("Database insertion successful");
+    if(!success){
+      System.out.println("Database insertion unsuccessful");  // ktu mund te vendos nje dialog nese nuk behet si duhet
+    }
+      
     return "redirect:/food";
   }
 }
