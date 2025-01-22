@@ -48,6 +48,9 @@ public class FoodEntryController {
           Model model) {
 
     // List<FoodEntry> foodEntries = foodEntryService.getAllForUser();
+    if(startDate.isAfter(endDate)){
+      return "redirect:/food";  // i should add a redirect dialog that explains the problem
+    }
 
     LocalDateTime start = startDate.atStartOfDay();
     LocalDateTime end = endDate.plusDays(1).atStartOfDay(); // endDate included
@@ -63,8 +66,10 @@ public class FoodEntryController {
     int minCalories = 2000;
     var daysOverDailyCalories = foodEntryService.getDaysAboveCalorieThreshold(filteredEntries, minCalories);
     model.addAttribute("exceededCalorieDays", daysOverDailyCalories.entrySet());
+    model.addAttribute("startDate", startDate.toString());
+    model.addAttribute("endDate", endDate.toString());
 
-    return "food";
+    return "food-interval";
   }
 
   @GetMapping("/admin/reports")

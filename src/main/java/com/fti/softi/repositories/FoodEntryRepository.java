@@ -71,5 +71,6 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
     return findByUserIdAndDateRangeNative(userId, startMillis, endMillis);
   }
 
+  // really nice qe e gjen vete
   Page<FoodEntry> findByUserId(Long userId, Pageable pageable);
 }

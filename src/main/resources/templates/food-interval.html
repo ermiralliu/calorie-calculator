@@ -3,7 +3,6 @@
 <head>
     <title>Food Tracker</title>
     <link th:href="@{/css/foodTracker.css}" rel="stylesheet"/>
-    <script th:src="@{/js/foodTracker.js}" defer></script>
 </head>
 <body>
 <h1>Food Tracker</h1>
@@ -91,6 +90,10 @@
     </form>
 </dialog>
 
+<div>
+  <p>Start Date: <span th:text="${startDate}"></span></p>
+  <p>End Date: <span th:text="${endDate}"></span></p>
+</div>
 <!-- Food Entries Table -->
 <table>
     <thead>
@@ -105,7 +108,7 @@
     </tr>
     </thead>
     <tbody id="food-entry-body">
-    <!-- <tr th:each="foodEntry, iStat : ${foodEntries}">
+    <tr th:each="foodEntry, iStat : ${foodEntries}">
         <td th:text="${iStat.index + 1}"></td>
         <td th:text="${foodEntry.name}"></td>
         <td th:text="${foodEntry.getDescription()}"></td>
@@ -116,11 +119,7 @@
           <br/>
           <span th:text="${foodEntry.getTime()}"></span>
         </td >
-        <td>
-          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
-          <button type="button">Edit</button>
-        </td>
-    </tr>-->
+    </tr>
     </tbody>
 </table>
 
