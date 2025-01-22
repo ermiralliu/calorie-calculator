@@ -26,7 +26,6 @@ public class UserController {
 	@PostMapping("/register")
 	public String postUser(
 			@RequestParam("name") String name,
-			@RequestParam("username") String username,
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
 			@RequestParam(name = "calorieLimit", required = false) Integer calorieLimit,
@@ -42,10 +41,8 @@ public class UserController {
 		var encryptor = new BCryptPasswordEncoder();
 		var user = User.builder()
 				.name(name)
-				.username(username)
 				.email(email)
 				.password(encryptor.encode(password))
-				.dailyCalorieLimit(calorieLimit)
 				.roles(userRoles)
 				.build();
 
@@ -56,51 +53,4 @@ public class UserController {
 		return "redirect:/login";
 	}
 
-	// @PutMapping
-	// public String updateUser(
-	// 		@RequestParam(name = "name", required = false) String name,
-	// 		@RequestParam(name = "password", required = false) String password,
-	// 		@RequestParam(name = "calorieLimit", required = false) String calorieLimit,
-	// 		RedirectAttributes redirectAttributes
-	// ) {
-	// 	Optional<User> optionalUser = currentUserService.getCurrentUser();
-
-	// 	if (optionalUser.isPresent()) {
-	// 		User user = optionalUser.get();
-
-	// 		if (name != null) {
-	// 			user.setName(name);
-	// 		}
-	// 		if (password != null) {
-	// 			var encryptor = new BCryptPasswordEncoder();
-	// 			user.setPassword(encryptor.encode(password));
-	// 		}
-	// 		if (calorieLimit != null) {
-	// 			user.setDailyCalorieLimit(Integer.parseInt(calorieLimit));
-	// 		}
-
-	// 		userRepository.save(user);
-	// 	} else {
-	// 		redirectAttributes.addFlashAttribute("message", "User not found.");
-	// 		return "redirect:/error";
-	// 	}
-
-	// 	return "redirect:/user";
-	// }
-
-	// @GetMapping
-	// public String getUserView(Model model) {
-	// 	Optional<User> user = currentUserService.getCurrentUserId();
-
-	// 	if (user.isEmpty()) {
-	// 		model.addAttribute("message", "User not found.");
-	// 		return "error";
-	// 	}
-
-	// 	model.addAttribute("user", user.get());
-	// 	model.addAttribute("dailyCalorieLimit", user.get().getDailyCalorieLimit());
-	// 	model.addAttribute("username", user.get().getUsername());
-
-	// 	return "user";
-	// }
 }

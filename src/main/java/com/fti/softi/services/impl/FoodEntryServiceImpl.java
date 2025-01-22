@@ -41,13 +41,6 @@ public class FoodEntryServiceImpl extends BaseService implements FoodEntryServic
     return foodEntryRepository.findByUserId(userId);
   }
 
-  // @Override
-  // public List<FoodEntry> getLastWeekForUser() {
-  //   long userId = this.getCurrentUserId();
-  //   LocalDateTime weekStart = weekStart();
-  //   return foodEntryRepository.findByUserIdAndDateRange(userId, weekStart, LocalDateTime.now());
-  // }
-
   public List<FoodEntry> filterCurrentWeek(List<FoodEntry> foodEntries) {
     LocalDateTime weekStart = weekStart();
     List<FoodEntry> weeklyEntries = foodEntries.stream().filter(e -> e.getCreatedAt().isAfter(weekStart)).toList();
@@ -63,7 +56,6 @@ public class FoodEntryServiceImpl extends BaseService implements FoodEntryServic
 
   @Override
   public int getDailyCalories(List<FoodEntry> foodEntries) {
-
     return foodEntries.stream()
         .filter(entry -> entry.getCreatedAt().isAfter(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0))
             && entry.getCreatedAt().isBefore(LocalDateTime.now()))

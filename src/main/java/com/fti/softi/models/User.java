@@ -23,13 +23,10 @@ public class User implements Serializable{
   private static final long serialVersionUID = 10L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private final Long id;
+	private Long id;
 	
 	@Column(unique=true)
-	private final String email;
-
-	@Column(unique = true)
-	private final String username;
+	private String email;
 	
 	private String name; 
 	
@@ -55,9 +52,5 @@ public class User implements Serializable{
   @Builder.Default
   private Integer dailyCalorieLimit = 2500;
 
-	public User() { // This isn't really used, but the app displays an error otherwise
-		id = null;
-		email = null;
-		username=null;
-	}
+  public User(){}
 }

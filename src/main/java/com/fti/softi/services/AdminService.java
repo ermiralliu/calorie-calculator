@@ -8,14 +8,16 @@ import com.fti.softi.dtos.CalorieDto;
 
 public interface AdminService {
 
+  boolean foodIsPresent(long id);
+
   void deleteFoodEntryById(long id);
 
   public void updateFoodEntry(  long foodId, String name, String description, 
     Double price, Integer calories, LocalDateTime createdAt );
 
-  public List<String> getUsersExceedingMonthlyLimit(double monthlyLimit);
+  public List<String> getUsersExceedingMonthlyExpenditureLimit(double monthlyLimit);
 
-  public List<CalorieDto> getAverageCaloriesPerUserPerDay();
+  public List<CalorieDto> averageDailyCaloriesLast7Days();
 
   public LinkedHashMap<String, Integer> getWeeklyEntryComparison();
 
