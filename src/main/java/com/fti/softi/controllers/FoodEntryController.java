@@ -2,7 +2,6 @@ package com.fti.softi.controllers;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,17 +25,21 @@ public class FoodEntryController {
 
   @GetMapping
   public String listFoodEntries(Model model) {
-    List<FoodEntry> foodEntries = foodEntryService.getAllForUser();
+    List<FoodEntry> foodEntries = foodEntryService.getLastMonthForUser();
+
     int dailyCalories = foodEntryService.getDailyCalories(foodEntries);
     double totalExpenditure = foodEntryService.getMonthlyExpenditure(foodEntries);
+    double monthlyExpenditure = foodEntryService.getExpenditure(foodEntries);
 
     model.addAttribute("foodEntries", foodEntries);
     model.addAttribute("dailyCalories", dailyCalories);
-    model.addAttribute("totalExpenditure", totalExpenditure);
+    // model.addAttribute("totalExpenditure", monthlyExpenditure);
+    model.addAttribute("totalExpenditure", totalExpenditure); // ky del ne rreg. Duhet te rreg dhe ate tjt
 
-    int minCalories = 2000; // this will be changed later. 
+    int maxCalories = 2500;
     // Probably will be set by user and held in CurrentUserService
-    var daysOverDailyCalories = foodEntryService.getDaysAboveCalorieThreshold(foodEntries, minCalories);
+    List<FoodEntry> weeklyEntries = foodEntryService.filterCurrentWeek(foodEntries);
+    var daysOverDailyCalories = foodEntryService.getDaysAboveCalorieThreshold(weeklyEntries, maxCalories);
     model.addAttribute("exceededCalorieDays", daysOverDailyCalories.entrySet()); // will be fixed later
     return "food";
   }
@@ -71,21 +74,6 @@ public class FoodEntryController {
 
     return "food-interval";
   }
-
-  @GetMapping("/admin/reports")
-  public String getAdminReports(Model model) {
-    LinkedHashMap<String, Integer> weeklyComparison = foodEntryService.getWeeklyEntryComparison();
-    // double avgCalories = foodEntryService.getAverageCaloriesPerUser();
-    double monthlyLimit = 100.0; // Define the limit
-    List<String> usersExceedingLimit = foodEntryService.getUsersExceedingMonthlyLimit(monthlyLimit);
-
-    model.addAttribute("weeklyComparison", weeklyComparison);
-    // model.addAttribute("avgCalories", avgCalories);
-    model.addAttribute("usersExceedingLimit", usersExceedingLimit);
-
-    return "admin";
-  }
-
 
   @PostMapping("/add")
   public String addFoodEntry(

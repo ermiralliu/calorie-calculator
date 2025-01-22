@@ -13,6 +13,13 @@ import com.fti.softi.models.FoodEntry;
 public interface FoodEntryService {
 
   public List<FoodEntry> getAllForUser();
+
+  public List<FoodEntry> getLastWeekForUser();
+  public List<FoodEntry> getLastMonthForUser();
+  public List<FoodEntry> filterCurrentWeek(List<FoodEntry> foodEntries);
+
+  public double getExpenditure(List<FoodEntry> entries);
+
   public List<FoodEntry> getByDate(LocalDateTime start, LocalDateTime end);
   public Page<FoodEntry> getFoodPageForUser(Pageable pageable);
 
