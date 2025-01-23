@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.fti.softi.dtos.CalorieDto;
+import com.fti.softi.models.User;
 
 public interface AdminService {
 
@@ -20,5 +21,7 @@ public interface AdminService {
   public List<CalorieDto> averageDailyCaloriesLast7Days();
 
   public LinkedHashMap<String, Integer> getWeeklyEntryComparison();
+
+  List<User> getAllUsers();
 
 }

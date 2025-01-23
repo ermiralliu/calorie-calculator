@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
   <title>Admin Panel</title>
-  <link th:href="@{/css/admin.css}" rel="stylesheet"/>
+  <link th:href="@{/css/admin.css}" rel="stylesheet" />
 </head>
+
 <body>
-<h1>Admin Panel</h1>
+  <h1>Admin Panel</h1>
 
-
-<nav>
-  <ul>
-    <li><a href="#manage-entries">Manage Food Entries</a></li>
-    <li><a href="#reports">Reports</a></li>
-  </ul>
-</nav>
-
-<!-- 
+  <nav>
+    <ul>
+      <li><a href="#manage-entries">Manage Food Entries</a></li>
+      <li><a href="#reports">Reports</a></li>
+    </ul>
+  </nav>
+  <section id="manage-entries">
+    <h2>Users</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="user: ${users}">
+          <td th:text="${user.id}"></td>
+          <td th:text="${user.name}"></td>
+      
+          <td>
+            <form action="/admin/user?user_id=${user.id}">
+              <button>Edit</button>
+            </form>
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <!-- 
 <section id="manage-entries">
   <h2>Manage Food Entries</h2>
 
@@ -48,7 +73,7 @@
 
 
   <button onclick="document.getElementById('foodEntryDialog').showModal()">Add New Entry</button> -->
-<!-- 
+  <!-- 
 
   <dialog id="foodEntryDialog">
     <form method="dialog">
@@ -78,35 +103,39 @@
 </section>
  -->
 
-<section id="reports">
-  <h2>Reports</h2>
+  <section id="reports">
+    <h2>Reports</h2>
 
-  <div>
-    <h3>Entries Comparison</h3>
-    <p>Entries in the last 7 days: <span th:text="${weeklyComparison['Last 7 Days']}"></span></p>
-    <p>Entries in the previous week: <span th:text="${weeklyComparison['Previous Week']}"></span></p>
-  </div>
+    <div>
+      <h3>Entries Comparison</h3>
+      <p>Entries in the last 7 days: <span th:text="${weeklyComparison['Last 7 Days']}"></span></p>
+      <p>Entries in the previous week: <span th:text="${weeklyComparison['Previous Week']}"></span></p>
+    </div>
 
-  <div>
-    <h3>Average Calories</h3>
-    <table>
-      <tbody>
-        <tr><th>User</th><th>Calories</th></tr>
-        <tr th:each="avgCaloriePerUser : ${avgCalories}">
-          <td th:text="${avgCaloriePerUser.name}"></td>
-          <td th:text="${avgCaloriePerUser.caloriesPerDay}"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div>
+      <h3>Average Calories</h3>
+      <table>
+        <tbody>
+          <tr>
+            <th>User</th>
+            <th>Calories</th>
+          </tr>
+          <tr th:each="avgCaloriePerUser : ${avgCalories}">
+            <td th:text="${avgCaloriePerUser.name}"></td>
+            <td th:text="${avgCaloriePerUser.caloriesPerDay}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <!-- <div>
+    <!-- <div>
     <h3>Users Exceeding Monthly Price Limit</h3>
     <ul>
       <li th:each="user : ${usersExceedingLimit}" th:text="${user}"></li>
     </ul>
   </div> -->
-</section>
+  </section>
 
 </body>
+
 </html>

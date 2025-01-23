@@ -7,6 +7,9 @@ public class DateUtils {
   private DateUtils(){} // Qe te mos konstruktohet dot
   
   public static LocalDateTime dayStart(LocalDateTime dateTime) {
+    if (dateTime == null) { // Conditional logic
+      return LocalDateTime.now();
+  }
     return dateTime.withHour(0).withMinute(0).withSecond(0);
   }
 

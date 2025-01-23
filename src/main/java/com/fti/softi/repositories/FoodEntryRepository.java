@@ -29,13 +29,14 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
   @Modifying
   @Transactional
   @Query(value = "INSERT INTO food_entry (user_id, name, description, price, calories, created_at) VALUES (:userId, :name, :description, :price, :calories, :createdAt)", nativeQuery = true)
-  int insertFoodEntrybyId( // the return value shows number of rows affected
+  int insertFoodEntryById( // the return value shows number of rows affected
       @Param("userId") long userId,
       @Param("name") String name,
       @Param("description") String description,
       @Param("price") double price,
       @Param("calories") double calories,
       @Param("createdAt") LocalDateTime createdAt); // After some testing we will prove if this is okay
+
 
   @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
   List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);

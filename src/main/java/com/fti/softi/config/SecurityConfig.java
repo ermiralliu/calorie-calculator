@@ -25,6 +25,7 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
+        // .csrf(Customizer.withDefaults())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/css/*.css", "/js/*.js").permitAll() // Public endpoints
             .requestMatchers("/register", "/user/register").not().authenticated()
