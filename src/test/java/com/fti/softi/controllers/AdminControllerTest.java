@@ -1,11 +1,16 @@
 package com.fti.softi.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +19,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.Model;
 
+import com.fti.softi.models.FoodEntry;
 import com.fti.softi.services.AdminService;
 
 // @WebMvcTest(AdminController.class)
@@ -22,6 +29,8 @@ class AdminControllerTest {
 
   @Mock
   private AdminService adminService;
+  @Mock
+  private Model model;
   @InjectMocks
   private AdminController adminController;
   @Autowired
@@ -54,7 +63,7 @@ class AdminControllerTest {
         .param("price", price.toString())
         .param("calories", calories.toString()))
         .andExpect(status().is3xxRedirection())
-        .andExpect(header().string("Location", "/admin"));
+        .andExpect(header().string("Location", "/admin/food/update?id="+id));
 
     // Verify that the food entry was updated
     verify(adminService, times(1)).updateFoodEntry(id, name, description, price, calories, null);
@@ -75,4 +84,21 @@ class AdminControllerTest {
     // Verify that the food entry was deleted
     verify(adminService, times(1)).deleteFoodEntryById(id);
   }
+
+  @Test
+    void testGetUserPage() {
+        Long userId = 123L;
+        List<FoodEntry> foodEntries = new ArrayList<>(); // Create some sample food entries
+        foodEntries.add(new FoodEntry()); // Add some dummy entries
+        foodEntries.add(new FoodEntry());
+
+        when(adminService.getAllForUser(userId)).thenReturn(foodEntries);
+
+        String viewName = adminController.getUserPage(userId, model);
+
+        assertEquals("admin-see-user", viewName);
+        verify(model).addAttribute("admin", true);
+        verify(model).addAttribute("foodEntries", foodEntries);
+    }
+
 }
