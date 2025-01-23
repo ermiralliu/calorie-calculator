@@ -1,3 +1,9 @@
+## Punoi: 
+Ermir Alliu (Grupi C) \
+Holta Ozuni (Grupi D) \
+Orkida Loku (Grupi D) \
+Selma Konda (Grupi D)
+
 ## calorie-calculator
 
 A MVC Spring Boot Web Application which tracks food calories and expenditure.
