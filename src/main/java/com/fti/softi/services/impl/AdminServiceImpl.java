@@ -100,4 +100,13 @@ public class AdminServiceImpl implements AdminService  {
   public List<User> getAllUsers(){
     return userRepository.findAll();
   }
+
+  @Override
+  public List<FoodEntry> getAllForUser(long user_id){
+    return foodEntryRepository.findByUserId(user_id);
+  }
+  @Override
+  public FoodEntry getFood(long foodId){
+    return foodEntryRepository.findById(foodId).orElse(null);
+  }
 }

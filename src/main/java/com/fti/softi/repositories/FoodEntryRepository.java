@@ -37,7 +37,6 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
       @Param("calories") double calories,
       @Param("createdAt") LocalDateTime createdAt); // After some testing we will prove if this is okay
 
-
   @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
   List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
@@ -45,17 +44,17 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
 
   @Query(value = """
       SELECT u.name AS name,
-             COALESCE(SUM(daily_calories) * 1.0 / COUNT(DISTINCT entry_date), 0.0) AS caloriesPerDay
+             COALESCE(SUM(CASE WHEN fe.entry_date >= date('now', '-7 day') THEN daily_calories ELSE 0 END) * 1.0 / COUNT(DISTINCT CASE WHEN fe.entry_date >= date('now', '-7 day') THEN entry_date ELSE NULL END), 0.0) AS caloriesPerDay
       FROM users u
       LEFT JOIN (
-          SELECT user_id,
-                 strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch')) AS entry_date,
-                 SUM(CAST(calories AS REAL)) AS daily_calories
-          FROM food_entry
-          GROUP BY user_id, strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch'))
+        SELECT user_id,
+               strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch')) AS entry_date,
+               SUM(CAST(calories AS REAL)) AS daily_calories
+        FROM food_entry
+        GROUP BY user_id, strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch'))
       ) AS fe ON u.id = fe.user_id
-      GROUP BY u.id, u.name
-      """, nativeQuery = true)
+      GROUP BY u.id, u.name;
+            """, nativeQuery = true)
   List<Object[]> findAverageCaloriesPerUser();
 
   @Query(value = "SELECT * FROM food_entry WHERE user_id = :userId AND created_at BETWEEN :startDate AND :endDate", nativeQuery = true)

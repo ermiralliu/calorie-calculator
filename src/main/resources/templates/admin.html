@@ -7,6 +7,7 @@
 </head>
 
 <body>
+
   <h1>Admin Panel</h1>
 
   <nav>
@@ -33,7 +34,8 @@
           <td th:text="${user.email}"></td>
       
           <td>
-            <form th:action="@{/admin/user(user_id=${user.id})}" method="get">
+            <form th:action="@{/admin/user}" method="get">
+              <input type="text" name="user_id" th:value="${user.id}" hidden>
               <button>Edit</button>
             </form>
             
@@ -74,7 +76,22 @@
       <li th:each="user : ${usersExceedingLimit}" th:text="${user}"></li>
     </ul>
   </div> -->
+
   </section>
+  <dialog id="update-dialog" th:if="${message  != null}">
+    <h1> Message </h1>
+    <p th:text="${message}"></p>
+    <button id="close-btn">Close</button>
+  </dialog>
+
+  <script th:if="${message != null}">
+    const updateDialog = document.getElementById("update-dialog");
+    updateDialog.showModal();
+    function closeDialog() {
+      updateDialog.close();
+    }
+    document.getElementById('close-btn').addEventListener('click', closeDialog);
+  </script>
 
 </body>
 
