@@ -40,9 +40,7 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
   @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
   List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-  @Query(value = "SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end", 
-    countQuery = "SELECT COUNT(fe) FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
-  long countByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+  long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
   @Query(value = """
       SELECT u.name AS name,

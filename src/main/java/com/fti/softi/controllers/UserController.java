@@ -1,12 +1,9 @@
 package com.fti.softi.controllers;
 
-import java.util.Set;
-
 import com.fti.softi.models.User;
-import com.fti.softi.repositories.RoleRepository;
-import com.fti.softi.repositories.UserRepository;
+import com.fti.softi.services.UserService;
+
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,13 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @AllArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-	private final UserRepository userRepository;
-	private final RoleRepository roleRepository;
 
-	@GetMapping("/register")
-	public String getInsertView() {
-		return "register";
-	}
+  private final UserService userService;
 
 	@PostMapping("/register")
 	public String postUser(
@@ -31,24 +23,21 @@ public class UserController {
 			@RequestParam(name = "calorieLimit", required = false) Integer calorieLimit,
 			RedirectAttributes redirectAttributes
 	) {
-		if (userRepository.findByEmail(email) != null) {
+		if (userService.userExists(email)) {
 			redirectAttributes.addFlashAttribute("message", "Email is already in use");
-			return "redirect:/user/register";
+			return "redirect:/register";
 		}
     calorieLimit = 2500;
 
-		var userRoles = Set.of(roleRepository.findByName("USER"));
-		var encryptor = new BCryptPasswordEncoder();
 		var user = User.builder()
 				.name(name)
 				.email(email)
-				.password(encryptor.encode(password))
-				.roles(userRoles)
+				.password(password)
 				.build();
 
-		var finalUser = userRepository.save(user);
-		finalUser.setRoles(Set.of());
-		redirectAttributes.addFlashAttribute("user", finalUser);
+		var redirUser = userService.addUser(user);
+
+		redirectAttributes.addFlashAttribute("user", redirUser);
 
 		return "redirect:/login";
 	}

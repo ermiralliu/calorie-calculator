@@ -42,6 +42,7 @@ public class User implements Serializable{
 	)
   @Builder.Default
   @JsonBackReference // Prevents infinite recursion
+  @JsonIgnore
 	private Set<Role> roles = Set.of();
 	
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

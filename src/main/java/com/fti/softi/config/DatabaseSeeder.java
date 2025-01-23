@@ -9,10 +9,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+
 import javax.sql.DataSource;
 
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
+@Profile("!test")
 public class DatabaseSeeder {
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
@@ -36,6 +39,7 @@ public class DatabaseSeeder {
 
   @PostConstruct // waits until dependency injection is done
   @Bean
+
   public ApplicationRunner seed() {
     return args -> {
       seedSessionTables();
