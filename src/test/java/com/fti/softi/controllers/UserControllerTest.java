@@ -56,7 +56,6 @@ class UserControllerTest {
 
     User user = User.builder()
             .name(name)
-            .username(username)
             .email(email)
             .password(password)
             .dailyCalorieLimit(calorieLimit)
@@ -67,7 +66,6 @@ class UserControllerTest {
 
     mockMvc.perform(post("/user/register")
                     .param("name", name)
-                    .param("username", username)
                     .param("email", email)
                     .param("password", password)
                     .param("calorieLimit", calorieLimit.toString()))
