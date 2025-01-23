@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MainController {
 
 	public MainController() {}
+
+  @GetMapping("/register")
+	public String getInsertView() {
+		return "register";
+	}
 	
 	@GetMapping("/login")
 	public String loginView(
@@ -23,16 +28,9 @@ public class MainController {
 		return "login";
 	}
 	
-	@GetMapping("/register")
-	public String registerRedirect() {
-		return "redirect:/user/register";
-	}
-	
 	@GetMapping("/")
 	public String home() {
 		return "redirect:/food";
 	}
-
-  // @Get                        RedirectAttributes redirectAttributesRedirectAttributes redirectAttributes
 
 }

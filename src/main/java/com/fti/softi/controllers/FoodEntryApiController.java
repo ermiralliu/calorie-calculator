@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,9 +22,10 @@ public class FoodEntryApiController {
   private final FoodEntryService foodEntryService;
 
   @GetMapping
-  public Page<FoodEntry> getFoodPage(@RequestParam("page") int page) {
+  public ResponseEntity<Page<FoodEntry>> getFoodPage(@RequestParam("page") int page) {
     int size = 20;
     Pageable pageable = PageRequest.of(page, size , Sort.by("createdAt").descending());
-    return foodEntryService.getFoodPageForUser(pageable);
+    return ResponseEntity.ok(foodEntryService.getFoodPageForUser(pageable));
   }
+
 }

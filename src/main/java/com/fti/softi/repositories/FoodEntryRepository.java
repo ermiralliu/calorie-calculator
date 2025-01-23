@@ -29,7 +29,7 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
   @Modifying
   @Transactional
   @Query(value = "INSERT INTO food_entry (user_id, name, description, price, calories, created_at) VALUES (:userId, :name, :description, :price, :calories, :createdAt)", nativeQuery = true)
-  int insertFoodEntrybyId( // the return value shows number of rows affected
+  int insertFoodEntryById( // the return value shows number of rows affected
       @Param("userId") long userId,
       @Param("name") String name,
       @Param("description") String description,
@@ -40,23 +40,21 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, Long> {
   @Query("SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
   List<FoodEntry> findByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-  @Query(value = "SELECT fe FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end", 
-    countQuery = "SELECT COUNT(fe) FROM FoodEntry fe WHERE fe.createdAt BETWEEN :start AND :end")
-  long countByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+  long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
   @Query(value = """
       SELECT u.name AS name,
-             COALESCE(SUM(daily_calories) * 1.0 / COUNT(DISTINCT entry_date), 0.0) AS caloriesPerDay
+             COALESCE(SUM(CASE WHEN fe.entry_date >= date('now', '-7 day') THEN daily_calories ELSE 0 END) * 1.0 / COUNT(DISTINCT CASE WHEN fe.entry_date >= date('now', '-7 day') THEN entry_date ELSE NULL END), 0.0) AS caloriesPerDay
       FROM users u
       LEFT JOIN (
-          SELECT user_id,
-                 strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch')) AS entry_date,
-                 SUM(CAST(calories AS REAL)) AS daily_calories
-          FROM food_entry
-          GROUP BY user_id, strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch'))
+        SELECT user_id,
+               strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch')) AS entry_date,
+               SUM(CAST(calories AS REAL)) AS daily_calories
+        FROM food_entry
+        GROUP BY user_id, strftime('%Y-%m-%d', datetime(created_at / 1000, 'unixepoch'))
       ) AS fe ON u.id = fe.user_id
-      GROUP BY u.id, u.name
-      """, nativeQuery = true)
+      GROUP BY u.id, u.name;
+            """, nativeQuery = true)
   List<Object[]> findAverageCaloriesPerUser();
 
   @Query(value = "SELECT * FROM food_entry WHERE user_id = :userId AND created_at BETWEEN :startDate AND :endDate", nativeQuery = true)
