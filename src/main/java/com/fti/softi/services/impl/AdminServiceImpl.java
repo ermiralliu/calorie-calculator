@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.fti.softi.dtos.CalorieDto;
 import com.fti.softi.models.FoodEntry;
+import com.fti.softi.models.User;
 import com.fti.softi.repositories.FoodEntryRepository;
+import com.fti.softi.repositories.UserRepository;
 import com.fti.softi.services.AdminService;
 import com.fti.softi.utils.DateUtils;
 
@@ -19,6 +21,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AdminServiceImpl implements AdminService  {
   private final FoodEntryRepository foodEntryRepository;
+  private final UserRepository userRepository;
 
   @Override
   public boolean foodIsPresent(long id){
@@ -93,5 +96,19 @@ public class AdminServiceImpl implements AdminService  {
         .map(entry -> entry.getValue().get(0).getUser().getEmail())
         .toList();
   }
+  @Override
+  public List<User> getAllUsers(){
+    return userRepository.findAll();
+  }
 
+  @Override
+  public List<FoodEntry> getAllForUser(long user_id){
+    var foodEntries = foodEntryRepository.findByUserId(user_id);
+    foodEntries.sort((one, two)-> -one.getCreatedAt().compareTo(two.getCreatedAt()) );
+    return foodEntries;
+  }
+  @Override
+  public FoodEntry getFood(long foodId){
+    return foodEntryRepository.findById(foodId).orElse(null);
+  }
 }

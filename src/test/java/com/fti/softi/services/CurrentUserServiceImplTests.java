@@ -1,24 +1,17 @@
 package com.fti.softi.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fti.softi.config.CustomUserDetails;
 import com.fti.softi.models.User;
-import com.fti.softi.repositories.UserRepository;
 import com.fti.softi.services.impl.CurrentUserServiceImpl;
 
 class CurrentUserServiceImplTests {
@@ -53,17 +46,7 @@ class CurrentUserServiceImplTests {
     assertEquals(1L, userId);
   }
 
-  // @Test
-  // void testGetCurrentUserWhenNotAuthenticated() {
-  //   SecurityContextHolder.clearContext();
-  //   Optional<User> result = currentUserService.getCurrentUser();
-
-  //   assertFalse(result.isPresent()); // Expecting null if not authenticated
-  // }
-
   @Test
-  // this reports problems, cause user is null and we're trying to get an attribute from a null value
-  // for security, maybe I'll do the check first
   void testGetCurrentUserIdWhenNotAuthenticated() {
     SecurityContextHolder.clearContext();
     Long userId = currentUserService.getCurrentUserId();

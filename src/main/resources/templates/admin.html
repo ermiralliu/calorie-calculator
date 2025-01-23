@@ -1,112 +1,98 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
   <title>Admin Panel</title>
-  <link th:href="@{/css/admin.css}" rel="stylesheet"/>
+  <link th:href="@{/css/admin.css}" rel="stylesheet" />
 </head>
+
 <body>
-<h1>Admin Panel</h1>
 
+  <h1>Admin Panel</h1>
 
-<nav>
-  <ul>
-    <li><a href="#manage-entries">Manage Food Entries</a></li>
-    <li><a href="#reports">Reports</a></li>
-  </ul>
-</nav>
-
-
-<section id="manage-entries">
-  <h2>Manage Food Entries</h2>
-
-
-  <table>
-    <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Calories</th>
-      <th>Price (&euro;)</th>
-      <th>Date/Time</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="foodEntry, iStat : ${allFoodEntries}">
-      <td th:text="${iStat.index + 1}"></td>
-      <td th:text="${foodEntry.name}"></td>
-      <td th:text="${foodEntry.calories}"></td>
-      <td th:text="${foodEntry.price}"></td>
-      <td th:text="${foodEntry.getCreatedAt().toString()}"></td>
-      <td>
-        <button>Edit</button>
-        <button>Delete</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-
-  <button onclick="document.getElementById('foodEntryDialog').showModal()">Add New Entry</button>
-
-
-  <dialog id="foodEntryDialog">
-    <form method="dialog">
-      <h2>Add or Edit Food Entry</h2>
-      <label for="datetime">Date/Time</label>
-      <input type="datetime-local" id="datetime" name="datetime" />
-      <br><br>
-
-      <label for="foodName">Food Name</label>
-      <input type="text" id="foodName" name="foodName" placeholder="e.g., Apple, Ice Cream" required />
-      <br><br>
-
-      <label for="calories">Calorie Value</label>
-      <input type="number" id="calories" name="calories" placeholder="e.g., 120" required />
-      <br><br>
-
-      <label for="price">Price</label>
-      <input type="number" id="price" name="price" placeholder="e.g., 5.00" required />
-      <br><br>
-
-      <menu>
-        <button value="cancel">Cancel</button>
-        <button value="save">Save</button>
-      </menu>
-    </form>
-  </dialog>
-</section>
-
-
-<section id="reports">
-  <h2>Reports</h2>
-
-  <div>
-    <h3>Entries Comparison</h3>
-    <p>Entries in the last 7 days: <span th:text="${weeklyComparison['Last 7 Days']}"></span></p>
-    <p>Entries in the previous week: <span th:text="${weeklyComparison['Previous Week']}"></span></p>
-  </div>
-
-  <div>
-    <h3>Average Calories</h3>
+  <nav>
+    <ul>
+      <li><a href="#manage-entries">Manage Food Entries</a></li>
+      <li><a href="#reports">Reports</a></li>
+    </ul>
+  </nav>
+  <section id="manage-entries">
+    <h2>Users</h2>
     <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr><th>User</th><th>Calories</th></tr>
-        <tr th:each="avgCaloriePerUser : ${avgCalories}">
-          <td th:text="${avgCaloriePerUser.name}"></td>
-          <td th:text="${avgCaloriePerUser.caloriesPerDay}"></td>
+        <tr th:each="user: ${users}">
+          <td th:text="${user.id}"></td>
+          <td th:text="${user.name}"></td>
+          <td th:text="${user.email}"></td>
+      
+          <td>
+            <form th:action="@{/admin/user}" method="get">
+              <input type="text" name="user_id" th:value="${user.id}" hidden>
+              <button>Edit</button>
+            </form>
+            
+          </td>
         </tr>
       </tbody>
     </table>
-  </div>
+  </section>
 
-  <div>
+  <section id="reports">
+    <h2>Reports</h2>
+
+    <div>
+      <h3>Entries Comparison</h3>
+      <p>Entries in the last 7 days: <span th:text="${weeklyComparison['Last 7 Days']}"></span></p>
+      <p>Entries in the previous week: <span th:text="${weeklyComparison['Previous Week']}"></span></p>
+    </div>
+
+    <div>
+      <h3>Average Daily Calories</h3>
+      <table>
+        <tbody>
+          <tr>
+            <th>User</th>
+            <th>Calories</th>
+          </tr>
+          <tr th:each="avgCaloriePerUser : ${avgCalories}">
+            <td th:text="${avgCaloriePerUser.name}"></td>
+            <td th:text="${avgCaloriePerUser.caloriesPerDay}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <div>
     <h3>Users Exceeding Monthly Price Limit</h3>
     <ul>
       <li th:each="user : ${usersExceedingLimit}" th:text="${user}"></li>
     </ul>
-  </div>
-</section>
+  </div> -->
+
+  </section>
+  <dialog id="update-dialog" th:if="${message  != null}">
+    <h1> Message </h1>
+    <p th:text="${message}"></p>
+    <button id="close-btn">Close</button>
+  </dialog>
+
+  <script th:if="${message != null}">
+    const updateDialog = document.getElementById("update-dialog");
+    updateDialog.showModal();
+    function closeDialog() {
+      updateDialog.close();
+    }
+    document.getElementById('close-btn').addEventListener('click', closeDialog);
+  </script>
 
 </body>
+
 </html>

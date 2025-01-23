@@ -16,7 +16,12 @@
 <!-- Monthly Expenditure and Calorie Messages -->
 <div>
     <p th:text="|Current Monthly Expenditure: ${totalExpenditure} Euros|"></p>
+    <p th:text="|Current Weekly Expenditure: ${weeklyExpenditure} Euros|"></p>
     <p th:text="|Current Daily Calorie Count: ${dailyCalories} kcal|"></p>
+</div>
+<div >
+  <p style="color: red;" th:if="${totalExpenditure> 1000}"> <strong>Warning</strong>, you're over the monthly expenditure limit</p>
+  <p style="color: red;" th:if="${dailyCalories> 2500}"><strong>Warning</strong>, you're over the daily calorie limit</p>
 </div>
 
 <div class="button-container">
@@ -36,7 +41,7 @@
 <!-- Food Entry Dialog -->
 <dialog id="foodEntryDialog">
     <form th:action="@{/food/add}" method="post">
-        <h2>Add or Edit Food Entry</h2>
+        <h2>Add Food Entry</h2>
         <label for="datetime">Date/Time</label>
         <input type="datetime-local" id="datetime" name="datetime" />
         <input type="checkbox" id="autoDatetime" onchange="document.getElementById('datetime').disabled = this.checked"> Use Current Time
@@ -101,26 +106,9 @@
         <th>Calories</th>
         <th>Price (&euro;)</th>
         <th>Date/Time</th>
-        <!-- <th> </th> -->
     </tr>
     </thead>
     <tbody id="food-entry-body">
-    <!-- <tr th:each="foodEntry, iStat : ${foodEntries}">
-        <td th:text="${iStat.index + 1}"></td>
-        <td th:text="${foodEntry.name}"></td>
-        <td th:text="${foodEntry.getDescription()}"></td>
-        <td th:text="${foodEntry.calories}"></td>
-        <td th:text="${foodEntry.price}"></td>
-        <td>
-          <span th:text="${foodEntry.getDate()}"></span>
-          <br/>
-          <span th:text="${foodEntry.getTime()}"></span>
-        </td >
-        <td>
-          <input type="hidden" name="foodId" th:value="${foodEntry.getId()}" />
-          <button type="button">Edit</button>
-        </td>
-    </tr>-->
     </tbody>
 </table>
 

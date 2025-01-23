@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Food Tracker</title>
+    <link th:href="@{/css/foodTracker.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>Food Tracker</h1>
+
+<!-- Logout Button -->
+<form th:action="@{/logout}"  method="post" style="display: inline;">
+    <button class="logout-btn" type="submit">Log out</button>
+</form>
+
+<!-- Food Entries Table -->
+<div>
+<form th:action="@{/admin/food/update}" method="post">
+  <h2>Edit or Delete Food Entry</h2>
+  <input type="number" name="id" th:value="${foodEntry.id}" hidden/>
+  <label for="datetime">Date/Time</label>
+  <input type="datetime-local" id="datetime" name="datetime" />
+  <input type="checkbox" id="autoDatetime" onchange="document.getElementById('datetime').disabled = this.checked"> Use Current Time
+  <br><br>
+
+  <label for="foodName">Food Name</label>
+  <input type="text" id="foodName" name="name" th:value="${foodEntry.name}" />
+  <br>
+
+  <label for="description">Description</label>
+  <input type="text" id="description" name="description" th:value="${foodEntry.description}" />
+  <br>
+
+  <label for="calories">Calorie Value</label>
+  <input type="number" id="calories" name="calories" th:value="${foodEntry.calories}" />
+  <br>
+
+  <label for="price">Price</label>
+  <input type="number" step=".01" id="price" name="price" th:value="${foodEntry.price}" />
+  <br>
+
+  <menu>
+    <button type="submit" value="save">Edit</button>
+    <!-- <button id="fed-cancel" type="button" value="cancel" onclick="document.getElementById('foodEntryDialog').close()">Cancel</button> -->
+  </menu>
+</form>
+<form th:action="@{/admin/food/delete}" method="post">
+  <input type="number" name="id" th:value="${foodEntry.id}" hidden/>
+  <button type="submit">Delete</button>
+</form>
+</div>
+
+</body>
+</html>
