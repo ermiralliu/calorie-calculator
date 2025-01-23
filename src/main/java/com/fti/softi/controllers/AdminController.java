@@ -46,7 +46,7 @@ public class AdminController {
     @RequestParam("user_id") Long user_id,
     Model model
   ){
-    List<FoodEntry> foodEntries = adminService.getAllForUser(user_id);
+    List<FoodEntry> foodEntries = adminService.getAllForUser(user_id);;
     model.addAttribute("admin", true);
     model.addAttribute("foodEntries", foodEntries);
     return "admin-see-user";

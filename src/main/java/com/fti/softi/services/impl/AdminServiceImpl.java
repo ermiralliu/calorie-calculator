@@ -103,7 +103,9 @@ public class AdminServiceImpl implements AdminService  {
 
   @Override
   public List<FoodEntry> getAllForUser(long user_id){
-    return foodEntryRepository.findByUserId(user_id);
+    var foodEntries = foodEntryRepository.findByUserId(user_id);
+    foodEntries.sort((one, two)-> -one.getCreatedAt().compareTo(two.getCreatedAt()) );
+    return foodEntries;
   }
   @Override
   public FoodEntry getFood(long foodId){

@@ -16,7 +16,12 @@
 <!-- Monthly Expenditure and Calorie Messages -->
 <div>
     <p th:text="|Current Monthly Expenditure: ${totalExpenditure} Euros|"></p>
+    <p th:text="|Current Weekly Expenditure: ${weeklyExpenditure} Euros|"></p>
     <p th:text="|Current Daily Calorie Count: ${dailyCalories} kcal|"></p>
+</div>
+<div >
+  <p style="color: red;" th:if="${totalExpenditure> 1000}"> <strong>Warning</strong>, you're over the monthly expenditure limit</p>
+  <p style="color: red;" th:if="${dailyCalories> 2500}"><strong>Warning</strong>, you're over the daily calorie limit</p>
 </div>
 
 <div class="button-container">

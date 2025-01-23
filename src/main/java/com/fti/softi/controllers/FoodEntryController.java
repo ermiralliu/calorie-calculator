@@ -29,16 +29,22 @@ public class FoodEntryController {
 
     int dailyCalories = foodEntryService.getDailyCalories(foodEntries);
     double monthlyExpenditure = foodEntryService.getExpenditure(foodEntries);
+  
 
-    model.addAttribute("foodEntries", foodEntries);
-    model.addAttribute("dailyCalories", dailyCalories);
-    model.addAttribute("totalExpenditure", monthlyExpenditure);
-
+    
     int maxCalories = 2500;
     // Probably will be set by user and held in CurrentUserService
     List<FoodEntry> weeklyEntries = foodEntryService.filterCurrentWeek(foodEntries);
     var daysOverDailyCalories = foodEntryService.getDaysAboveCalorieThreshold(weeklyEntries, maxCalories);
+    double weeklyExpenditure = foodEntryService.getExpenditure(weeklyEntries);
+    
+    
+    model.addAttribute("foodEntries", foodEntries);
+    model.addAttribute("dailyCalories", dailyCalories);
+    model.addAttribute("totalExpenditure", monthlyExpenditure);
+    model.addAttribute("weeklyExpenditure", weeklyExpenditure);
     model.addAttribute("exceededCalorieDays", daysOverDailyCalories.entrySet()); // will be fixed later
+
     return "food";
   }
 
